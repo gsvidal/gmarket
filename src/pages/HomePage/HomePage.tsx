@@ -1,13 +1,11 @@
-import './HomePage.scss';
+import "./HomePage.scss";
 
-type HomePageProps = {
-
-};
+type HomePageProps = {};
 
 export const HomePage: React.FC<HomePageProps> = () => {
-return (
-   <>
-   This is the homepage!
-   </>
-);
+  return (
+    <>
+      <h1>Welcome to the homepage!</h1>
+    </>
+  );
 };
