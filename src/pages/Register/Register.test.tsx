@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Register } from ".";
 
 beforeEach(() => {
@@ -33,7 +34,7 @@ describe("Register", () => {
     };
   };
 
-  const getFormElement = () : FormElements => ({
+  const getFormElement = (): FormElements => ({
     registerTitle: screen.getByRole("heading", {
       name: /register form/i,
     }),
@@ -46,8 +47,13 @@ describe("Register", () => {
   });
 
   const submitButton = () => {
-    return fireEvent.click(getFormElement().submitButton);
+    return userEvent.click(getFormElement().submitButton);
   };
+
+  const fillInput = (inputElement: HTMLElement, content: string) => {
+    return userEvent.type(inputElement, content);
+  };
+
   it("should render form title", () => {
     expect(getFormElement().registerTitle).toBeInTheDocument();
   });
@@ -60,16 +66,10 @@ describe("Register", () => {
     expect(getFormElement().submitButton).toBeInTheDocument();
   });
   it("should allows user to fill in the register form", () => {
-    fireEvent.change(getFormElement().usernameInput, {
-      target: { value: "testUser" },
-    });
-    fireEvent.change(getFormElement().passwordInput, {
-      target: { value: "testPassword" },
-    });
-    fireEvent.change(getFormElement().confirmPasswordInput, {
-      target: { value: "testPassword" },
-    });
-    fireEvent.click(getFormElement().sellerRadio);
+    userEvent.type(getFormElement().usernameInput, "testUser");
+    userEvent.type(getFormElement().passwordInput, "testPassword");
+    userEvent.type(getFormElement().confirmPasswordInput,"testPassword");
+    userEvent.click(getFormElement().sellerRadio);
 
     expect(getFormElement().usernameInput).toHaveValue("testUser");
     expect(getFormElement().passwordInput).toHaveValue("testPassword");
@@ -89,26 +89,20 @@ describe("Register", () => {
     expect(checkError().username).toBeInTheDocument();
 
     // Only Filling in username field and submitting
-    fireEvent.change(getFormElement().usernameInput, {
-      target: { value: "testUser" },
-    });
+    userEvent.type(getFormElement().usernameInput,"testUser");
     submitButton();
     expect(checkError().username).not.toBeInTheDocument();
     expect(checkError().password).toBeInTheDocument();
 
     // Then Filling password field and submitting
-    fireEvent.change(getFormElement().passwordInput, {
-      target: { value: "testPassword" },
-    });
+    userEvent.type(getFormElement().passwordInput, "testPassword");
     submitButton();
     expect(checkError().username).not.toBeInTheDocument();
     expect(checkError().password).not.toBeInTheDocument();
     expect(checkError().confirmPassword).toBeInTheDocument();
 
     // Then Filling confirm password field and submitting
-    fireEvent.change(getFormElement().confirmPasswordInput, {
-      target: { value: "testPassword" },
-    });
+    userEvent.type(getFormElement().confirmPasswordInput, "testPassword");
     submitButton();
     expect(checkError().username).not.toBeInTheDocument();
     expect(checkError().password).not.toBeInTheDocument();
@@ -116,8 +110,8 @@ describe("Register", () => {
     expect(checkError().role).toBeInTheDocument();
 
     // Then select role and submitting
-    fireEvent.click(getFormElement().sellerRadio);
-    fireEvent.click(getFormElement().customerRadio);
+    userEvent.click(getFormElement().sellerRadio);
+    userEvent.click(getFormElement().customerRadio);
     submitButton();
     expect(checkError().username).not.toBeInTheDocument();
     expect(checkError().password).not.toBeInTheDocument();
@@ -131,8 +125,8 @@ describe("Register", () => {
   //   const submitButton = screen.getByRole('button', {name: /register/i});
 
   //   // Attempt to submit with an invalid password
-  //   fireEvent.change(passwordInput, { target: { value: "weak" } });
-  //   fireEvent.click(submitButton);
+  //   userEvent.type(passwordInput, { target: { value: "weak" } });
+  //   userEvent.click(submitButton);
 
   //   // Check if the error message is displayed
   //   const passwordError = screen.getByText(
@@ -148,9 +142,9 @@ describe("Register", () => {
   //   const submitButton = screen.getByRole('button', {name: /register/i});
 
   //   // Attempt to submit with mismatched passwords
-  //   fireEvent.change(passwordInput, { target: { value: "Test123!" } });
-  //   fireEvent.change(confirmPasswordInput, { target: { value: "Mismatched123!" } });
-  //   fireEvent.click(submitButton);
+  //   userEvent.type(passwordInput, { target: { value: "Test123!" } });
+  //   userEvent.type(confirmPasswordInput, { target: { value: "Mismatched123!" } });
+  //   userEvent.click(submitButton);
 
   //   // Check if the error message is displayed
   //   const passwordMismatchError = screen.getByText(/passwords do not match/i);
@@ -166,13 +160,13 @@ describe("Register", () => {
   //   const sellerRadio = screen.getByLabelText(/seller/i);
   //   const submitButton = screen.getByRole('button', {name: /register/i});
 
-  //   fireEvent.change(usernameInput, { target: { value: "testUser" } });
-  //   fireEvent.change(passwordInput, { target: { value: "Test123!" } });
-  //   fireEvent.change(confirmPasswordInput, {
+  //   userEvent.type(usernameInput, { target: { value: "testUser" } });
+  //   userEvent.type(passwordInput, { target: { value: "Test123!" } });
+  //   userEvent.type(confirmPasswordInput, {
   //     target: { value: "Test123!" },
   //   });
-  //   fireEvent.click(sellerRadio);
-  //   fireEvent.submit(submitButton);
+  //   userEvent.click(sellerRadio);
+  //   userEvent.submit(submitButton);
 
   //   // Assert that form submission is successful, e.g., by checking for a success message or redirection
   //   const homePageHeading = await screen.findByText(/homepage/i);
