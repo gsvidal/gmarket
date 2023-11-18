@@ -12,6 +12,8 @@ describe("Register", () => {
     username: HTMLElement | null;
     password: HTMLElement | null;
     confirmPassword: HTMLElement | null;
+    passwordLength: HTMLElement | null;
+    passwordsDontMatch: HTMLElement | null;
     role: HTMLElement | null;
   };
 
@@ -30,6 +32,10 @@ describe("Register", () => {
       username: screen.queryByText(/username is required/i),
       password: screen.queryByText(/^password is required$/i),
       confirmPassword: screen.queryByText(/confirm password is required/i),
+      passwordLength: screen.queryByText(
+        /password must be at least 6 characters long/i
+      ),
+      passwordsDontMatch: screen.queryByText(/passwords do not match/i),
       role: screen.queryByText(/role is required/i),
     };
   };
@@ -46,12 +52,12 @@ describe("Register", () => {
     submitButton: screen.getByRole("button", { name: /register/i }),
   });
 
-  const submitButton = () => {
-    return userEvent.click(getFormElement().submitButton);
+  const clickSubmitButton = async () => {
+    await userEvent.click(getFormElement().submitButton);
   };
 
-  const fillInput = (inputElement: HTMLElement, content: string) => {
-    return userEvent.type(inputElement, content);
+  const fillInput = async (inputElement: HTMLElement, content: string) => {
+    await userEvent.type(inputElement, content);
   };
 
   it("should render form title", () => {
@@ -65,75 +71,72 @@ describe("Register", () => {
     expect(getFormElement().customerRadio).toBeInTheDocument();
     expect(getFormElement().submitButton).toBeInTheDocument();
   });
-  it("should allows user to fill in the register form", () => {
-    userEvent.type(getFormElement().usernameInput, "testUser");
-    userEvent.type(getFormElement().passwordInput, "testPassword");
-    userEvent.type(getFormElement().confirmPasswordInput,"testPassword");
-    userEvent.click(getFormElement().sellerRadio);
 
+  it("should allows user to fill in the register form", async () => {
+    await fillInput(getFormElement().usernameInput, "testUser");
     expect(getFormElement().usernameInput).toHaveValue("testUser");
+
+    await fillInput(getFormElement().passwordInput, "testPassword");
     expect(getFormElement().passwordInput).toHaveValue("testPassword");
+
+    await fillInput(getFormElement().confirmPasswordInput, "testPassword");
     expect(getFormElement().confirmPasswordInput).toHaveValue("testPassword");
+
+    await userEvent.click(getFormElement().sellerRadio);
+
     expect(getFormElement().sellerRadio).toBeChecked();
     expect(getFormElement().customerRadio).not.toBeChecked();
   });
 
   // Client validation
 
-  it("should display error messages for empty username field", () => {
+  it("should display error messages for empty username field", async () => {
     expect(checkError().username).not.toBeInTheDocument();
     // Attempt to submit with empty fields
-    submitButton();
+    await clickSubmitButton();
 
     // Check if the error message for empty username is displayed
     expect(checkError().username).toBeInTheDocument();
 
     // Only Filling in username field and submitting
-    userEvent.type(getFormElement().usernameInput,"testUser");
-    submitButton();
+    await fillInput(getFormElement().usernameInput, "testUser");
+    await clickSubmitButton();
     expect(checkError().username).not.toBeInTheDocument();
     expect(checkError().password).toBeInTheDocument();
 
     // Then Filling password field and submitting
-    userEvent.type(getFormElement().passwordInput, "testPassword");
-    submitButton();
+    await fillInput(getFormElement().passwordInput, "testPassword");
+    await clickSubmitButton();
     expect(checkError().username).not.toBeInTheDocument();
     expect(checkError().password).not.toBeInTheDocument();
     expect(checkError().confirmPassword).toBeInTheDocument();
 
     // Then Filling confirm password field and submitting
-    userEvent.type(getFormElement().confirmPasswordInput, "testPassword");
-    submitButton();
+    await fillInput(getFormElement().confirmPasswordInput, "testPassword");
+    await clickSubmitButton();
     expect(checkError().username).not.toBeInTheDocument();
     expect(checkError().password).not.toBeInTheDocument();
     expect(checkError().confirmPassword).not.toBeInTheDocument();
     expect(checkError().role).toBeInTheDocument();
 
     // Then select role and submitting
-    userEvent.click(getFormElement().sellerRadio);
-    userEvent.click(getFormElement().customerRadio);
-    submitButton();
+    await userEvent.click(getFormElement().sellerRadio);
+    await userEvent.click(getFormElement().customerRadio);
+    await clickSubmitButton();
     expect(checkError().username).not.toBeInTheDocument();
     expect(checkError().password).not.toBeInTheDocument();
     expect(checkError().confirmPassword).not.toBeInTheDocument();
     expect(checkError().role).not.toBeInTheDocument();
   });
-  // it("should display error messages for invalid passwords (must be at least 6 characters long)", () => {
-  //   const passwordInput = screen.getByPlaceholderText(/^password$/i);
-  //   // const confirmPasswordInput =
-  //   //   screen.getByPlaceholderText(/confirm password/i);
-  //   const submitButton = screen.getByRole('button', {name: /register/i});
 
-  //   // Attempt to submit with an invalid password
-  //   userEvent.type(passwordInput, { target: { value: "weak" } });
-  //   userEvent.click(submitButton);
+  it("should display error messages for invalid passwords (must be at least 6 characters long) after submitting", async () => {
+    // Attempt to submit with an invalid password
+    await fillInput(getFormElement().passwordInput, "weak");
+    await clickSubmitButton();
 
-  //   // Check if the error message is displayed
-  //   const passwordError = screen.getByText(
-  //     /password must be at least 6 characters long/i
-  //   );
-  //   expect(passwordError).toBeInTheDocument();
-  // });
+    // Check if the error message is displayed
+    expect(checkError().passwordLength).toBeInTheDocument();
+  });
 
   // it("should display error message for mismatched passwords", () => {
   //   const passwordInput = screen.getByPlaceholderText(/^password$/i);
@@ -142,12 +145,12 @@ describe("Register", () => {
   //   const submitButton = screen.getByRole('button', {name: /register/i});
 
   //   // Attempt to submit with mismatched passwords
-  //   userEvent.type(passwordInput, { target: { value: "Test123!" } });
-  //   userEvent.type(confirmPasswordInput, { target: { value: "Mismatched123!" } });
+  //   fillInput(passwordInput, { target: { value: "Test123!" } });
+  //   fillInput(confirmPasswordInput, { target: { value: "Mismatched123!" } });
   //   userEvent.click(submitButton);
 
   //   // Check if the error message is displayed
-  //   const passwordMismatchError = screen.getByText(/passwords do not match/i);
+  //   const passwordMismatchError = screen.getByText
   //   expect(passwordMismatchError).toBeInTheDocument();
   // });
 
@@ -160,9 +163,9 @@ describe("Register", () => {
   //   const sellerRadio = screen.getByLabelText(/seller/i);
   //   const submitButton = screen.getByRole('button', {name: /register/i});
 
-  //   userEvent.type(usernameInput, { target: { value: "testUser" } });
-  //   userEvent.type(passwordInput, { target: { value: "Test123!" } });
-  //   userEvent.type(confirmPasswordInput, {
+  //   fillInput(usernameInput, { target: { value: "testUser" } });
+  //   fillInput(passwordInput, { target: { value: "Test123!" } });
+  //   fillInput(confirmPasswordInput, {
   //     target: { value: "Test123!" },
   //   });
   //   userEvent.click(sellerRadio);

@@ -23,16 +23,11 @@ export const Register: React.FC<RegisterProps> = () => {
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value, id } = event.target;
-    console.log(id)
     setFormValues((prevState) => ({
       ...prevState,
       [name]: name === "role" ? id : value,
     }));
   };
-
-  useEffect(() => {
-    // console.log(formValues)
-  }, [formValues])
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -45,11 +40,15 @@ export const Register: React.FC<RegisterProps> = () => {
 
     for (const { field, message } of fieldsToValidate) {
       if (field.trim() === "") {
-        console.log("some error")
         setErrorMessage(message);
         return;
       }
     }
+
+    // if(password.length < 6 || confirmPassword.length <6){
+    //   setErrorMessage("Password must be at least 6 characters long")
+    //   return;
+    // }
 
     setErrorMessage("");
   };
