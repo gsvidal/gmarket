@@ -131,50 +131,46 @@ describe("Register", () => {
 
   it("should display error messages for invalid passwords (must be at least 6 characters long) after submitting", async () => {
     // Attempt to submit with an invalid password
+    await fillInput(getFormElement().usernameInput, "testUser");
     await fillInput(getFormElement().passwordInput, "weak");
+    await fillInput(getFormElement().confirmPasswordInput, "weak");
+    await userEvent.click(getFormElement().sellerRadio);
+
     await clickSubmitButton();
 
     // Check if the error message is displayed
     expect(checkError().passwordLength).toBeInTheDocument();
   });
 
-  // it("should display error message for mismatched passwords", () => {
-  //   const passwordInput = screen.getByPlaceholderText(/^password$/i);
-  //   const confirmPasswordInput =
-  //     screen.getByPlaceholderText(/confirm password/i);
-  //   const submitButton = screen.getByRole('button', {name: /register/i});
+  it("should display error message for mismatched passwords", async () => {
+    await fillInput(getFormElement().usernameInput, "testUser");
+    await fillInput(getFormElement().passwordInput, "strongpsw");
+    await fillInput(getFormElement().confirmPasswordInput, "strongpsw2");
+    await userEvent.click(getFormElement().sellerRadio);
 
-  //   // Attempt to submit with mismatched passwords
-  //   fillInput(passwordInput, { target: { value: "Test123!" } });
-  //   fillInput(confirmPasswordInput, { target: { value: "Mismatched123!" } });
-  //   userEvent.click(submitButton);
+    await clickSubmitButton();
 
-  //   // Check if the error message is displayed
-  //   const passwordMismatchError = screen.getByText
-  //   expect(passwordMismatchError).toBeInTheDocument();
-  // });
+    // Check if the error message is displayed
+    expect(checkError().passwordsDontMatch).toBeInTheDocument();
+  });
+
+  it("should not display error message for same passwords", async () => {
+    await fillInput(getFormElement().usernameInput, "testUser");
+    await fillInput(getFormElement().passwordInput, "strongpsw");
+    await fillInput(getFormElement().confirmPasswordInput, "strongpsw");
+    await userEvent.click(getFormElement().sellerRadio);
+
+    await clickSubmitButton();
+
+    // Check if the error message is displayed
+    expect(checkError().passwordsDontMatch).not.toBeInTheDocument();
+  });
 
   // Implement mocking API call (POST) with Mocking Service Worker (MSW)
-  // it("should submit the form with correct valuesf", async () => {
-  //   const usernameInput = screen.getByPlaceholderText(/username/i);
-  //   const passwordInput = screen.getByPlaceholderText(/^password$/i);
-  //   const confirmPasswordInput =
-  //     screen.getByPlaceholderText(/confirm password/i);
-  //   const sellerRadio = screen.getByLabelText(/seller/i);
-  //   const submitButton = screen.getByRole('button', {name: /register/i});
+  // it("should submit the form with correct values", async () => {
 
-  //   fillInput(usernameInput, { target: { value: "testUser" } });
-  //   fillInput(passwordInput, { target: { value: "Test123!" } });
-  //   fillInput(confirmPasswordInput, {
-  //     target: { value: "Test123!" },
-  //   });
-  //   userEvent.click(sellerRadio);
-  //   userEvent.submit(submitButton);
+    // Assert that form submission is successful, e.g., by checking for a success message or redirection
 
-  //   // Assert that form submission is successful, e.g., by checking for a success message or redirection
-  //   const homePageHeading = await screen.findByText(/homepage/i);
-  //   expect(homePageHeading).toBeInTheDocument();
-
-  //   // You can also mock the API call and check if it was called with the correct values
+    // You can also mock the API call and check if it was called with the correct values
   // });
 });

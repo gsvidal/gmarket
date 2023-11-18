@@ -38,6 +38,7 @@ export const Register: React.FC<RegisterProps> = () => {
       { field: role, message: "Role is required" },
     ];
 
+    // Validate if there's an empty input
     for (const { field, message } of fieldsToValidate) {
       if (field.trim() === "") {
         setErrorMessage(message);
@@ -45,10 +46,16 @@ export const Register: React.FC<RegisterProps> = () => {
       }
     }
 
-    // if(password.length < 6 || confirmPassword.length <6){
-    //   setErrorMessage("Password must be at least 6 characters long")
-    //   return;
-    // }
+    // If all inputs are filled, validate:
+    if (password.length < 6) {
+      setErrorMessage("Password must be at least 6 characters long");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setErrorMessage("Passwords do not match");
+      return;
+    }
 
     setErrorMessage("");
   };
@@ -85,9 +92,9 @@ export const Register: React.FC<RegisterProps> = () => {
           onChange={handleChange}
         />
         <label htmlFor="seller">Seller</label>
-        <input type="radio" id="seller" name="role" onChange={handleChange}/>
+        <input type="radio" id="seller" name="role" onChange={handleChange} />
         <label htmlFor="customer">Customer</label>
-        <input type="radio" id="customer" name="role" onChange={handleChange}/>
+        <input type="radio" id="customer" name="role" onChange={handleChange} />
         {errorMessage && <p>{errorMessage}</p>}
         <button>Register</button>
       </form>
