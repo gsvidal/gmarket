@@ -1,5 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import "./Register.scss";
+import axios from "axios";
 
 type RegisterProps = {};
 
@@ -18,11 +19,13 @@ export const Register: React.FC<RegisterProps> = () => {
     role: "",
   });
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const { username, password, confirmPassword, role } = formValues;
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value, id } = event.target;
+    setIsSubmitting(false);
     setFormValues((prevState) => ({
       ...prevState,
       [name]: name === "role" ? id : value,
@@ -57,8 +60,30 @@ export const Register: React.FC<RegisterProps> = () => {
       return;
     }
 
+    // if (password meets 1number, 1uppercase, 1symbol requirement)
+
     setErrorMessage("");
+
+    // API Call using axios
+    setIsSubmitting(true);
   };
+
+  useEffect(() => {
+    if (isSubmitting) {
+      console.log("is making the API call");
+      const postData = async () => {
+        try {
+          const response = await axios.post("http://127.0.0.1:8000/register", formValues);
+          console.log(response);
+          const data = await response.data;
+          console.log(data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      postData();
+    }
+  }, [isSubmitting]);
 
   return (
     <>

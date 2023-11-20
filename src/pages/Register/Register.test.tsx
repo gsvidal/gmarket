@@ -167,10 +167,9 @@ describe("Register", () => {
   });
 
   // Implement mocking API call (POST) with Mocking Service Worker (MSW)
-  it("should submit the form with correct values", async () => {
-    // Assert that form submission is successful, e.g., by checking for a success message or redirection
-    
-
-    // You can also mock the API call and check if it was called with the correct values
+  it("should render success message if user was created", async () => {
+    render(<Register />);
+    const success = await screen.findByText(/user created successfully/i);
+    expect(success).toBeInTheDocument();
   });
 });
