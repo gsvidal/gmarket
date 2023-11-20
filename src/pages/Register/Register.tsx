@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import "./Register.scss";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 type RegisterProps = {};
 
@@ -11,6 +12,14 @@ type FormValues = {
   role: string;
 };
 
+function getCookie(name: string): string | undefined {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    const cookieValue = parts.pop()?.split(";").shift();
+    return cookieValue;
+  }
+}
 export const Register: React.FC<RegisterProps> = () => {
   const [formValues, setFormValues] = useState<FormValues>({
     username: "",
@@ -70,20 +79,42 @@ export const Register: React.FC<RegisterProps> = () => {
 
   useEffect(() => {
     if (isSubmitting) {
-      console.log("is making the API call");
       const postData = async () => {
         try {
-          const response = await axios.post("http://127.0.0.1:8000/register", formValues);
-          console.log(response);
+          const response = await axios.post(
+            "http://127.0.0.1:8000/register",
+            formValues,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
           const data = await response.data;
-          console.log(data);
+          console.log(data.user.created_at);
         } catch (error) {
+          console.log(error);
           console.log(error);
         }
       };
       postData();
     }
+    setIsSubmitting(false);
   }, [isSubmitting]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get("http://127.0.0.1:8000/");
+  //       console.log(response);
+  //       const data = await response.data
+  //       console.log(data)
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
 
   return (
     <>

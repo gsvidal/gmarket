@@ -8,7 +8,6 @@ export const handlers = [
         "user": {
           "id": 123,
           "username": "example_user",
-          "email": "user@example.com",
           "role": "seller",
           "created_at": "17/11/2023" // format this to dd/mm/yyyy
         }
