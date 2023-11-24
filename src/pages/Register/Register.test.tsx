@@ -2,9 +2,14 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Register } from ".";
+import { BrowserRouter } from "react-router-dom";
 
 beforeEach(() => {
-  render(<Register />);
+  render(
+    <BrowserRouter>
+      <Register />
+    </BrowserRouter>
+  );
 });
 
 describe("Register", () => {
@@ -168,7 +173,12 @@ describe("Register", () => {
 
   // Implement mocking API call (POST) with Mocking Service Worker (MSW)
   it("should render success message if user was created", async () => {
-    render(<Register />);
+    await fillInput(getFormElement().usernameInput, "testUser");
+    await fillInput(getFormElement().passwordInput, "strongpsw");
+    await fillInput(getFormElement().confirmPasswordInput, "strongpsw");
+    await userEvent.click(getFormElement().sellerRadio);
+
+    await clickSubmitButton();
     const success = await screen.findByText(/user created successfully/i);
     expect(success).toBeInTheDocument();
   });
