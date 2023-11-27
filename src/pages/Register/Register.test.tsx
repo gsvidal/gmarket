@@ -1,13 +1,22 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { render, screen } from "@testing-library/react";
+import {
+  render,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Register } from ".";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, MemoryRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "../../redux/store";
 
 beforeEach(() => {
   render(
     <BrowserRouter>
-      <Register />
+      <Provider store={store}>
+        <Register />
+      </Provider>
     </BrowserRouter>
   );
 });
@@ -172,14 +181,23 @@ describe("Register", () => {
   });
 
   // Implement mocking API call (POST) with Mocking Service Worker (MSW)
-  it("should render success message if user was created", async () => {
+
+  it("submits the form, updates the Redux store, and navigates to the dashboard", async () => {
     await fillInput(getFormElement().usernameInput, "testUser");
     await fillInput(getFormElement().passwordInput, "strongpsw");
     await fillInput(getFormElement().confirmPasswordInput, "strongpsw");
     await userEvent.click(getFormElement().sellerRadio);
 
     await clickSubmitButton();
-    const success = await screen.findByText(/user created successfully/i);
-    expect(success).toBeInTheDocument();
+
+    await waitFor(() => {
+      const state = store.getState();
+      expect(state.user).toEqual({
+        id: 123,
+        username: 'example_user',
+        role: 'seller',
+        creationDate: '2023-11-21T20:56:27.133Z' 
+      });
+    });
   });
 });

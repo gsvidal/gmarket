@@ -1,11 +1,15 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import "./Register.scss";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { createUser } from "../../redux/states/user.slice";
+import { createUserAdapter } from "../../adapters/user.adapter";
+import { useFetchAndLoad } from "../../hooks/useFetchAndLoad";
+import { register } from "../../services/public.service";
 
 type RegisterProps = {};
 
-type FormValues = {
+export type FormValues = {
   username: string;
   password: string;
   confirmPassword: string;
@@ -20,9 +24,9 @@ export const Register: React.FC<RegisterProps> = () => {
     role: "",
   });
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [userSuccessMessage, setUserSuccessMessage] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading, callEndPoint } = useFetchAndLoad();
 
   const { username, password, confirmPassword, role } = formValues;
 
@@ -34,7 +38,7 @@ export const Register: React.FC<RegisterProps> = () => {
     }));
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const fieldsToValidate = [
       { field: username, message: "Username is required" },
@@ -51,7 +55,7 @@ export const Register: React.FC<RegisterProps> = () => {
       }
     }
 
-    // If all inputs are filled, validate:
+    // If all inputs are filled, validate password
     if (password.length < 6) {
       setErrorMessage("Password must be at least 6 characters long");
       return;
@@ -64,60 +68,26 @@ export const Register: React.FC<RegisterProps> = () => {
 
     // if (password meets 1number, 1uppercase, 1symbol requirement)
 
+    // If all validations pass, clear error message
     setErrorMessage("");
-    setUserSuccessMessage("");
+
     // Trigger API Call using axios
-    setIsLoading(true);
-  };
-
-  useEffect(() => {
-    if (isLoading) {
-      const postData = async () => {
-        try {
-          const response = await axios.post(
-            "http://127.0.0.1:8000/register",
-            formValues,
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          const data = await response.data;
-          setUserSuccessMessage(data.message);
-          navigate("/dashboard");
-        } catch (error: any) {
-          setErrorMessage(error.response?.data.error);
-        } finally {
-          setIsLoading(false);
-        }
-      };
-      postData();
+    try {
+      const data = await callEndPoint(register(formValues));
+      dispatch(createUser(createUserAdapter(data)));
+      navigate("/dashboard");
+    } catch (error: any) {
+      setErrorMessage(error.message);
     }
-  }, [isLoading]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get("http://127.0.0.1:8000/");
-  //       console.log(response);
-  //       const data = await response.data
-  //       console.log(data)
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
+  };
 
   return (
     <>
-      {isLoading ? (
+      {loading ? (
         <p>Loading...</p>
       ) : (
         <form action="" onSubmit={handleSubmit}>
           <h1>Register Form</h1>
-          {userSuccessMessage && <p>{userSuccessMessage}</p>}
           <label htmlFor="username">Username:</label>
           <input
             type="text"
