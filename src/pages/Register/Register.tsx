@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import "./Register.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -6,9 +6,10 @@ import { createUser } from "../../redux/states/user.slice";
 import { createUserAdapter } from "../../adapters/user.adapter";
 import { useFetchAndLoad } from "../../hooks/useFetchAndLoad";
 import { register } from "../../services/public.service";
+import { Input } from "../../components";
+import { useInput } from "../../hooks/useInput";
 
 type RegisterProps = {};
-
 export type FormValues = {
   username: string;
   password: string;
@@ -17,26 +18,24 @@ export type FormValues = {
 };
 
 export const Register: React.FC<RegisterProps> = () => {
-  const [formValues, setFormValues] = useState<FormValues>({
-    username: "",
-    password: "",
-    confirmPassword: "",
-    role: "",
-  });
   const [errorMessage, setErrorMessage] = useState<string>("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading, callEndPoint } = useFetchAndLoad();
 
-  const { username, password, confirmPassword, role } = formValues;
+  const usernameData = useInput("");
+  const passwordData = useInput("");
+  const confirmPasswordData = useInput("");
+  const roleData = useInput("");
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value, id } = event.target;
-    setFormValues((prevState) => ({
-      ...prevState,
-      [name]: name === "role" ? id : value,
-    }));
+  const formValues = {
+    username: usernameData.value,
+    password: passwordData.value,
+    confirmPassword: confirmPasswordData.value,
+    role: roleData.value,
   };
+
+  const { username, password, confirmPassword, role } = formValues;
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -88,48 +87,43 @@ export const Register: React.FC<RegisterProps> = () => {
       ) : (
         <form action="" onSubmit={handleSubmit}>
           <h1>Register Form</h1>
-          <label htmlFor="username">Username:</label>
-          <input
+          <Input
+            labelText="Username"
             type="text"
             placeholder="Username"
             name="username"
-            autoComplete="username"
-            value={username}
-            onChange={handleChange}
+            autocomplete="username"
+            {...usernameData}
           />
-          <label htmlFor="password">Password:</label>
-          <input
+          <Input
+            labelText="Password"
             type="password"
             placeholder="Password"
             name="password"
-            autoComplete="new-password"
-            value={password}
-            onChange={handleChange}
+            autocomplete="new-password"
+            {...passwordData}
           />
-          <label htmlFor="password">Confirm password:</label>
-          <input
+          <Input
+            labelText="Confirm Password"
             type="password"
             placeholder="Confirm Password"
             name="confirmPassword"
-            autoComplete="new-password"
-            value={confirmPassword}
-            onChange={handleChange}
+            autocomplete="new-password"
+            {...confirmPasswordData}
           />
-          <label htmlFor="seller">Seller</label>
-          <input
+          <Input
+            labelText="Seller"
             type="radio"
-            id="seller"
             name="role"
-            onChange={handleChange}
-            checked={role === "seller"}
+            checked={role === "Seller"}
+            {...roleData}
           />
-          <label htmlFor="customer">Customer</label>
-          <input
+          <Input
+            labelText="Customer"
             type="radio"
-            id="customer"
             name="role"
-            onChange={handleChange}
-            checked={role === "customer"}
+            checked={role === "Customer"}
+            {...roleData}
           />
           {errorMessage && <p>{errorMessage}</p>}
           <button>Register</button>
