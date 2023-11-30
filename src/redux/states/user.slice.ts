@@ -1,29 +1,30 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { User } from '../../models';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { User } from "../../models";
 
 const emptyUser: User = {
-  id: '',
-  username: '',
-  role: 'seller',
-  creationDate: ''
-}
+  id: 0,
+  username: "",
+  role: "seller",
+  creationDate: "",
+};
 
 export const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState: emptyUser,
   reducers: {
-    createUser: (state, action: PayloadAction<User>) => {
+    authUser: (state, action: PayloadAction<User>) => {
       return action.payload;
     },
     updateUser: (state, action: PayloadAction<User>) => {
-      return {...state, ...action.payload}
+      return { ...state, ...action.payload };
     },
     resetUser: () => {
-      return emptyUser
-    }
-  }
-})
+      return emptyUser;
+    },
+  },
+});
 
-export const { createUser, updateUser } = userSlice.actions
+export const { authUser, updateUser } = userSlice.actions;
 
-export default userSlice.reducer
+
+export default userSlice.reducer;

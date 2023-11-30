@@ -1,9 +1,8 @@
 import "./Login.scss";
+import { AuthForm } from "..";
 
-type LoginProps = {
-
-};
+type LoginProps = {};
 
 export const Login: React.FC<LoginProps> = () => {
-  return <>Login</>;
+  return <AuthForm title="Login" />;
 };

@@ -1,15 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AxiosResponse } from "axios";
 import { AxiosCall } from "../models";
 
 export const useFetchAndLoad = () => {
-  console.log("useFetchAndLoad");
   const [loading, setLoading] = useState(false);
-  let controller: AbortController;
+  const controllerRef = useRef<AbortController | null>(null);
 
   const callEndPoint = async (axiosCall: AxiosCall<any>) => {
     if (axiosCall.controller) {
-      controller = axiosCall.controller;
+      controllerRef.current = axiosCall.controller;
     }
     setLoading(true);
     let response = {} as AxiosResponse<any>;
@@ -28,15 +27,14 @@ export const useFetchAndLoad = () => {
   };
 
   const cancelEndpoint = () => {
-    setLoading(false);
-    if (controller) {
-      controller.abort();
+    if (controllerRef.current) {
+      controllerRef.current.abort();
     }
+    setLoading(false);
   };
 
   useEffect(() => {
     return () => {
-      console.log("useFetchAndLoad cleanup");
       cancelEndpoint();
     };
   }, []);
