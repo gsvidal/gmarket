@@ -6,5 +6,6 @@ export const authUserAdapter = (data: any): User => {
     username: data.data.user.username,
     role: data.data.user.role,
     creationDate: data.data.user.created_at,
+    token: data.data.token
   };
 };

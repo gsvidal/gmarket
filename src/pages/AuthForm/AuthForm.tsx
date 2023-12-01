@@ -9,6 +9,7 @@ import { login, register } from "../../services/public.service";
 import { Input } from "../../components";
 import { useFetchAndLoad, useInput } from "../../hooks";
 
+
 type AuthFormProps = {
   title: "Login" | "Register";
 };
@@ -24,6 +25,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ title }) => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const { loading, callEndPoint } = useFetchAndLoad();
 
   const usernameData = useInput("");

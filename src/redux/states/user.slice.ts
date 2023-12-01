@@ -6,6 +6,7 @@ const emptyUser: User = {
   username: "",
   role: "seller",
   creationDate: "",
+  token: ""
 };
 
 export const userSlice = createSlice({
@@ -25,6 +26,5 @@ export const userSlice = createSlice({
 });
 
 export const { authUser, updateUser } = userSlice.actions;
-
 
 export default userSlice.reducer;
