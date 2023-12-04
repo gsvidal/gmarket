@@ -1,9 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "./states/user.slice.ts";
-import { User } from "../models/user.model.ts";
+import userReducer, { UserState } from "./states/user.slice.ts";
 
 export interface AppStore {
-  user: User;
+  user: UserState
 }
 
 export const store = configureStore<AppStore>({

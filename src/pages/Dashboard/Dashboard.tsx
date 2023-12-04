@@ -31,8 +31,7 @@ export const Dashboard = () => {
 
   return (
     <>
-      <h1>Dashboard</h1>
-      <button>Logout</button>
+      <h1>Seller Dashboard</h1>
       <p>Message from back: {dataBack}</p>
       <h2>This is your info:</h2>
       <ul>

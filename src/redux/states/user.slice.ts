@@ -1,12 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { User } from "../../models";
 
-const emptyUser: User = {
+export type UserState = User & {
+  isUserAuth: boolean;
+};
+
+const emptyUser: UserState = {
   id: 0,
   username: "",
-  role: "seller",
+  role: "Seller",
   creationDate: "",
-  token: ""
+  token: "",
+  isUserAuth: false,
 };
 
 export const userSlice = createSlice({
@@ -14,7 +19,7 @@ export const userSlice = createSlice({
   initialState: emptyUser,
   reducers: {
     authUser: (state, action: PayloadAction<User>) => {
-      return action.payload;
+      return { ...action.payload, isUserAuth: true };
     },
     updateUser: (state, action: PayloadAction<User>) => {
       return { ...state, ...action.payload };
@@ -25,6 +30,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { authUser, updateUser } = userSlice.actions;
+export const { authUser, updateUser, resetUser } = userSlice.actions;
 
 export default userSlice.reducer;

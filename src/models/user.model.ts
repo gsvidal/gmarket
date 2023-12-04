@@ -1,4 +1,4 @@
-type UserRole = 'seller' | 'customer'
+type UserRole = 'Seller' | 'Customer'
 
 export interface User {
   id: number;

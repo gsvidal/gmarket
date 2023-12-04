@@ -9,7 +9,6 @@ import { login, register } from "../../services/public.service";
 import { Input } from "../../components";
 import { useFetchAndLoad, useInput } from "../../hooks";
 
-
 type AuthFormProps = {
   title: "Login" | "Register";
 };
@@ -102,17 +101,10 @@ export const AuthForm: React.FC<AuthFormProps> = ({ title }) => {
     }
   };
 
-  const handleClick = () => {
-    console.log("button clicked");
-    navigate("/");
-  };
-
   return (
     <>
       {loading ? (
-        <p>
-          Loading... <button onClick={handleClick}>button</button>
-        </p>
+        <p>Loading...</p>
       ) : (
         <form action="" onSubmit={handleSubmit}>
           <h1>{title} Form</h1>
