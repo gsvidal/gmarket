@@ -1,13 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import {
-  render,
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-} from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Register } from ".";
-import { BrowserRouter, MemoryRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "../../redux/store";
 
@@ -194,9 +189,11 @@ describe("Register", () => {
       const state = store.getState();
       expect(state.user).toEqual({
         id: 123,
-        username: 'example_user',
-        role: 'seller',
-        creationDate: '2023-11-21T20:56:27.133Z' 
+        username: "example_user",
+        role: "Seller",
+        creationDate: "2023-11-21T20:56:27.133Z",
+        token: "abcdefg",
+        isUserAuth: true,
       });
     });
   });

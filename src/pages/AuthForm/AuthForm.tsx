@@ -70,7 +70,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ title }) => {
       // If all inputs are filled, validate password
       console.log("you're in register");
       if (password.length < 6) {
-        setErrorMessage("Password must be at least 6 characters ");
+        setErrorMessage("Password must be at least 6 characters long");
         return;
       }
 

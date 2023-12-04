@@ -8,9 +8,10 @@ export const handlers = [
         "user": {
           "id": 123,
           "username": "example_user",
-          "role": "seller",
+          "role": "Seller",
           "created_at": "2023-11-21T20:56:27.133Z" // format this to dd/mm/yyyy
-        }
+        },
+        "token": "abcdefg"
     });
   }),
 ];
