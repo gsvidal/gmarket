@@ -22,15 +22,15 @@ const Dashboard = () => {
     fetchSellerProducts();
   }, []);
 
-  useEffect(() => {
-    console.log("tokenn in dash: ", user.token);
-  }, []);
+  // useEffect(() => {
+  //   console.log("tokenn in dash: ", user.token);
+  // }, []);
 
   return (
     <>
       <h1>Seller Dashboard</h1>
       <h2>These are your products:</h2>
-      {/* <button>Add product</button> */}
+      <button>Add product</button>
       <ul>
         {loading ? (
           "Loading..."
@@ -46,4 +46,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard
+export default Dashboard;

@@ -9,12 +9,8 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { authUser } from "./redux/states/user.slice";
 
-const Dashboard = lazy(
-  () => 
-    new Promise<{ default: React.ComponentType<any> }>((resolve) => {
-      setTimeout(() => resolve(import("./pages/Dashboard/Dashboard")), 3000);
-    }
-));
+const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
+
 function App() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
@@ -26,6 +22,7 @@ function App() {
     }
     setIsLoading(false);
   }, [dispatch]);
+
   return (
     <>
       <Header />

@@ -28,12 +28,13 @@ export const Header = () => {
   const handleLogout = async () => {
     try {
       const data: any = await callEndPoint(logout());
-      console.log(data.data.message);
+      // console.log(data.data.message);
       // TODO: Toast
       dispatch(resetUser());
       localStorage.removeItem("user");
       navigate(PublicRoutes.HOME);
     } catch (error: any) {
+      // TODO: Toast
       console.log(error);
     }
   };
