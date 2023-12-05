@@ -20,5 +20,7 @@ beforeEach(() => {
 });
 
 describe("App", () => {
-  it("", () => {});
+  it("should render logo", () => {
+    expect(screen.getByText(/gmarket/i)).toBeInTheDocument()
+  });
 });

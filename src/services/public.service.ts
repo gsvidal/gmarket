@@ -52,3 +52,20 @@ export const logout = () => {
   };
 };
 
+export const getSellerProducts = (id: number, token: string) => {
+  const controller = new AbortController();
+  return {
+    call: axios.get(
+      `http://127.0.0.1:8000/seller_dashboard/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+        signal: controller.signal
+      },
+    ),
+    controller
+  };
+};
+

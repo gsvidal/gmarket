@@ -11,7 +11,6 @@ export const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isUserAuth } = useSelector((store: AppStore) => store.user);
-  console.log(isUserAuth);
   const { loading, callEndPoint } = useFetchAndLoad();
 
   const notAuth = (): React.ReactNode => {
@@ -27,20 +26,22 @@ export const Header = () => {
     );
   };
   const handleLogout = async () => {
-    console.log("login out");
     try {
       const data: any = await callEndPoint(logout());
-      console.log("data from back: ", data.message);
+      console.log(data.message)
       dispatch(resetUser());
       navigate(PublicRoutes.HOME);
     } catch (error: any) {
-      console.log(error.message);
+      console.log(error)
     }
   };
   return (
     <>
       <nav>
         <ul>
+          <li>
+            <NavLink to={PublicRoutes.HOME}>Gmarket</NavLink>
+          </li>
           <li>
             <NavLink to={PublicRoutes.HOME}>Home</NavLink>
           </li>
