@@ -10,7 +10,7 @@ import { resetUser } from "../../redux/states/user.slice";
 export const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isUserAuth } = useSelector((store: AppStore) => store.user);
+  const { username, isUserAuth } = useSelector((store: AppStore) => store.user);
   const { loading: logoutLoading, callEndPoint } = useFetchAndLoad();
 
   const notAuth = (): React.ReactNode => {
@@ -29,7 +29,7 @@ export const Header = () => {
     try {
       const data: any = await callEndPoint(logout());
       console.log(data.data.message);
-      // TODO: Toast 
+      // TODO: Toast
       dispatch(resetUser());
       localStorage.removeItem("user");
       navigate(PublicRoutes.HOME);
@@ -48,11 +48,16 @@ export const Header = () => {
             <NavLink to={PublicRoutes.HOME}>Home</NavLink>
           </li>
           {isUserAuth ? (
-            <li>
-              <NavLink to="" onClick={handleLogout}>
-                Logout
-              </NavLink>
-            </li>
+            <>
+              <li>
+                {username}
+              </li>
+              <li>
+                <NavLink to="" onClick={handleLogout}>
+                  Logout
+                </NavLink>
+              </li>
+            </>
           ) : logoutLoading ? (
             <li>Logging out...</li>
           ) : (

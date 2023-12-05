@@ -5,7 +5,7 @@ import { Product } from "../../models";
 import { useFetchAndLoad } from "../../hooks";
 import { getSellerProducts } from "../../services/public.service";
 
-export const Dashboard = () => {
+const Dashboard = () => {
   const user = useSelector((store: AppStore) => store.user);
 
   const [sellerProducts, setSellerProducts] = useState<Product[]>([]);
@@ -45,3 +45,5 @@ export const Dashboard = () => {
     </>
   );
 };
+
+export default Dashboard

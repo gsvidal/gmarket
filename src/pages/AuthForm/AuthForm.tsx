@@ -109,7 +109,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ title }) => {
         <p>Loading...</p>
       ) : (
         <form action="" onSubmit={handleSubmit}>
-          <h1>{title} Form</h1>
+          <h1>{title} Form-Auth</h1>
           <Input
             labelText="Username"
             type="text"
