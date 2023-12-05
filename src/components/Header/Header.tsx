@@ -11,7 +11,7 @@ export const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isUserAuth } = useSelector((store: AppStore) => store.user);
-  const { loading, callEndPoint } = useFetchAndLoad();
+  const { loading: logoutLoading, callEndPoint } = useFetchAndLoad();
 
   const notAuth = (): React.ReactNode => {
     return (
@@ -28,11 +28,13 @@ export const Header = () => {
   const handleLogout = async () => {
     try {
       const data: any = await callEndPoint(logout());
-      console.log(data.message)
+      console.log(data.data.message);
+      // TODO: Toast 
       dispatch(resetUser());
+      localStorage.removeItem("user");
       navigate(PublicRoutes.HOME);
     } catch (error: any) {
-      console.log(error)
+      console.log(error);
     }
   };
   return (
@@ -51,6 +53,8 @@ export const Header = () => {
                 Logout
               </NavLink>
             </li>
+          ) : logoutLoading ? (
+            <li>Logging out...</li>
           ) : (
             notAuth()
           )}

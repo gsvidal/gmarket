@@ -8,14 +8,16 @@ import { getSellerProducts } from "../../services/public.service";
 export const Dashboard = () => {
   const user = useSelector((store: AppStore) => store.user);
 
-  const [products, setProducts] = useState<Product[]>([]);
+  const [sellerProducts, setSellerProducts] = useState<Product[]>([]);
   const { loading, callEndPoint } = useFetchAndLoad();
 
   useEffect(() => {
     const fetchSellerProducts = async () => {
-      const response = await callEndPoint(getSellerProducts(user.id, user.token));
+      const response = await callEndPoint(
+        getSellerProducts(user.id, user.token)
+      );
       const data = await response.data;
-      setProducts(data.products);
+      setSellerProducts(data.products);
     };
     fetchSellerProducts();
   }, []);
@@ -32,12 +34,12 @@ export const Dashboard = () => {
       <ul>
         {loading ? (
           "Loading..."
+        ) : sellerProducts.length === 0 ? (
+          <li>List is empty</li>
         ) : (
-          <li>
-            {products.map((product) => (
-              <li>{JSON.stringify(product)}</li>
-            ))}
-          </li>
+          sellerProducts.map((sellerProduct) => (
+            <li>{JSON.stringify(sellerProduct)}</li>
+          ))
         )}
       </ul>
     </>
