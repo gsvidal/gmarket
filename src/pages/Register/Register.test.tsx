@@ -177,7 +177,7 @@ describe("Register", () => {
 
   // Implement mocking API call (POST) with Mocking Service Worker (MSW)
 
-  it("submits the form, updates the Redux store, and navigates to the dashboard", async () => {
+  it("submits the form and updates the Redux store", async () => {
     await fillInput(getFormElement().usernameInput, "testUser");
     await fillInput(getFormElement().passwordInput, "strongpsw");
     await fillInput(getFormElement().confirmPasswordInput, "strongpsw");

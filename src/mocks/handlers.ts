@@ -14,4 +14,27 @@ export const handlers = [
         "token": "abcdefg"
     });
   }),
+  
+  http.get("http://127.0.0.1:8000/seller_dashboard/:id", () => {
+    // Note that you DON'T have to stringify the JSON!
+    return HttpResponse.json({"message": "Seller dashboard data retrieved successfully", "products": [
+      {
+        "id": 1,
+        "product_name": "Product 1",
+        "description": "This is a description for Product 1",
+        "price": 99.99,
+        "stock_quantity": 10,
+        "images": [],
+        "category": {
+          "id": 1,
+          "name": "Category 1"
+        },
+        "seller": {
+          "id": 1,
+          "name": "Seller 1"
+        }
+      },
+      // Add more products as needed
+    ]});
+  }),
 ];

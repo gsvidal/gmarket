@@ -5,7 +5,6 @@ export type InputProps = {
   name: string;
   autocomplete?: string;
   checked?: boolean;
-
 };
 
 export const Input = ({
@@ -16,9 +15,8 @@ export const Input = ({
   autocomplete,
   ...otherProps
 }: InputProps) => {
-
   return (
-    <>
+    <div>
       <label htmlFor={labelText}>{labelText}:</label>
       <input
         id={labelText}
@@ -28,6 +26,6 @@ export const Input = ({
         autoComplete={autocomplete}
         {...otherProps}
       />
-    </>
+    </div>
   );
 };
