@@ -5,7 +5,7 @@ type ModalProps = {
 export const Modal = ({children}: ModalProps) : React.ReactNode  => {
   return(
     <>
-    {children}
+    {children }
     </>
   );
 }

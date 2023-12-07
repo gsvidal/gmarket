@@ -14,7 +14,6 @@ const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-
   useEffect(() => {
     const fetchSellerProducts = async () => {
       try {
@@ -30,12 +29,7 @@ const Dashboard = () => {
     fetchSellerProducts();
   }, []);
 
-  // useEffect(() => {
-  //   console.log("tokenn in dash: ", user.token);
-  // }, []);
-
   const handleAddProduct = () => {
-    // Open a modal
     setIsModalOpen(true);
   };
 
@@ -45,9 +39,11 @@ const Dashboard = () => {
       <h2>These are your products:</h2>
       {errorMessage && <p>{errorMessage}</p>}
       <button onClick={handleAddProduct}>Add product</button>
-      <Modal>
-        <AddProductForm />
-      </Modal>
+      {isModalOpen && (
+        <Modal>
+          <AddProductForm />
+        </Modal>
+      )}
       <ul>
         {loading ? (
           "Loading..."
