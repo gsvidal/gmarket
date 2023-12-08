@@ -1,37 +1,30 @@
 import axios from "axios";
 import { FormValues } from "../pages";
+import { productFormValues } from "../components";
 
 export const register = (userData: FormValues) => {
   const controller = new AbortController();
   return {
-    call: axios.post(
-      "http://127.0.0.1:8000/register",
-      userData,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        signal: controller.signal
+    call: axios.post("http://127.0.0.1:8000/register", userData, {
+      headers: {
+        "Content-Type": "application/json",
       },
-    ),
-    controller
+      signal: controller.signal,
+    }),
+    controller,
   };
 };
 
 export const login = (userData: FormValues) => {
   const controller = new AbortController();
   return {
-    call: axios.post(
-      "http://127.0.0.1:8000/login_view",
-      userData,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        signal: controller.signal
+    call: axios.post("http://127.0.0.1:8000/login_view", userData, {
+      headers: {
+        "Content-Type": "application/json",
       },
-    ),
-    controller
+      signal: controller.signal,
+    }),
+    controller,
   };
 };
 
@@ -45,27 +38,51 @@ export const logout = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        signal: controller.signal
-      },
+        signal: controller.signal,
+      }
     ),
-    controller
+    controller,
   };
 };
 
 export const getSellerProducts = (id: number, token: string) => {
   const controller = new AbortController();
   return {
-    call: axios.get(
-      `http://127.0.0.1:8000/seller_dashboard/${id}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${token}`,
-        },
-        signal: controller.signal
+    call: axios.get(`http://127.0.0.1:8000/seller_dashboard/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
       },
-    ),
-    controller
+      signal: controller.signal,
+    }),
+    controller,
   };
 };
 
+export const createProduct = (formValues: productFormValues, token: string) => {
+  const controller = new AbortController();
+  return {
+    call: axios.post("http://127.0.0.1:8000/create_product", formValues, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+      },
+      signal: controller.signal,
+    }),
+    controller,
+  };
+};
+
+export const getCategories = (token: string) => {
+  const controller = new AbortController();
+  return {
+    call: axios.get(`http://127.0.0.1:8000/categories`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+      },
+      signal: controller.signal,
+    }),
+    controller,
+  };
+};

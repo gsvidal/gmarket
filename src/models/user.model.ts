@@ -7,3 +7,8 @@ export interface User {
   creationDate: string;
   token: string;
 }
+
+export interface Seller {
+  id: number;
+  username: string;
+}

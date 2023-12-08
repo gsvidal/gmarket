@@ -27,8 +27,9 @@ export const Header = () => {
   };
   const handleLogout = async () => {
     try {
+      console.log("before logout response");
       const data: any = await callEndPoint(logout());
-      // console.log(data.data.message);
+      console.log("after logout response");
       // TODO: Toast
       dispatch(resetUser());
       localStorage.removeItem("user");

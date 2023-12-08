@@ -1,10 +1,12 @@
+import { User, Category } from ".";
+
 export interface Product {
-  id: string;
+  id: number;
   name: string;
   description: string;
   price: number;
-  quantity: number;
-  images: string;
-  category: string;
-  seller_id: string;
+  stock: number;
+  images: string[];
+  category: Category[];
+  seller: User;
 }

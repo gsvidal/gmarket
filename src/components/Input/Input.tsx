@@ -3,6 +3,7 @@ export type InputProps = {
   type: string;
   placeholder?: string;
   name: string;
+  required?: boolean;
   autocomplete?: string;
   checked?: boolean;
 };
@@ -12,6 +13,7 @@ export const Input = ({
   type,
   placeholder,
   name,
+  required,
   autocomplete,
   ...otherProps
 }: InputProps) => {
@@ -23,6 +25,7 @@ export const Input = ({
         type={type}
         placeholder={placeholder}
         name={name}
+        required={required}
         autoComplete={autocomplete}
         {...otherProps}
       />

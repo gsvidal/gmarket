@@ -21,6 +21,7 @@ const Dashboard = () => {
           getSellerProducts(user.id, user.token)
         );
         const data = await response.data;
+        console.log(data);
         setSellerProducts(data.products);
       } catch (error: any) {
         setErrorMessage(error);
@@ -51,7 +52,7 @@ const Dashboard = () => {
           <li>List is empty</li>
         ) : (
           sellerProducts.map((sellerProduct) => (
-            <li>{JSON.stringify(sellerProduct)}</li>
+            <li key={sellerProduct.id}>{JSON.stringify(sellerProduct)}</li>
           ))
         )}
       </ul>
