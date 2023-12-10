@@ -1,6 +1,5 @@
 import axios from "axios";
 import { FormValues } from "../pages";
-import { productFormValues } from "../components";
 
 export const register = (userData: FormValues) => {
   const controller = new AbortController();
@@ -28,7 +27,7 @@ export const login = (userData: FormValues) => {
   };
 };
 
-export const logout = () => {
+export const logout = (token: string) => {
   const controller = new AbortController();
   return {
     call: axios.post(
@@ -37,6 +36,7 @@ export const logout = () => {
       {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
         },
         signal: controller.signal,
       }
@@ -59,10 +59,10 @@ export const getSellerProducts = (id: number, token: string) => {
   };
 };
 
-export const createProduct = (formValues: productFormValues, token: string) => {
+export const createProduct = (formData: FormData, token: string) => {
   const controller = new AbortController();
   return {
-    call: axios.post("http://127.0.0.1:8000/create_product", formValues, {
+    call: axios.post("http://127.0.0.1:8000/create_product", formData, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Token ${token}`,

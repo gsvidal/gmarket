@@ -13,6 +13,7 @@ const Dashboard = () => {
   const { loading, callEndPoint } = useFetchAndLoad();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [newProductAdded, setNewProductAdded] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchSellerProducts = async () => {
@@ -23,12 +24,13 @@ const Dashboard = () => {
         const data = await response.data;
         console.log(data);
         setSellerProducts(data.products);
+        setErrorMessage("");
       } catch (error: any) {
-        setErrorMessage(error);
+        setErrorMessage(error.message);
       }
     };
     fetchSellerProducts();
-  }, []);
+  }, [newProductAdded]);
 
   const handleAddProduct = () => {
     setIsModalOpen(true);
@@ -38,11 +40,11 @@ const Dashboard = () => {
     <>
       <h1>Seller Dashboard</h1>
       <h2>These are your products:</h2>
-      {errorMessage && <p>{errorMessage}</p>}
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
       <button onClick={handleAddProduct}>Add product</button>
       {isModalOpen && (
         <Modal>
-          <AddProductForm />
+          <AddProductForm setIsModalOpen={setIsModalOpen} setNewProductAdded={setNewProductAdded}/>
         </Modal>
       )}
       <ul>

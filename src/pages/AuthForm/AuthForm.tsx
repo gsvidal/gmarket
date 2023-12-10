@@ -94,7 +94,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ title }) => {
         title === "Register" ? register(formValues) : login(formValues)
       );
       dispatch(authUser(authUserAdapter(data)));
-      localStorage.setItem("user", JSON.stringify(authUserAdapter(data)))
+      localStorage.setItem("user", JSON.stringify(authUserAdapter(data)));
       // TODO:
       // Toast(title)
       navigate("/dashboard");
@@ -152,7 +152,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ title }) => {
               />
             </>
           )}
-          {errorMessage && <p>{errorMessage}</p>}
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
           <button>{title}</button>
         </form>
       )}

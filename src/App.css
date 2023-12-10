@@ -1,0 +1,11 @@
+.error-message {
+  padding: 4px 9px;
+  width: fit-content;
+  color: rgb(119, 0, 0);
+  background: rgb(255, 191, 191);
+  border: 1px solid red;
+  border-radius: 4px;
+}
+.error-message:before {
+  content: "Error: ";
+}
