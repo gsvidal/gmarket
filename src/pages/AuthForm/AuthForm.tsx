@@ -58,11 +58,14 @@ export const AuthForm: React.FC<AuthFormProps> = ({ title }) => {
       }
     }
 
+    console.log(fieldsToValidate);
     // Validate if there's an empty input
     for (const { field, message } of fieldsToValidate) {
+      console.log("{field: ", field, "message: ", message, "}");
+      console.log(typeof field);
       if (field.trim() === "") {
         setErrorMessage(message);
-        return;
+        return false;
       }
     }
 
@@ -70,23 +73,26 @@ export const AuthForm: React.FC<AuthFormProps> = ({ title }) => {
       // If all inputs are filled, validate password
       if (password.length < 6) {
         setErrorMessage("Password must be at least 6 characters long");
-        return;
+        return false;
       }
 
       if (password !== confirmPassword) {
         setErrorMessage("Passwords do not match");
-        return;
+        return false;
       }
 
       // if (password meets 1number, 1uppercase, 1symbol requirement)
     }
+    return true;
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     // Validate inputs
-    inputValidation();
+    if (!inputValidation()) {
+      return;
+    }
 
     // Trigger API Call using axios
     try {

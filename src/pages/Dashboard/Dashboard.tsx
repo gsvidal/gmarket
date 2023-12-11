@@ -16,6 +16,11 @@ const Dashboard = () => {
   const [newProductAdded, setNewProductAdded] = useState<boolean>(false);
 
   useEffect(() => {
+    console.log("rerendered");
+  });
+
+  useEffect(() => {
+    console.log("rerendered on newProductAdded");
     const fetchSellerProducts = async () => {
       try {
         const response = await callEndPoint(
@@ -25,6 +30,7 @@ const Dashboard = () => {
         console.log(data);
         setSellerProducts(data.products);
         setErrorMessage("");
+        setNewProductAdded(false);
       } catch (error: any) {
         setErrorMessage(error.message);
       }
@@ -36,6 +42,14 @@ const Dashboard = () => {
     setIsModalOpen(true);
   };
 
+  useEffect(() => {
+    console.log("dashboard mounted");
+    return () => {
+      console.log(
+        "dashboard unmountedddddddddddddddddddddddddddddddddddddddddddddd"
+      );
+    };
+  }, []);
   return (
     <>
       <h1>Seller Dashboard</h1>
@@ -44,7 +58,10 @@ const Dashboard = () => {
       <button onClick={handleAddProduct}>Add product</button>
       {isModalOpen && (
         <Modal>
-          <AddProductForm setIsModalOpen={setIsModalOpen} setNewProductAdded={setNewProductAdded}/>
+          <AddProductForm
+            setIsModalOpen={setIsModalOpen}
+            setNewProductAdded={setNewProductAdded}
+          />
         </Modal>
       )}
       <ul>

@@ -13,7 +13,7 @@ type AddProductFormProps = {
 
 export const AddProductForm = ({
   setIsModalOpen,
-  setNewProductAdded
+  setNewProductAdded,
 }: AddProductFormProps): React.ReactNode => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const { loading, callEndPoint } = useFetchAndLoad();
@@ -24,6 +24,7 @@ export const AddProductForm = ({
   const [uploadedImage, setUploadedImage] = useState<File | undefined>(
     undefined
   );
+  const [flash, setFlash] = useState<boolean>(false);
 
   const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedCategory(event.target.value);
@@ -31,28 +32,57 @@ export const AddProductForm = ({
 
   const handleImage = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      setUploadedImage(file);
-    }
+    // if (file) {
+    setUploadedImage(file);
+    // }
   };
+
+  useEffect(() => {
+    if (errorMessage) {
+      setFlash(true);
+      setTimeout(() => setFlash(false), 1500);
+    }
+  }, [errorMessage]);
 
   const productNameData = useInput("");
   const productDescriptionData = useInput("");
   const productPriceData = useInput("");
   const productStockData = useInput("");
 
-  // const inputValidation = () => {
-  //   setErrorMessage("");
-  //   const fieldsToValidate = [
-  //     { field: productName, message: "Name is required" },
-  //     { field: productDescription, message: "Description is required" },
-  //     { field: productPrice, message: "Description is required" },
-  //     { field: productStock, message: "Description is required" },
-  //   ];
+  const inputValidation = () => {
+    setErrorMessage("");
+    const fieldsToValidate = [
+      { field: productNameData.value, message: "Name is required" },
+      {
+        field: productDescriptionData.value,
+        message: "Description is required",
+      },
+      { field: productPriceData.value, message: "Price is required" },
+      { field: productStockData.value, message: "Stock is required" },
+    ];
 
-  //   validate if price and stock are positive
-  //   validate if image's size is less than 2MB
-  // }
+    // Validate if there's an empty input
+    for (const { field, message } of fieldsToValidate) {
+      if (field.trim() === "") {
+        setErrorMessage(message);
+        return false;
+      }
+    }
+    // validate if price and stock are positive
+    if (+productPriceData.value < 0) {
+      setErrorMessage("Price must be a positive number");
+      return false;
+    }
+    if (
+      +productStockData.value < 0 ||
+      +productStockData.value - Math.round(+productStockData.value) !== 0
+    ) {
+      setErrorMessage("Stock must be a positive integer");
+      return false;
+    }
+    // validate if image's size is less than 2MB
+    return true;
+  };
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -69,6 +99,9 @@ export const AddProductForm = ({
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!inputValidation()) {
+      return;
+    }
     // Create a FormData instance
     const formData = new FormData();
     formData.append("name", productNameData.value as string);
@@ -88,7 +121,7 @@ export const AddProductForm = ({
     const selectedCategoryExists = categories.some(
       (category) => category.code === selectedCategory
     );
-    if (!selectedCategoryExists) {
+    if (!selectedCategoryExists && selectedCategory !== "no-category") {
       setErrorMessage("Please select a valid category.");
       return;
     }
@@ -116,7 +149,6 @@ export const AddProductForm = ({
         type="text"
         placeholder="Your product name"
         name="name"
-        required
         {...productNameData}
       />
       <Input
@@ -124,7 +156,6 @@ export const AddProductForm = ({
         type="text"
         placeholder="Your product description"
         name="description"
-        required
         {...productDescriptionData}
       />
       <Input
@@ -140,7 +171,6 @@ export const AddProductForm = ({
         type="number"
         placeholder="Your product stock"
         name="stock"
-        required
         {...productStockData}
       />
       <div>
@@ -164,7 +194,11 @@ export const AddProductForm = ({
           ))}
         </select>
       </div>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      {errorMessage && (
+        <p className={`error-message ${flash ? "flash" : ""}`}>
+          {errorMessage}
+        </p>
+      )}
       <button>Add</button>
     </form>
   );

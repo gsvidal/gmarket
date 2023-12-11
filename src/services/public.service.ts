@@ -64,7 +64,6 @@ export const createProduct = (formData: FormData, token: string) => {
   return {
     call: axios.post("http://127.0.0.1:8000/create_product", formData, {
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Token ${token}`,
       },
       signal: controller.signal,

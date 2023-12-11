@@ -6,6 +6,15 @@
   border: 1px solid red;
   border-radius: 4px;
 }
-.error-message:before {
-  content: "Error: ";
+.flash {
+  animation: flash 1s;
+}
+
+@keyframes flash {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
