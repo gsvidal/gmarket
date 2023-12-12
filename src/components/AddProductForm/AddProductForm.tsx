@@ -24,25 +24,29 @@ export const AddProductForm = ({
   const [uploadedImage, setUploadedImage] = useState<File | undefined>(
     undefined
   );
-  const [flash, setFlash] = useState<boolean>(false);
 
   const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedCategory(event.target.value);
   };
 
-  const handleImage = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    // if (file) {
-    setUploadedImage(file);
-    // }
+  const validateImageType = (file: File | undefined) => {
+    return (
+      file?.type === "image/png" ||
+      file?.type === "image/jpeg" ||
+      file?.type === "image/jpg"
+    );
   };
 
-  useEffect(() => {
-    if (errorMessage) {
-      setFlash(true);
-      setTimeout(() => setFlash(false), 1500);
+  const handleImage = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (validateImageType(file)) {
+      setErrorMessage("");
+      setUploadedImage(file);
+    } else {
+      setErrorMessage("Please upload a valid image file: jpg/jpeg/png.");
+      event.target.value = "";
     }
-  }, [errorMessage]);
+  };
 
   const productNameData = useInput("");
   const productDescriptionData = useInput("");
@@ -50,7 +54,6 @@ export const AddProductForm = ({
   const productStockData = useInput("");
 
   const inputValidation = () => {
-    setErrorMessage("");
     const fieldsToValidate = [
       { field: productNameData.value, message: "Name is required" },
       {
@@ -80,7 +83,19 @@ export const AddProductForm = ({
       setErrorMessage("Stock must be a positive integer");
       return false;
     }
+
     // validate if image's size is less than 2MB
+    const validateImageSize = () => {
+      if (uploadedImage && uploadedImage.size > 2 * 1024 * 1024) {
+        setErrorMessage("Image size must be less than or equal to 2MB");
+        return false;
+      }
+    };
+    validateImageSize();
+    if (!validateImageType(uploadedImage)) {
+      return false;
+    }
+
     return true;
   };
 
@@ -113,9 +128,9 @@ export const AddProductForm = ({
     formData.append("seller_id", user.id.toString() as string);
 
     // how to get formData values?
-    for (let value of formData.values()) {
-      console.log(value);
-    }
+    // for (let value of formData.values()) {
+    //   console.log(value);
+    // }
 
     // Check if the selected category code exists in the fetched categories
     const selectedCategoryExists = categories.some(
@@ -143,63 +158,65 @@ export const AddProductForm = ({
   };
 
   return (
-    <form action="" onSubmit={handleSubmit}>
-      <Input
-        labelText="Name"
-        type="text"
-        placeholder="Your product name"
-        name="name"
-        {...productNameData}
-      />
-      <Input
-        labelText="Description"
-        type="text"
-        placeholder="Your product description"
-        name="description"
-        {...productDescriptionData}
-      />
-      <Input
-        labelText="Price"
-        type="text"
-        placeholder="99.99"
-        name="price"
-        {...productPriceData}
-      />
+    <>
+      <h2>Create a new product</h2>
+      <form action="" onSubmit={handleSubmit} role="form">
+        <Input
+          labelText="Name"
+          type="text"
+          placeholder="Your product name"
+          name="name"
+          {...productNameData}
+        />
+        <Input
+          labelText="Description"
+          type="text"
+          placeholder="Your product description"
+          name="description"
+          {...productDescriptionData}
+        />
+        <Input
+          labelText="Price"
+          type="text"
+          placeholder="99.99"
+          name="price"
+          {...productPriceData}
+        />
+        <Input
+          labelText="Stock"
+          type="number"
+          placeholder="Your product stock"
+          name="stock"
+          {...productStockData}
+        />
+        <div>
+          <label htmlFor="image">Image:</label>
+          <input type="file" name="image" id="image" onChange={handleImage} />
+        </div>
+        <div className="select-input">
+          <label htmlFor="category">Category:</label>
+          <select
+            name="category"
+            id="category"
+            onChange={handleSelectChange}
+            value={selectedCategory}
+          >
+            <option value="no-category">--Select a category--</option>
 
-      <Input
-        labelText="Stock"
-        type="number"
-        placeholder="Your product stock"
-        name="stock"
-        {...productStockData}
-      />
-      <div>
-        <label htmlFor="image">Image:</label>
-        <input type="file" name="image" id="image" onChange={handleImage} />
-      </div>
-
-      <div className="select-input">
-        <label htmlFor="category">Category:</label>
-        <select
-          name="category"
-          id="category"
-          onChange={handleSelectChange}
-          value={selectedCategory}
-        >
-          <option value="no-category">--Select a category--</option>
-          {categories.map((category) => (
-            <option key={category.id} value={category.code}>
-              {category.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      {errorMessage && (
-        <p className={`error-message ${flash ? "flash" : ""}`}>
-          {errorMessage}
-        </p>
-      )}
-      <button>Add</button>
-    </form>
+            {categories.map((category) => (
+              <option key={category.id} value={category.code}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        {errorMessage && (
+          <p className={`error-message ${errorMessage ? "fade-in" : ""}`}>
+            {errorMessage}
+          </p>
+        )}
+        <button disabled={loading}>Add</button>{" "}
+      </form>
+    </>
   );
 };

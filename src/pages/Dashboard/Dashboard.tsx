@@ -16,18 +16,13 @@ const Dashboard = () => {
   const [newProductAdded, setNewProductAdded] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log("rerendered");
-  });
-
-  useEffect(() => {
-    console.log("rerendered on newProductAdded");
     const fetchSellerProducts = async () => {
       try {
         const response = await callEndPoint(
           getSellerProducts(user.id, user.token)
         );
         const data = await response.data;
-        console.log(data);
+        // console.log(data);
         setSellerProducts(data.products);
         setErrorMessage("");
         setNewProductAdded(false);
@@ -42,14 +37,7 @@ const Dashboard = () => {
     setIsModalOpen(true);
   };
 
-  useEffect(() => {
-    console.log("dashboard mounted");
-    return () => {
-      console.log(
-        "dashboard unmountedddddddddddddddddddddddddddddddddddddddddddddd"
-      );
-    };
-  }, []);
+
   return (
     <>
       <h1>Seller Dashboard</h1>

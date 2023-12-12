@@ -19,10 +19,12 @@ describe("Header", () => {
     renderHeaderComponent();
     expect(screen.getByText(/gmarket/i)).toBeInTheDocument();
   });
+
   it("should render Home link", () => {
     renderHeaderComponent();
     expect(screen.getByText(/home/i)).toBeInTheDocument();
   });
+
   it("renders the correct links when the user is authenticated", () => {
     store.dispatch({
       type: "user/authUser",
@@ -30,6 +32,15 @@ describe("Header", () => {
     });
     renderHeaderComponent();
     expect(screen.getByText("Logout")).toBeInTheDocument();
+  });
+
+  it("renders the correct links when the user is authenticated and is seller role", () => {
+    store.dispatch({
+      type: "user/authUser",
+      payload: { username: "testUser", role: "Seller" },
+    });
+    renderHeaderComponent();
+    expect(screen.getByText("Dashboard")).toBeInTheDocument();
   });
 
   it("renders the correct links when the user is not authenticated", () => {

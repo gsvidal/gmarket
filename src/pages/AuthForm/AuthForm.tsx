@@ -58,11 +58,8 @@ export const AuthForm: React.FC<AuthFormProps> = ({ title }) => {
       }
     }
 
-    console.log(fieldsToValidate);
     // Validate if there's an empty input
     for (const { field, message } of fieldsToValidate) {
-      console.log("{field: ", field, "message: ", message, "}");
-      console.log(typeof field);
       if (field.trim() === "") {
         setErrorMessage(message);
         return false;

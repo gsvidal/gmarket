@@ -6,15 +6,16 @@
   border: 1px solid red;
   border-radius: 4px;
 }
-.flash {
-  animation: flash 1s;
-}
 
-@keyframes flash {
+@keyframes fadeIn {
   0% {
     opacity: 0;
   }
   100% {
     opacity: 1;
   }
+}
+
+.fade-in {
+  animation: fadeIn 0.75s;
 }
