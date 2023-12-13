@@ -92,7 +92,7 @@ export const AddProductForm = ({
       }
     };
     validateImageSize();
-    if (!validateImageType(uploadedImage)) {
+    if (uploadedImage && !validateImageType(uploadedImage)) {
       return false;
     }
 

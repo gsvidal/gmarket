@@ -85,3 +85,16 @@ export const getCategories = (token: string) => {
     controller,
   };
 };
+
+export const getAllProducts = () => {
+  const controller = new AbortController();
+  return {
+    call: axios.get(`http://127.0.0.1:8000/all_products`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      signal: controller.signal,
+    }),
+    controller,
+  };
+};
