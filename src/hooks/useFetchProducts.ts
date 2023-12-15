@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useFetchAndLoad } from ".";
 import { Product } from "../models";
+import { productsAdapter } from "../adapters";
 
 export const useFetchProducts = (fetchProductsFunc: Function, dependency?: boolean) => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -12,8 +13,7 @@ export const useFetchProducts = (fetchProductsFunc: Function, dependency?: boole
       try {
         const response = await callEndPoint(fetchProductsFunc());
         const data = await response.data;
-        // console.log(data);
-        setProducts(data.products);
+        setProducts(productsAdapter(data.products));
         setErrorMessage("");
       } catch (error: any) {
         setErrorMessage(error.message);

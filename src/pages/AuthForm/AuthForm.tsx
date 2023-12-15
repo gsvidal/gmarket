@@ -3,7 +3,7 @@ import "./AuthForm.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { authUser } from "../../redux/states/user.slice";
-import { authUserAdapter } from "../../adapters/user.adapter";
+import { authUserAdapter } from "../../adapters";
 
 import { login, register } from "../../services/public.service";
 import { Input } from "../../components";
@@ -99,7 +99,11 @@ export const AuthForm: React.FC<AuthFormProps> = ({ title }) => {
       dispatch(authUser(authUserAdapter(data)));
       localStorage.setItem("user", JSON.stringify(authUserAdapter(data)));
       // TODO:
-      // Toast(title)
+      // if(title === "Register") {
+      //   // Toast("Registered successfully")
+      // } else if(title === "Login") {
+      //   // Toast("Logged in successfully")
+      // }
       navigate("/dashboard");
     } catch (error: any) {
       setErrorMessage(error.message);

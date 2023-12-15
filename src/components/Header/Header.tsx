@@ -33,12 +33,13 @@ export const Header = () => {
 
       const data: any = await callEndPoint(logout(token));
       // TODO: Toast
+      // <Toast message={data.message} />
       dispatch(resetUser());
       localStorage.removeItem("user");
       navigate(PublicRoutes.HOME);
     } catch (error: any) {
       // TODO: Toast
-      console.log(error.message);
+      // <Toast message={error.message} />
     }
   };
 

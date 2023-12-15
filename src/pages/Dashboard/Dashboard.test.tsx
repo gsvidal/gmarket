@@ -59,7 +59,7 @@ describe("Dashboard", () => {
 
     expect(await screen.findByRole("form")).toBeInTheDocument();
   });
-  
+
   it("should render error message if seller doesn't exist", async () => {
     server.use(
       http.get(`${API_URL}/seller_dashboard/:id`, () => {

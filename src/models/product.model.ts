@@ -6,7 +6,7 @@ export interface Product {
   description: string;
   price: number;
   stock: number;
-  images: string[];
-  category: Category[];
+  image_url: string;
+  category: Category;
   seller: User;
 }
