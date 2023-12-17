@@ -24,34 +24,40 @@ export const handlers = [
       products: [
         {
           id: 1,
-          product_name: "Product 1",
+          name: "Product 1",
+          brand: "Brand 1",
           description: "This is a description for Product 1",
+          base_price: 249.99,
           price: 199.99,
-          stock_quantity: 10,
-          images: [],
+          stock: 10,
+          image: "image.png",
           category: {
             id: 1,
             name: "Category 1",
+            code: "cat1",
           },
           seller: {
             id: 1,
-            name: "Seller 1",
+            username: "Seller 1",
           },
         },
         {
           id: 2,
-          product_name: "Product 2",
+          name: "Product 2",
+          brand: "Brand 2",
           description: "This is a description for Product 2",
+          base_price: 349.99,
           price: 299.99,
-          stock_quantity: 20,
-          images: [],
+          stock: 20,
+          image: [],
           category: {
             id: 3,
             name: "Category 3",
+            code: "cat3",
           },
           seller: {
             id: 1,
-            name: "Seller 1",
+            username: "Seller 1",
           },
         },
         // Add more products as needed
@@ -115,14 +121,17 @@ export const handlers = [
       products: [
         {
           id: 1,
-          product_name: "Product 1",
+          name: "Product 1",
+          brand: "Brand 1",
           description: "This is a description for Product 1",
+          base_price: 249.99,
           price: 199.99,
-          stock_quantity: 10,
+          stock: 10,
           images: [],
           category: {
             id: 1,
             name: "Category 1",
+            code: "cat1",
           },
           seller: {
             id: 1,
@@ -131,22 +140,50 @@ export const handlers = [
         },
         {
           id: 2,
-          product_name: "Product 3",
-          description: "This is a description for Product 3",
-          price: 399.99,
-          stock_quantity: 30,
+          name: "Product 2",
+          brand: "Brand 2",
+          description: "This is a description for Product 2",
+          base_price: 349.99,
+          price: 299.99,
+          stock: 20,
           images: [],
           category: {
             id: 3,
             name: "Category 3",
+            code: "cat3",
           },
           seller: {
-            id: 3,
-            name: "Seller 3",
+            id: 1,
+            username: "Seller 2",
           },
         },
         // Add more products as needed
       ],
+    });
+  }),
+  http.post(`${API_URL}/create_product`, () => {
+    // Note that you DON'T have to stringify the JSON!
+    return HttpResponse.json({
+      message: "Product created successfully",
+      product: {
+        id: 1,
+        name: "Product 1",
+        brand: "Brand 1",
+        description: "This is a description for Product 1",
+        base_price: 249.99,
+        price: 199.99,
+        stock: 10,
+        images: [],
+        category: {
+          id: 1,
+          name: "Category 1",
+          code: "cat1",
+        },
+        seller: {
+          id: 1,
+          username: "Seller 1",
+        },
+      },
     });
   }),
 ];

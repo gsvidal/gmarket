@@ -4,15 +4,19 @@ import { AppStore } from "../../redux/store";
 import { getSellerProducts } from "../../services/public.service";
 import { AddProductForm, Modal } from "../../components";
 import { useFetchProducts } from "../../hooks";
-import { ProductList } from '../../components'
+import { ProductList } from "../../components";
 
 const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [newProductAdded, setNewProductAdded] = useState<boolean>(false);
   const user = useSelector((store: AppStore) => store.user);
-  const {products, loading, errorMessage} = useFetchProducts(() => getSellerProducts(user.id, user.token), newProductAdded)
+  const { products, loading, errorMessage } = useFetchProducts(
+    () => getSellerProducts(user.id, user.token),
+    newProductAdded
+  );
 
   const handleAddProduct = () => {
+    setNewProductAdded(false);
     setIsModalOpen(true);
   };
 
@@ -29,7 +33,11 @@ const Dashboard = () => {
           />
         </Modal>
       )}
-      <ProductList products={products} loading={loading} errorMessage={errorMessage}/>
+      <ProductList
+        products={products}
+        loading={loading}
+        errorMessage={errorMessage}
+      />
     </>
   );
 };

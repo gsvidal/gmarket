@@ -1,3 +1,5 @@
+import './Input.scss'
+
 export type InputProps = {
   labelText: string;
   type: string;
@@ -6,6 +8,7 @@ export type InputProps = {
   required?: boolean;
   autocomplete?: string;
   checked?: boolean;
+  className?: string;
 };
 
 export const Input = ({
@@ -15,11 +18,12 @@ export const Input = ({
   name,
   required,
   autocomplete,
+  className,
   ...otherProps
 }: InputProps) => {
   return (
     <div>
-      <label htmlFor={labelText}>{labelText}:</label>
+      <label className={className} htmlFor={labelText}>{labelText}:</label>
       <input
         id={labelText}
         type={type}

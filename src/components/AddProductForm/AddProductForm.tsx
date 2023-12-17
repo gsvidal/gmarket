@@ -29,7 +29,15 @@ export const AddProductForm = ({
     setSelectedCategory(event.target.value);
   };
 
-  const validateImageType = (file: File | undefined) => {
+  const isValidImageSize = (file: File | undefined) => {
+    if (file && file.size > 2 * 1024 * 1024) {
+      setErrorMessage("Image size must be less than or equal to 2MB");
+      return false;
+    }
+    return true;
+  };
+
+  const isValidImageType = (file: File | undefined) => {
     return (
       file?.type === "image/png" ||
       file?.type === "image/jpeg" ||
@@ -39,7 +47,7 @@ export const AddProductForm = ({
 
   const handleImage = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (validateImageType(file)) {
+    if (isValidImageType(file)) {
       setErrorMessage("");
       setUploadedImage(file);
     } else {
@@ -49,17 +57,21 @@ export const AddProductForm = ({
   };
 
   const productNameData = useInput("");
+  const productBrandData = useInput("");
   const productDescriptionData = useInput("");
   const productPriceData = useInput("");
+  const productBasePriceData = useInput("");
   const productStockData = useInput("");
 
-  const inputValidation = () => {
+  const areProductInputsValid = () => {
     const fieldsToValidate = [
       { field: productNameData.value, message: "Name is required" },
+      { field: productBrandData.value, message: "Brand is required" },
       {
         field: productDescriptionData.value,
         message: "Description is required",
       },
+      { field: productBasePriceData.value, message: "Base price is required" },
       { field: productPriceData.value, message: "Price is required" },
       { field: productStockData.value, message: "Stock is required" },
     ];
@@ -84,20 +96,15 @@ export const AddProductForm = ({
       return false;
     }
 
-    // validate if image's size is less than 2MB
-    const validateImageSize = () => {
-      if (uploadedImage && uploadedImage.size > 2 * 1024 * 1024) {
-        setErrorMessage("Image size must be less than or equal to 2MB");
-        return false;
-      }
-    };
-    validateImageSize();
-    if (uploadedImage && !validateImageType(uploadedImage)) {
+    if (!isValidImageSize(uploadedImage) || !isValidImageType(uploadedImage)) {
       return false;
     }
-
     return true;
   };
+
+  useEffect(() => {
+    console.log(uploadedImage);
+  }, [uploadedImage]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -114,23 +121,20 @@ export const AddProductForm = ({
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!inputValidation()) {
+    if (!areProductInputsValid()) {
       return;
     }
     // Create a FormData instance
     const formData = new FormData();
     formData.append("name", productNameData.value as string);
+    formData.append("brand", productBrandData.value as string);
     formData.append("description", productDescriptionData.value as string);
+    formData.append("base_price", productBasePriceData.value as string);
     formData.append("price", productPriceData.value as string);
     formData.append("stock", productStockData.value as string);
     formData.append("image", uploadedImage as File); // Append the first file in the FileList
     formData.append("category_code", selectedCategory as string);
     formData.append("seller_id", user.id.toString() as string);
-
-    // how to get formData values?
-    // for (let value of formData.values()) {
-    //   console.log(value);
-    // }
 
     // Check if the selected category code exists in the fetched categories
     const selectedCategoryExists = categories.some(
@@ -146,7 +150,8 @@ export const AddProductForm = ({
         const response = await callEndPoint(
           createProduct(formData, user.token)
         );
-        console.log(response);
+        // TODO: Toast
+        // console.log(response);
         setErrorMessage("");
         setIsModalOpen(false);
         setNewProductAdded(true);
@@ -166,20 +171,39 @@ export const AddProductForm = ({
           type="text"
           placeholder="Your product name"
           name="name"
+          className="required"
           {...productNameData}
+        />
+        <Input
+          labelText="Brand"
+          type="text"
+          placeholder="Your product brand: Apple, Sony, Generic,etc..."
+          name="brand"
+          className="required"
+          {...productBrandData}
         />
         <Input
           labelText="Description"
           type="text"
           placeholder="Your product description"
           name="description"
+          className="required"
           {...productDescriptionData}
+        />
+        <Input
+          labelText="Base Price"
+          type="text"
+          placeholder="129.99"
+          name="base_price"
+          className="required"
+          {...productBasePriceData}
         />
         <Input
           labelText="Price"
           type="text"
           placeholder="99.99"
           name="price"
+          className="required"
           {...productPriceData}
         />
         <Input
@@ -187,6 +211,7 @@ export const AddProductForm = ({
           type="number"
           placeholder="Your product stock"
           name="stock"
+          className="required"
           {...productStockData}
         />
         <div>

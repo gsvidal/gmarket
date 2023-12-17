@@ -1,3 +1,7 @@
+body {
+  padding: 30px;
+}
+
 .error-message {
   padding: 4px 9px;
   width: fit-content;
@@ -14,6 +18,14 @@
   100% {
     opacity: 1;
   }
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
 }
 
 .fade-in {

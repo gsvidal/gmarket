@@ -27,25 +27,25 @@ describe("Dashboard", () => {
   });
 
   it("should get products successfully", async () => {
-    const productName = await screen.findByText(/product 1/i);
-    const productDescription = await screen.findByText(
-      /This is a description for Product 1/i
-    );
+    const productName = await screen.findByText(/^product 1$/i);
+    const productBrand = await screen.findByText(/brand 1/i);
+    const productBasePrice = await screen.findByText(/249.99/i);
     const productPrice = await screen.findByText(/199.99/i);
-    const productStock = await screen.findByText(/10/i);
+    const productStock = await screen.findByText(/stock: 10/i);
     expect(productName).toBeInTheDocument();
-    expect(productDescription).toBeInTheDocument();
+    expect(productBrand).toBeInTheDocument();
+    expect(productBasePrice).toBeInTheDocument();
     expect(productPrice).toBeInTheDocument();
     expect(productStock).toBeInTheDocument();
 
-    const productName2 = await screen.findByText(/product 2/i);
-    const productDescription2 = await screen.findByText(
-      /This is a description for Product 2/i
-    );
-    const productPrice2 = await screen.findByText(/199.99/i);
-    const productStock2 = await screen.findByText(/20/i);
+    const productName2 = await screen.findByText(/^product 2$/i);
+    const productBrand2 = await screen.findByText(/brand 2/i);
+    const productBasePrice2 = await screen.findByText(/349.99/i);
+    const productPrice2 = await screen.findByText(/299.99/i);
+    const productStock2 = await screen.findByText(/stock: 20/i);
     expect(productName2).toBeInTheDocument();
-    expect(productDescription2).toBeInTheDocument();
+    expect(productBrand2).toBeInTheDocument();
+    expect(productBasePrice2).toBeInTheDocument();
     expect(productPrice2).toBeInTheDocument();
     expect(productStock2).toBeInTheDocument();
   });
