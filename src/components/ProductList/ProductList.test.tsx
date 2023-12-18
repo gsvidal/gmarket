@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { ProductList } from ".";
 import { Product } from "../../models";
+import { BrowserRouter } from "react-router-dom";
 
 describe("ProductList", () => {
   it("should render 'Loading...' when loading is true", () => {
@@ -99,11 +100,13 @@ describe("ProductList", () => {
     const errorMessage = "";
 
     render(
-      <ProductList
-        products={products}
-        loading={loading}
-        errorMessage={errorMessage}
-      />
+      <BrowserRouter>
+        <ProductList
+          products={products}
+          loading={loading}
+          errorMessage={errorMessage}
+        />
+      </BrowserRouter>
     );
 
     expect(screen.getByText(/test product 1/i)).toBeInTheDocument();

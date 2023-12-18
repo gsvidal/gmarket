@@ -98,3 +98,16 @@ export const getAllProducts = () => {
     controller,
   };
 };
+
+export const deleteProduct = (productId: number, token: string) => {
+  const controller = new AbortController();
+  return {
+    call: axios.delete(`http://127.0.0.1:8000/delete_product/${productId}`, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+      signal: controller.signal,
+    }),
+    controller,
+  };
+};

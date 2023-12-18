@@ -23,7 +23,7 @@ export const useFetchAndLoad = () => {
     } finally {
       setLoading(false);
     }
-    return response;
+  return response;
   };
 
   const cancelEndpoint = () => {

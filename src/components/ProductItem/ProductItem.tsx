@@ -1,6 +1,11 @@
+import { useSelector } from "react-redux";
+import { useFetchAndLoad } from "../../hooks";
 import { Product } from "../../models";
+import { deleteProduct } from "../../services/public.service";
 import "./ProductItem.scss";
 import noImagePlaceholder from "/images/no-image.png";
+import { useLocation } from "react-router-dom";
+import { AppStore } from "../../redux/store";
 
 type ProductItemProps = {
   product: Product;
@@ -15,9 +20,27 @@ const discount = (base: number, price: number) => {
 
 export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
   const { base_price, price } = product;
+  const location = useLocation();
+  const currentUrl = location.pathname;
+  const { loading, callEndPoint } = useFetchAndLoad();
+  const { token } = useSelector((store: AppStore) => store.user);
+
+  const handleDelete = async (productId: number) => {
+    try {
+      const response = await callEndPoint(deleteProduct(productId, token));
+      console.log(response)
+      const data = await response.data;
+      console.log(data)
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <li className="product">
-      <img className="product__image"
+      <img
+        className="product__image"
         src={
           product.image_url
             ? `${API_URL}${product.image_url}`
@@ -28,12 +51,14 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
       />
       <p>{product.brand}</p>
       <p>{product.name}</p>
-      {/* <p>{product.description}</p> */}
       <p>{product.price}</p>
       <p>{discount(+base_price, +price)}%</p>
       <p className="base-price">{product.base_price}</p>
       <p>Stock: {product.stock}</p>
       <p>{product.seller.username}</p>
+      {currentUrl === "/dashboard" && (
+        <button onClick={() => handleDelete(product.id)}>Delete</button>
+      )}
     </li>
   );
 };

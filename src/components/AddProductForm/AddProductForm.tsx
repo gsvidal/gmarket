@@ -103,10 +103,6 @@ export const AddProductForm = ({
   };
 
   useEffect(() => {
-    console.log(uploadedImage);
-  }, [uploadedImage]);
-
-  useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await callEndPoint(getCategories(user.token));
