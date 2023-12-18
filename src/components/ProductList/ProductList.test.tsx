@@ -2,6 +2,8 @@ import { render, screen } from "@testing-library/react";
 import { ProductList } from ".";
 import { Product } from "../../models";
 import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "../../redux/store";
 
 describe("ProductList", () => {
   it("should render 'Loading...' when loading is true", () => {
@@ -10,11 +12,13 @@ describe("ProductList", () => {
     const errorMessage = "";
 
     render(
-      <ProductList
-        products={products}
-        loading={loading}
-        errorMessage={errorMessage}
-      />
+      <Provider store={store}>
+        <ProductList
+          products={products}
+          loading={loading}
+          errorMessage={errorMessage}
+        />
+      </Provider>
     );
 
     expect(screen.getByText(/loading.../i)).toBeInTheDocument();
@@ -26,11 +30,13 @@ describe("ProductList", () => {
     const errorMessage = "";
 
     render(
-      <ProductList
-        products={products}
-        loading={loading}
-        errorMessage={errorMessage}
-      />
+      <Provider store={store}>
+        <ProductList
+          products={products}
+          loading={loading}
+          errorMessage={errorMessage}
+        />{" "}
+      </Provider>
     );
 
     expect(screen.getByText(/product list is empty/i)).toBeInTheDocument();
@@ -42,11 +48,13 @@ describe("ProductList", () => {
     const errorMessage = "Couldn't retrieve products. Error: Test error";
 
     render(
-      <ProductList
-        products={products}
-        loading={loading}
-        errorMessage={errorMessage}
-      />
+      <Provider store={store}>
+        <ProductList
+          products={products}
+          loading={loading}
+          errorMessage={errorMessage}
+        />
+      </Provider>
     );
 
     expect(
@@ -100,13 +108,15 @@ describe("ProductList", () => {
     const errorMessage = "";
 
     render(
-      <BrowserRouter>
-        <ProductList
-          products={products}
-          loading={loading}
-          errorMessage={errorMessage}
-        />
-      </BrowserRouter>
+      <Provider store={store}>
+        <BrowserRouter>
+          <ProductList
+            products={products}
+            loading={loading}
+            errorMessage={errorMessage}
+          />
+        </BrowserRouter>
+      </Provider>
     );
 
     expect(screen.getByText(/test product 1/i)).toBeInTheDocument();

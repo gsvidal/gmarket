@@ -10,10 +10,11 @@ const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [newProductAdded, setNewProductAdded] = useState<boolean>(false);
   const user = useSelector((store: AppStore) => store.user);
-  const { products, loading, errorMessage } = useFetchProducts(
+  const { loading, errorMessage } = useFetchProducts(
     () => getSellerProducts(user.id, user.token),
     newProductAdded
   );
+  const { sellerProducts } = useSelector((store: AppStore) => store.product);
 
   const handleAddProduct = () => {
     setNewProductAdded(false);
@@ -34,7 +35,7 @@ const Dashboard = () => {
         </Modal>
       )}
       <ProductList
-        products={products}
+        products={sellerProducts}
         loading={loading}
         errorMessage={errorMessage}
       />

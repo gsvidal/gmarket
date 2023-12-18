@@ -8,14 +8,19 @@ import { ProductList } from "../../components";
 type HomePageProps = {};
 
 export const HomePage: React.FC<HomePageProps> = () => {
-  const { username } = useSelector((store: AppStore) => store.user)
-  const {products, loading, errorMessage} = useFetchProducts(getAllProducts);
+  const { username } = useSelector((store: AppStore) => store.user);
+  const { loading, errorMessage } = useFetchProducts(getAllProducts);
+  const { allProducts } = useSelector((store: AppStore) => store.product);
 
   return (
     <>
       <h1>Welcome {username && username}! </h1>
       <h2>You can find any products here:</h2>
-      <ProductList products={products} loading={loading} errorMessage={errorMessage}/>
+      <ProductList
+        products={allProducts}
+        loading={loading}
+        errorMessage={errorMessage}
+      />
     </>
   );
 };

@@ -17,6 +17,7 @@ describe("HomePage", () => {
     const store = configureStore({
       reducer: {
         user: () => ({ username: "testuser" }),
+        product: () => ({ allProducts: [] }),
       },
     });
 

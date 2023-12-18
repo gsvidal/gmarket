@@ -7,26 +7,78 @@ import { Provider } from "react-redux";
 import { store } from "../../redux/store";
 import { server } from "../../mocks/node";
 import { HttpResponse, http } from "msw";
+import { configureStore } from "@reduxjs/toolkit";
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 
-beforeEach(() => {
-  render(
-    <BrowserRouter>
-      <Provider store={store}>
-        <Dashboard />
-      </Provider>
-    </BrowserRouter>
-  );
-});
-
 describe("Dashboard", () => {
   it("should render the dashboard title", async () => {
+    render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <Dashboard />
+        </Provider>
+      </BrowserRouter>
+    );
     const title = screen.getByText(/seller dashboard/i);
     expect(title).toBeInTheDocument();
   });
 
   it("should get products successfully", async () => {
+    const store = configureStore({
+      reducer: {
+        user: () => ({ username: "testuser" }),
+        product: () => ({
+          sellerProducts: [
+            {
+              id: 1,
+              name: "Product 1",
+              brand: "Brand 1",
+              description: "This is a description for Product 1",
+              base_price: 249.99,
+              price: 199.99,
+              stock: 10,
+              image: "image.png",
+              category: {
+                id: 1,
+                name: "Category 1",
+                code: "cat1",
+              },
+              seller: {
+                id: 1,
+                username: "testuser",
+              },
+            },
+            {
+              id: 2,
+              name: "Product 2",
+              brand: "Brand 2",
+              description: "This is a description for Product 2",
+              base_price: 349.99,
+              price: 299.99,
+              stock: 20,
+              image: [],
+              category: {
+                id: 3,
+                name: "Category 3",
+                code: "cat3",
+              },
+              seller: {
+                id: 1,
+                username: "testuser",
+              },
+            },
+          ],
+        }),
+      },
+    });
+    render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <Dashboard />
+        </Provider>
+      </BrowserRouter>
+    );
     const productName = await screen.findByText(/^product 1$/i);
     const productBrand = await screen.findByText(/brand 1/i);
     const productBasePrice = await screen.findByText(/249.99/i);
@@ -51,6 +103,13 @@ describe("Dashboard", () => {
   });
 
   it("should open add product form when click on add product button", async () => {
+    render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <Dashboard />
+        </Provider>
+      </BrowserRouter>
+    );
     await userEvent.click(screen.getByRole("button", { name: /add product/i }));
 
     expect(

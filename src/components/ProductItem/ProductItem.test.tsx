@@ -3,6 +3,8 @@ import { ProductItem } from "./ProductItem";
 import { Product } from "../../models";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter, MemoryRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "../../redux/store";
 
 describe("ProductItem", () => {
   it("should render product details correctly", () => {
@@ -27,9 +29,11 @@ describe("ProductItem", () => {
     };
 
     render(
-      <BrowserRouter>
-        <ProductItem product={product} />
-      </BrowserRouter>
+      <Provider store={store}>
+        <BrowserRouter>
+          <ProductItem product={product} />
+        </BrowserRouter>
+      </Provider>
     );
 
     expect(screen.getByText(/test product/i)).toBeInTheDocument();
@@ -62,9 +66,11 @@ describe("ProductItem", () => {
     };
 
     render(
-      <BrowserRouter>
-        <ProductItem product={product} />
-      </BrowserRouter>
+      <Provider store={store}>
+        <BrowserRouter>
+          <ProductItem product={product} />
+        </BrowserRouter>
+      </Provider>
     );
 
     const image = screen.getByAltText(
@@ -95,9 +101,11 @@ describe("ProductItem", () => {
     };
 
     render(
-      <MemoryRouter initialEntries={["/dashboard"]}>
-        <ProductItem product={product} />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/dashboard"]}>
+          <ProductItem product={product} />
+        </MemoryRouter>
+      </Provider>
     );
 
     // Check if the Delete button is rendered based on the /dashboard URL

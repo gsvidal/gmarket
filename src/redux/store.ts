@@ -1,13 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer, { UserState } from "./states/user.slice.ts";
+import { UserState } from "./states/user.slice";
+import { productReducer, userReducer } from "./states";
+import { ProductState } from "./states/product.slice.ts";
 
 export interface AppStore {
-  user: UserState
+  user: UserState;
+  product: ProductState;
 }
 
 export const store = configureStore<AppStore>({
   reducer: {
     user: userReducer,
+    product: productReducer,
   },
 });
 
