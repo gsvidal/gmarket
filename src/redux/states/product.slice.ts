@@ -6,9 +6,14 @@ export type ProductState = {
   sellerProducts: Product[];
 };
 
-type ProductAction = {
+type AddProductAction = {
   isSellerProduct: boolean;
   product: Product;
+};
+
+type RemoveProductAction = {
+  isSellerProduct: boolean;
+  productId: number;
 };
 
 const initialState: ProductState = {
@@ -26,23 +31,28 @@ export const productSlice = createSlice({
     saveSellerProducts: (state, action: PayloadAction<Product[]>) => {
       state.sellerProducts = action.payload;
     },
-    addProduct: (state, action: PayloadAction<ProductAction>) => {
+    addProduct: (state, action: PayloadAction<AddProductAction>) => {
       const { isSellerProduct, product } = action.payload;
       if (isSellerProduct) {
         state.sellerProducts.push(product);
       }
     },
-    deleteProduct: (state, action: PayloadAction<ProductAction>) => {
-      const { isSellerProduct, product } = action.payload;
+    removeProduct: (state, action: PayloadAction<RemoveProductAction>) => {
+      const { isSellerProduct, productId } = action.payload;
       if (isSellerProduct) {
         state.sellerProducts = state.sellerProducts.filter(
-          (sellerProduct) => sellerProduct.id !== product.id
+          (sellerProduct) => sellerProduct.id !== productId
         );
       }
     },
   },
 });
 
-export const { saveAllProducts, saveSellerProducts, addProduct, deleteProduct } = productSlice.actions 
+export const {
+  saveAllProducts,
+  saveSellerProducts,
+  addProduct,
+  removeProduct,
+} = productSlice.actions;
 
-export default productSlice.reducer
+export default productSlice.reducer;

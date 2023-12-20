@@ -6,7 +6,7 @@ import { authUser } from "../../redux/states/user.slice";
 import { authUserAdapter } from "../../adapters";
 
 import { login, register } from "../../services/public.service";
-import { Input } from "../../components";
+import { Button, Input } from "../../components";
 import { useFetchAndLoad, useInput } from "../../hooks";
 
 type AuthFormProps = {
@@ -160,7 +160,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ title }) => {
             </>
           )}
           {errorMessage && <p className="error-message">{errorMessage}</p>}
-          <button>{title}</button>
+          <Button>{title}</Button>
         </form>
       )}
     </>

@@ -1,10 +1,14 @@
 import { ChangeEvent, useState, useEffect, FormEvent } from "react";
-import { Input } from "..";
+import { Button, Input } from "..";
 import { useFetchAndLoad, useInput } from "../../hooks";
 import { createProduct, getCategories } from "../../services/public.service";
 import { Category } from "../../models";
 import { useSelector } from "react-redux";
 import { AppStore } from "../../redux/store";
+import { useDispatch } from "react-redux";
+import { addProduct } from "../../redux/states/product.slice";
+import { useLocation } from "react-router-dom";
+import { productAdapter } from "../../adapters";
 
 type AddProductFormProps = {
   setIsModalOpen: (bool: boolean) => void;
@@ -24,6 +28,9 @@ export const AddProductForm = ({
   const [uploadedImage, setUploadedImage] = useState<File | undefined>(
     undefined
   );
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const isSellerProduct = location.pathname === "/dashboard";
 
   const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedCategory(event.target.value);
@@ -83,11 +90,17 @@ export const AddProductForm = ({
         return false;
       }
     }
-    // validate if price and stock are positive
-    if (+productPriceData.value < 0) {
+    // validate if price and stock are numbers and positive
+    if (isNaN(+productBasePriceData.value) || +productBasePriceData.value < 0) {
+      setErrorMessage("Base price must be a positive number");
+      return false;
+    }
+
+    if (isNaN(+productPriceData.value) || +productPriceData.value < 0) {
       setErrorMessage("Price must be a positive number");
       return false;
     }
+
     if (
       +productStockData.value < 0 ||
       +productStockData.value - Math.round(+productStockData.value) !== 0
@@ -96,7 +109,10 @@ export const AddProductForm = ({
       return false;
     }
 
-    if (!isValidImageSize(uploadedImage) || !isValidImageType(uploadedImage)) {
+    if (
+      uploadedImage &&
+      (!isValidImageSize(uploadedImage) || !isValidImageType(uploadedImage))
+    ) {
       return false;
     }
     return true;
@@ -146,8 +162,16 @@ export const AddProductForm = ({
         const response = await callEndPoint(
           createProduct(formData, user.token)
         );
+        const data = await response.data;
+        console.log(data);
         // TODO: Toast
         // console.log(response);
+        dispatch(
+          addProduct({
+            isSellerProduct,
+            product: productAdapter(data.product),
+          })
+        );
         setErrorMessage("");
         setIsModalOpen(false);
         setNewProductAdded(true);
@@ -236,7 +260,9 @@ export const AddProductForm = ({
             {errorMessage}
           </p>
         )}
-        <button disabled={loading}>Add</button>{" "}
+        <Button disabled={loading} className="danger">
+          Add
+        </Button>{" "}
       </form>
     </>
   );

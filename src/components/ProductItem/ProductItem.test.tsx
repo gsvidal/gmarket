@@ -5,8 +5,10 @@ import userEvent from "@testing-library/user-event";
 import { BrowserRouter, MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "../../redux/store";
+import sinon from "sinon";
+import { removeProduct } from "../../redux/states/product.slice";
 
-describe("ProductItem", () => {
+describe("ProductItem", async () => {
   it("should render product details correctly", () => {
     const product: Product = {
       id: 1,
@@ -79,7 +81,7 @@ describe("ProductItem", () => {
     expect(image.src).toContain("/images/no-image.png");
   });
 
-  it("should not show the product item after clicking delete button", async () => {
+  it("should render delete button for seller", () => {
     const product: Product = {
       id: 1,
       name: "test product",
@@ -107,12 +109,85 @@ describe("ProductItem", () => {
         </MemoryRouter>
       </Provider>
     );
+    const deleteButton = screen.getByRole("button", { name: /delete/i });
+    expect(deleteButton).toBeInTheDocument();
+  });
+
+  it("should not show the delete button when the URL is not /dashboard", () => {
+    const product: Product = {
+      id: 1,
+      name: "test product",
+      brand: "test brand",
+      description: "test description",
+      base_price: 249.99,
+      price: 199.99,
+      stock: 10,
+      image_url: null,
+      category: {
+        id: 1,
+        name: "Test Category",
+        code: "test-category",
+      },
+      seller: {
+        id: 1,
+        username: "testUser",
+      },
+    };
+
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/"]}>
+          <ProductItem product={product} />
+        </MemoryRouter>
+      </Provider>
+    );
 
     // Check if the Delete button is rendered based on the /dashboard URL
+    const deleteButton = screen.queryByRole("button", { name: /delete/i });
+
+    expect(deleteButton).not.toBeInTheDocument();
+  });
+
+  it("should call handleDelete when delete button is clicked", async () => {
+    const product: Product = {
+      id: 1,
+      name: "test product",
+      brand: "test brand",
+      description: "test description",
+      base_price: 249.99,
+      price: 199.99,
+      stock: 10,
+      image_url: null,
+      category: {
+        id: 1,
+        name: "Test Category",
+        code: "test-category",
+      },
+      seller: {
+        id: 1,
+        username: "testUser",
+      },
+    };
+
+    const mockDispatch = sinon.stub(store, "dispatch");
+
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/dashboard"]}>
+          <ProductItem product={product} />
+        </MemoryRouter>
+      </Provider>
+    );
+
     const deleteButton = screen.getByRole("button", { name: /delete/i });
 
     await userEvent.click(deleteButton);
 
-    expect(screen.queryByText(/test product/i)).not.toBeInTheDocument();
+    sinon.assert.calledWith(
+      mockDispatch,
+      removeProduct({ isSellerProduct: true, productId: product.id })
+    );
+
+    mockDispatch.restore();
   });
 });

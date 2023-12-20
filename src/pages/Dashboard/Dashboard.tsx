@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { AppStore } from "../../redux/store";
 import { getSellerProducts } from "../../services/public.service";
-import { AddProductForm, Modal } from "../../components";
+import { AddProductForm, Button, Modal } from "../../components";
 import { useFetchProducts } from "../../hooks";
 import { ProductList } from "../../components";
 
@@ -23,9 +23,9 @@ const Dashboard = () => {
 
   return (
     <>
-      <h1>Seller Dashboard</h1>
-      <h2>These are your products:</h2>
-      <button onClick={handleAddProduct}>Add product</button>
+      <h1 className="title dashboard__title">Seller Dashboard</h1>
+      <Button onClick={handleAddProduct}>+ Add product</Button>
+      <h3>These are your products:</h3>
       {isModalOpen && (
         <Modal>
           <AddProductForm

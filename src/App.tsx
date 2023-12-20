@@ -1,6 +1,6 @@
 import { useState, lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
-import "./App.css";
+import "./App.scss";
 import { HomePage, Login, Register } from "./pages";
 import { AuthGuard } from "./guards/auth.guards";
 import { PrivateRoutes, PublicRoutes } from "./models";

@@ -3,3 +3,35 @@
   margin: 0;
   box-sizing: border-box;
 }
+
+/* Theme for colors */
+:root {
+  --primary-color: rgb(33, 33, 33);
+  --secondary-dark-color: #673e99;
+  --secondary-color: #aa78e7;
+  --secondary-light-color: #c192fd;
+  --tertiary-color: #007bff;
+  --tertiary-light-color: #5cabff;
+  --tertiary-dark-color: #00438b;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --danger-light-color: rgb(255, 191, 191);
+  --danger-dark-color: rgb(145, 0, 0);
+  --warning-color: #ffc107;
+  --info-color: #17a2b8;
+  --white: white;
+  --black: black;
+  --gray: gray;
+}|
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  background-color: var(--primary-color);
+  color: var(--white);
+  font-family: "Inter", sans-serif;
+  font-weight: 300;
+  font-size: 1.2rem;
+}

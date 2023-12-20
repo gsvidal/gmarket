@@ -6,6 +6,10 @@ import "./ProductItem.scss";
 import noImagePlaceholder from "/images/no-image.png";
 import { useLocation } from "react-router-dom";
 import { AppStore } from "../../redux/store";
+import { removeProduct } from "../../redux/states/product.slice";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
+import { Button } from "..";
 
 type ProductItemProps = {
   product: Product;
@@ -20,25 +24,30 @@ const discount = (base: number, price: number) => {
 
 export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
   const { base_price, price } = product;
-  const location = useLocation();
-  const currentUrl = location.pathname;
   const { loading, callEndPoint } = useFetchAndLoad();
   const { token } = useSelector((store: AppStore) => store.user);
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const isSellerProduct = location.pathname === "/dashboard";
+  const [fade, setFade] = useState<boolean>(false);
 
   const handleDelete = async (productId: number) => {
     try {
       const response = await callEndPoint(deleteProduct(productId, token));
-      console.log(response)
       const data = await response.data;
-      console.log(data)
-      
+      // TODO: Toast(data.message)
+      setFade(true)
+      setTimeout(() => {
+        setFade(false);
+        dispatch(removeProduct({ isSellerProduct, productId }));
+      }, 1000);
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <li className="product">
+    <li className={`product ${fade ? "fade-animation":""}`}>
       <img
         className="product__image"
         src={
@@ -56,8 +65,14 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
       <p className="base-price">{product.base_price}</p>
       <p>Stock: {product.stock}</p>
       <p>{product.seller.username}</p>
-      {currentUrl === "/dashboard" && (
-        <button onClick={() => handleDelete(product.id)}>Delete</button>
+      {isSellerProduct && (
+        <Button
+          className={loading ? "disabled" : ""}
+          disabled={loading}
+          onClick={() => handleDelete(product.id)}
+        >
+          {loading ? "Deleting" : "Delete"}
+        </Button>
       )}
     </li>
   );

@@ -141,6 +141,39 @@ describe("AddProductForm", () => {
     expect(await screen.findByText(/stock is required/i)).toBeInTheDocument();
   });
 
+  it("should show base price error if filled base price is a string, after adding product name, description and stock", async () => {
+    await userEvent.type(screen.getByLabelText(/name/i), "product 1");
+    await userEvent.type(screen.getByLabelText(/brand/i), "brand 1");
+    await userEvent.type(
+      screen.getByLabelText(/description/i),
+      "product 1 description"
+    );
+    await userEvent.type(screen.getByLabelText(/base price/i), "ciento noventa y nueve");
+    await userEvent.type(screen.getByLabelText(/^price/i), "149");
+    await userEvent.type(screen.getByLabelText(/stock/i), "10");
+    await clickAddProduct();
+    expect(
+      await screen.findByText(/base price must be a positive number/i)
+    ).toBeInTheDocument();
+  });
+
+  it("should show price error if filled price is a string, after adding product name, description, base price and stock", async () => {
+    await userEvent.type(screen.getByLabelText(/name/i), "product 1");
+    await userEvent.type(screen.getByLabelText(/brand/i), "brand 1");
+    await userEvent.type(
+      screen.getByLabelText(/description/i),
+      "product 1 description"
+    );
+    await userEvent.type(screen.getByLabelText(/base price/i), "199");
+    await userEvent.type(screen.getByLabelText(/^price/i), "ciento cuarenta y nueve");
+    await userEvent.type(screen.getByLabelText(/stock/i), "10");
+    await clickAddProduct();
+    expect(
+      await screen.findByText(/price must be a positive number/i)
+    ).toBeInTheDocument();
+  });
+
+
   it("should show price error if filled price is not a positive number, after adding product name, description and stock", async () => {
     await userEvent.type(screen.getByLabelText(/name/i), "product 1");
     await userEvent.type(screen.getByLabelText(/brand/i), "brand 1");

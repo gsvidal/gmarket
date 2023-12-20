@@ -1,0 +1,45 @@
+body {
+  padding: 10px;
+  @media screen and (min-width: 600px) {
+    padding: 20px;
+  }
+  @media screen and (min-width: 1024px) {
+    padding: 30px;
+  }
+}
+
+.error-message {
+  padding: 4px 9px;
+  width: fit-content;
+  color: var(--danger-dark-color);
+  background: var(--danger-light-color);
+  border: 1px solid var(--danger-color);
+  border-radius: 4px;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+.fade-in {
+  animation: fadeIn 0.75s;
+}
+
+
+.title {
+  font-size: 4.5rem;
+  text-align: center;
+}

@@ -1,5 +1,6 @@
 import { ProductItem } from "..";
 import { Product } from "../../models";
+import './ProductList.scss'
 
 type ProductListProps = {
   products: Product[];
@@ -15,7 +16,7 @@ export const ProductList = ({
   return (
     <>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
-      <ul>
+      <ul className="product__list">
         {loading ? (
           "Loading..."
         ) : products.length === 0 && !errorMessage ? (

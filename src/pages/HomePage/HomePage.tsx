@@ -14,7 +14,7 @@ export const HomePage: React.FC<HomePageProps> = () => {
 
   return (
     <>
-      <h1>Welcome {username && username}! </h1>
+      <h1 className="title homepage__title">Welcome {username && username}! </h1>
       <h2>You can find any products here:</h2>
       <ProductList
         products={allProducts}

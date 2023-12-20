@@ -186,4 +186,10 @@ export const handlers = [
       },
     });
   }),
+  http.delete(`${API_URL}/delete_product/:id`, () => {
+    // Note that you DON'T have to stringify the JSON!
+    return HttpResponse.json({
+      message: "Product deleted successfully",
+    });
+  }),
 ];
