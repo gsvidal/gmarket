@@ -7,6 +7,7 @@
 /* Theme for colors */
 :root {
   --primary-color: rgb(33, 33, 33);
+  --primary-opacity-color: rgba(33, 33, 33, 0.65);
   --secondary-dark-color: #673e99;
   --secondary-color: #aa78e7;
   --secondary-light-color: #c192fd;
@@ -22,7 +23,8 @@
   --white: white;
   --black: black;
   --gray: gray;
-}|
+  --max-width: 1240px;
+}
 
 html {
   font-size: 62.5%;
@@ -33,5 +35,5 @@ body {
   color: var(--white);
   font-family: "Inter", sans-serif;
   font-weight: 300;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 }

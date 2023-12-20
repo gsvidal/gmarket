@@ -13,14 +13,16 @@ export const HomePage: React.FC<HomePageProps> = () => {
   const { allProducts } = useSelector((store: AppStore) => store.product);
 
   return (
-    <>
-      <h1 className="title homepage__title">Welcome {username && username}! </h1>
-      <h2>You can find any products here:</h2>
+    <main className="homepage">
+      <h1 className="title homepage__title">
+        Welcome {username && username}!{" "}
+      </h1>
+      <h3>You can find any products here:</h3>
       <ProductList
         products={allProducts}
         loading={loading}
         errorMessage={errorMessage}
       />
-    </>
+    </main>
   );
 };
