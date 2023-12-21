@@ -21,6 +21,11 @@ beforeEach(() => {
 
 describe("App", () => {
   it("should render logo", () => {
-    expect(screen.getByText(/gmarket/i)).toBeInTheDocument()
+    expect(screen.getByText(/market/i)).toBeInTheDocument()
+  });
+  it("should render Home navigation item", () => {
+    expect(screen.getByText(/home/i)).toBeInTheDocument()
   });
 });
+
+

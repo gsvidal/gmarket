@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { ProductItem } from "./ProductItem";
 import { Product } from "../../models";
 import userEvent from "@testing-library/user-event";
@@ -183,10 +183,12 @@ describe("ProductItem", async () => {
 
     await userEvent.click(deleteButton);
 
-    sinon.assert.calledWith(
-      mockDispatch,
-      removeProduct({ isSellerProduct: true, productId: product.id })
-    );
+    await waitFor(() => {
+      sinon.assert.calledWith(
+        mockDispatch,
+        removeProduct({ isSellerProduct: true, productId: product.id })
+      );
+    });
 
     mockDispatch.restore();
   });

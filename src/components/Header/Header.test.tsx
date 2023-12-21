@@ -17,7 +17,7 @@ const renderHeaderComponent = () => {
 describe("Header", () => {
   it("should render logo", () => {
     renderHeaderComponent();
-    expect(screen.getByText(/gmarket/i)).toBeInTheDocument();
+    expect(screen.getByText(/market/i)).toBeInTheDocument();
   });
 
   it("should render Home link", () => {

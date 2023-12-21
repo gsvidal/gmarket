@@ -39,7 +39,10 @@ fs.writeFileSync(path.join(folderPath, `${componentName}.scss`), "");
 // Create Component.test.tsx
 const testContent = `
 import { render, screen } from '@testing-library/react';
-import { ${componentName} } from './${componentName}';
+import { ${componentName} } from '.';
+import { BrowserRouter } from 'react-router-dom';
+import { store } from '../../redux/store';
+import { Provider } from 'react-redux';
 
 beforeEach(() => {
   render(

@@ -24,7 +24,7 @@ const discount = (base: number, price: number) => {
 
 export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
   const { base_price, price } = product;
-  const { loading, callEndPoint } = useFetchAndLoad();
+  const { loading: deleteLoading, callEndPoint } = useFetchAndLoad();
   const { token } = useSelector((store: AppStore) => store.user);
   const dispatch = useDispatch();
   const location = useLocation();
@@ -36,7 +36,7 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
       const response = await callEndPoint(deleteProduct(productId, token));
       const data = await response.data;
       // TODO: Toast(data.message)
-      setFade(true)
+      setFade(true);
       setTimeout(() => {
         setFade(false);
         dispatch(removeProduct({ isSellerProduct, productId }));
@@ -47,23 +47,22 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
   };
 
   return (
-    <li className={`product ${fade ? "fade-animation":""}`}>
+    <li className={`product ${fade ? "fade-animation" : ""}`}>
       <figure className="product__image-container">
-      <img
-        className="product__image"
-        src={
-          product.image_url
-            ? `${API_URL}${product.image_url}`
-            : noImagePlaceholder
-        }
-        alt={`${product.name} image`}
-        width="260"
-        onError={(e) => {
-          (e.target as HTMLImageElement).src = noImagePlaceholder;
-        }}
+        <img
+          className="product__image"
+          src={
+            product.image_url
+              ? `${API_URL}${product.image_url}`
+              : noImagePlaceholder
+          }
+          alt={`${product.name} image`}
+          width="260"
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = noImagePlaceholder;
+          }}
         />
-        
-              </figure>
+      </figure>
       <p>{product.brand}</p>
       <p>{product.name}</p>
       <p>{product.price}</p>
@@ -71,14 +70,17 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
       <p className="base-price">{product.base_price}</p>
       <p>Stock: {product.stock}</p>
       <p>{product.seller.username}</p>
+
       {isSellerProduct && (
-        <Button
-          className={loading ? "disabled" : ""}
-          disabled={loading}
-          onClick={() => handleDelete(product.id)}
-        >
-          {loading ? "Deleting" : "Delete"}
-        </Button>
+        <>
+          <Button
+            className={deleteLoading ? "disabled" : ""}
+            disabled={deleteLoading}
+            onClick={() => handleDelete(product.id)}
+          >
+            {deleteLoading ? "Deleting" : "Delete"}
+          </Button>
+        </>
       )}
     </li>
   );
