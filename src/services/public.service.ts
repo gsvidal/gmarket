@@ -113,15 +113,15 @@ export const deleteProduct = (productId: number, token: string) => {
 };
 
 export const updateProduct = (
-  updateForm: FormData,
+  updatedFormData: FormData,
   productId: number,
   token: string
 ) => {
   const controller = new AbortController();
   return {
-    call: axios.patch(
+    call: axios.post(
       `http://127.0.0.1:8000/update_product/${productId}`,
-      updateForm,
+      updatedFormData,
       {
         headers: {
           Authorization: `Token ${token}`,

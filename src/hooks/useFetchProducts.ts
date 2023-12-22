@@ -9,8 +9,7 @@ import {
 import { useLocation } from "react-router-dom";
 
 export const useFetchProducts = (
-  fetchProductsFunc: Function,
-  dependency?: boolean
+  fetchProductsFunc: Function
 ) => {
   const { loading, callEndPoint } = useFetchAndLoad();
   const dispatch = useDispatch();
@@ -35,7 +34,7 @@ export const useFetchProducts = (
       }
     };
     fetchSellerProducts();
-  }, [dependency]);
+  }, []);
 
   return { loading, errorMessage };
 };

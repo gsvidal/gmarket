@@ -17,6 +17,11 @@
       height: 200px;
     }
   }
+
+  &__button-container {
+    display: flex;
+    justify-content: space-around;
+  }
 }
 
 .base-price {
@@ -36,4 +41,11 @@
     opacity: 0;
     transform: scale(0.1);
   }
+}
+
+.icon-edit {
+  display: inline;
+  width: 10px;
+  height: 10px;
+  background: url() center/cover no-repeat;
 }

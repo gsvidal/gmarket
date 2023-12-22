@@ -11,6 +11,11 @@ type AddProductAction = {
   product: Product;
 };
 
+type EditProductAction = {
+  isSellerProduct: boolean;
+  productToEdit: Product;
+};
+
 type RemoveProductAction = {
   isSellerProduct: boolean;
   productId: number;
@@ -45,6 +50,14 @@ export const productSlice = createSlice({
         );
       }
     },
+    editProduct: (state, action: PayloadAction<EditProductAction>) => {
+      const { isSellerProduct, productToEdit } = action.payload;
+      if (isSellerProduct) {
+        state.sellerProducts = state.sellerProducts.map((sellerProduct) =>
+          sellerProduct.id === productToEdit.id ? productToEdit : sellerProduct
+        );
+      }
+    },
   },
 });
 
@@ -53,6 +66,7 @@ export const {
   saveSellerProducts,
   addProduct,
   removeProduct,
+  editProduct,
 } = productSlice.actions;
 
 export default productSlice.reducer;

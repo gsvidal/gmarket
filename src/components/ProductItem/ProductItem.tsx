@@ -9,7 +9,7 @@ import { AppStore } from "../../redux/store";
 import { removeProduct } from "../../redux/states/product.slice";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-import { Button, Modal } from "..";
+import { ProductForm, Button, Modal } from "..";
 
 type ProductItemProps = {
   product: Product;
@@ -32,7 +32,7 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
   const location = useLocation();
   const isSellerProduct = location.pathname === "/dashboard";
   const [fade, setFade] = useState<boolean>(false);
-  const [isEditFormOpen, setIsEditFormOpen] = useState<boolean>(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
 
   const handleDelete = async (productId: number) => {
     try {
@@ -51,21 +51,8 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
   };
 
   const openEditForm = () => {
-    setIsEditFormOpen(true);
-  };
-
-  const saveEdit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // Save info in updateForm object
-    // Validate info
-
-    // Send info
-    try {
-      // const response = await editCallEndPoint(updateProduct(productId))
-    } catch (error) {
-      // TODO: Toast(error)
-      console.log(error);
-    }
+    setIsEditModalOpen(true);
+    console.log(product);
   };
 
   return (
@@ -94,7 +81,10 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
       <p>{seller.username}</p>
 
       {isSellerProduct && (
-        <>
+        <div className="product__button-container">
+          <Button onClick={openEditForm}>
+            Edit <span className="icon-edit"></span>
+          </Button>
           <Button
             className={deleteLoading ? "disabled" : ""}
             disabled={deleteLoading}
@@ -102,19 +92,16 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
           >
             {deleteLoading ? "Deleting" : "Delete"}
           </Button>
-          <Button
-            // className={editLoading ? "disabled" : ""}
-            // disabled={editLoading}
-            onClick={openEditForm}
-          >
-            Edit
-          </Button>
-        </>
+        </div>
       )}
 
-      {isEditFormOpen && (
+      {isEditModalOpen && (
         <Modal>
-          
+          <ProductForm
+            setIsModalOpen={setIsEditModalOpen}
+            type="update"
+            product={product}
+          />
         </Modal>
       )}
     </li>
