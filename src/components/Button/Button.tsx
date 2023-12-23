@@ -14,7 +14,7 @@ export const Button = ({
   onClick,
 }: ButtonProps): React.ReactNode => {
   return (
-    <div className="button__container">
+    <div className={`button__container ${className}`}>
       <button
         onClick={onClick}
         disabled={disabled}

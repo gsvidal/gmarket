@@ -81,12 +81,12 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
       <p>{seller.username}</p>
 
       {isSellerProduct && (
-        <div className="product__button-container">
-          <Button onClick={openEditForm}>
+        <div className="product__buttons-container">
+          <Button onClick={openEditForm} className="edit">
             Edit <span className="icon-edit"></span>
           </Button>
           <Button
-            className={deleteLoading ? "disabled" : ""}
+            className={`delete ${deleteLoading ? "disabled" : ""}`}
             disabled={deleteLoading}
             onClick={() => handleDelete(product.id)}
           >

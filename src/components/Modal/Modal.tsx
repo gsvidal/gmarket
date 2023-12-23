@@ -1,11 +1,9 @@
-type ModalProps = {
-  children: React.ReactNode
-}
+import "./Modal.scss";
 
-export const Modal = ({children}: ModalProps) : React.ReactNode  => {
-  return(
-    <>
-    {children }
-    </>
-  );
-}
+type ModalProps = {
+  children: React.ReactNode;
+};
+
+export const Modal = ({ children }: ModalProps): React.ReactNode => {
+  return <div className="modal">{children}</div>;
+};

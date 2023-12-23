@@ -1,4 +1,29 @@
 .required::after {
-  content: '*';
-  color: red;
+  content: "*";
+  color: var(--danger-color);
+}
+
+.input__container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 4px 0;
+  text-align: left;
+
+  label {
+    margin: 5px 0;
+  }
+
+  input {
+    padding: 5px 8px;
+    border: none;
+    border-radius: 5px;
+    min-width: 100px;
+  }
+
+  @media screen and (min-width: 380px) {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 300px;
+  }
 }

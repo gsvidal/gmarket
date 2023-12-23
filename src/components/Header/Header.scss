@@ -4,7 +4,7 @@
   left: 0;
   width: 100%;
   z-index: 5;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.35);
+  border-bottom: 1px solid var(--gray-opac35);
 }
 
 .header {
@@ -41,11 +41,12 @@
   position: absolute;
   top: 130px;
   right: -215px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-  text-align: center;
   @media screen and (min-width: 800px) {
     position: static;
-    display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -58,7 +59,8 @@
 }
 
 .header__nav__item {
-  margin: 20px 0px;
+  text-align: center;
+  margin: 10px 0px;
   @media screen and (min-width: 800px) {
     margin: 0 15px;
   }
@@ -73,7 +75,7 @@
 }
 
 .header__auth {
-  top: 220px;
+  top: 200px;
   right: -215px;
 }
 
@@ -81,14 +83,20 @@
   right: 65px;
 }
 
+.header__auth__item {
+  display: flex;
+  justify-content: center;
+}
+
 .hamburger__menu {
   position: fixed;
   top: 80px;
   right: -215px;
+  z-index: 1;
   width: 215px;
   height: 300px;
-  border-left: 1px solid rgba(128, 128, 128, 0.5);
-  border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+  border-left: 1px solid var(--gray-opac50);
+  border-bottom: 1px solid var(--gray-opac50);
   transition: right 0.25s linear;
 
   @media screen and (min-width: 800px) {

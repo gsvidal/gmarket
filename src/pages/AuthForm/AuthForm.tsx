@@ -14,9 +14,9 @@ type AuthFormProps = {
 };
 
 export type FormValues = {
-  username: string;
-  password: string;
-  confirmPassword?: string;
+  username: string | number;
+  password: string | number;
+  confirmPassword?: string | number;
   role?: string;
 };
 
@@ -37,7 +37,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ title }) => {
     password: passwordData.value,
     confirmPassword:
       title === "Register" ? confirmPasswordData.value : undefined,
-    role: title === "Register" ? roleData.value : undefined,
+    role: title === "Register" ? (roleData.value).toString() : undefined,
   };
 
   const { username, password, confirmPassword, role } = formValues;
@@ -60,7 +60,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ title }) => {
 
     // Validate if there's an empty input
     for (const { field, message } of fieldsToValidate) {
-      if (field.trim() === "") {
+      if (field.toString().trim() === "") {
         setErrorMessage(message);
         return false;
       }
@@ -68,7 +68,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ title }) => {
 
     if (title === "Register") {
       // If all inputs are filled, validate password
-      if (password.length < 6) {
+      if (password.toString().length < 6) {
         setErrorMessage("Password must be at least 6 characters long");
         return false;
       }
@@ -115,7 +115,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ title }) => {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <form action="" onSubmit={handleSubmit}>
+        <form action="" onSubmit={handleSubmit} className="border">
           <h1>{title} Form</h1>
           <Input
             labelText="Username"

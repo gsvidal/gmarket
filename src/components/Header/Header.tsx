@@ -25,12 +25,12 @@ export const Header = () => {
     return (
       <>
         <li className="header__nav__item header__auth__item">
-          <Button>
+          <Button onClick={closeHamburger}>
             <NavLink to={PublicRoutes.REGISTER}>Register</NavLink>
           </Button>
         </li>
         <li className="header__nav__item header__auth__item">
-          <Button>
+          <Button onClick={closeHamburger}>
             <NavLink to={PublicRoutes.LOGIN}>Login</NavLink>
           </Button>
         </li>
@@ -45,6 +45,7 @@ export const Header = () => {
       dispatch(resetUser());
       localStorage.removeItem("user");
       navigate(PublicRoutes.HOME);
+      closeHamburger();
     } catch (error: any) {
       // TODO: Toast
       // <Toast message={error.message} />
@@ -56,7 +57,6 @@ export const Header = () => {
   };
 
   const closeHamburger = () => {
-    console.log("close");
     setIsHamburgerOpen(false);
   };
 
@@ -96,12 +96,16 @@ export const Header = () => {
               isHamburgerOpen ? "open" : "closed"
             }`}
           >
-            <li className="header__nav__item header__menu__item">
-              <NavLink to={PublicRoutes.HOME}>Home</NavLink>
+            <li className={`header__nav__item header__menu__item`}>
+              <NavLink to={PublicRoutes.HOME} onClick={closeHamburger}>
+                Home
+              </NavLink>
             </li>
             {isUserAuth && role === "Seller" && (
               <li className="header__nav__item header__menu__item">
-                <NavLink to={PrivateRoutes.DASHBOARD}>Dashboard</NavLink>
+                <NavLink to={PrivateRoutes.DASHBOARD} onClick={closeHamburger}>
+                  Dashboard
+                </NavLink>
               </li>
             )}
           </div>

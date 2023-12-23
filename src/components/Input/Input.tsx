@@ -22,7 +22,7 @@ export const Input = ({
   ...otherProps
 }: InputProps) => {
   return (
-    <div>
+    <div className="input__container">
       <label className={className} htmlFor={labelText}>{labelText}:</label>
       <input
         id={labelText}
