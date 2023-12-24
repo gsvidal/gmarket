@@ -1,29 +1,33 @@
 import { describe, it, beforeEach, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ProductForm } from ".";
 import sinon from "sinon";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "../../redux/store";
+import { Product } from "../../models";
 
-describe("ProductForm", () => {
+// For create product
+
+const clickCreateProduct = async () => {
+  await userEvent.click(screen.getByRole("button", { name: /create/i }));
+};
+
+describe("ProductForm when used to create a product", () => {
   beforeEach(() => {
     const mockSetIsModalOpen = sinon.stub();
-    const mockSetNewProductAdded = sinon.stub();
+    const mockType = "create" || "update";
     render(
       <BrowserRouter>
         <Provider store={store}>
-          <ProductForm
-            setIsModalOpen={mockSetIsModalOpen}
-            setNewProductAdded={mockSetNewProductAdded}
-          />
+          <ProductForm setIsModalOpen={mockSetIsModalOpen} type={mockType} />
         </Provider>
       </BrowserRouter>
     );
   });
 
-  it("renders all input fields and the select dropdown", () => {
+  it("should renders all input fields and the select dropdown", () => {
     expect(screen.getByLabelText(/name/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/brand/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/description/i)).toBeInTheDocument();
@@ -73,19 +77,15 @@ describe("ProductForm", () => {
     );
   });
 
-  const clickAddProduct = async () => {
-    await userEvent.click(screen.getByRole("button", { name: /add/i }));
-  };
-
   it("should show the product name input error message when trying to add a product without a name", async () => {
-    await clickAddProduct();
+    await clickCreateProduct();
     expect(await screen.findByText(/name is required/i)).toBeInTheDocument();
   });
 
   it("should show the product brand input error message when trying to add a product without a description", async () => {
     await userEvent.type(screen.getByLabelText(/name/i), "productTest");
 
-    await clickAddProduct();
+    await clickCreateProduct();
 
     expect(await screen.findByText(/brand is required/i)).toBeInTheDocument();
   });
@@ -94,7 +94,7 @@ describe("ProductForm", () => {
     await userEvent.type(screen.getByLabelText(/name/i), "product 1");
     await userEvent.type(screen.getByLabelText(/brand/i), "brand 1");
 
-    await clickAddProduct();
+    await clickCreateProduct();
     expect(
       await screen.findByText(/description is required/i)
     ).toBeInTheDocument();
@@ -108,7 +108,7 @@ describe("ProductForm", () => {
       "product 1 description"
     );
 
-    await clickAddProduct();
+    await clickCreateProduct();
     expect(
       await screen.findByText(/base price is required/i)
     ).toBeInTheDocument();
@@ -123,7 +123,7 @@ describe("ProductForm", () => {
     );
     await userEvent.type(screen.getByLabelText(/base price/i), "199");
 
-    await clickAddProduct();
+    await clickCreateProduct();
     expect(await screen.findByText(/price is required/i)).toBeInTheDocument();
   });
 
@@ -137,7 +137,7 @@ describe("ProductForm", () => {
     await userEvent.type(screen.getByLabelText(/base price/i), "199");
     await userEvent.type(screen.getByLabelText(/^price/i), "99");
 
-    await clickAddProduct();
+    await clickCreateProduct();
     expect(await screen.findByText(/stock is required/i)).toBeInTheDocument();
   });
 
@@ -154,7 +154,7 @@ describe("ProductForm", () => {
     );
     await userEvent.type(screen.getByLabelText(/^price/i), "149");
     await userEvent.type(screen.getByLabelText(/stock/i), "10");
-    await clickAddProduct();
+    await clickCreateProduct();
     expect(
       await screen.findByText(/base price must be a positive number/i)
     ).toBeInTheDocument();
@@ -173,7 +173,7 @@ describe("ProductForm", () => {
       "ciento cuarenta y nueve"
     );
     await userEvent.type(screen.getByLabelText(/stock/i), "10");
-    await clickAddProduct();
+    await clickCreateProduct();
     expect(
       await screen.findByText(/price must be a positive number/i)
     ).toBeInTheDocument();
@@ -189,7 +189,7 @@ describe("ProductForm", () => {
     await userEvent.type(screen.getByLabelText(/base price/i), "199");
     await userEvent.type(screen.getByLabelText(/^price/i), "-99");
     await userEvent.type(screen.getByLabelText(/stock/i), "10");
-    await clickAddProduct();
+    await clickCreateProduct();
     expect(
       await screen.findByText(/price must be a positive number/i)
     ).toBeInTheDocument();
@@ -205,7 +205,7 @@ describe("ProductForm", () => {
     await userEvent.type(screen.getByLabelText(/base price/i), "199");
     await userEvent.type(screen.getByLabelText(/^price/i), "99");
     await userEvent.type(screen.getByLabelText(/stock/i), "10.5");
-    await clickAddProduct();
+    await clickCreateProduct();
     expect(
       await screen.findByText(/stock must be a positive integer/i)
     ).toBeInTheDocument();
@@ -221,7 +221,7 @@ describe("ProductForm", () => {
     await userEvent.type(screen.getByLabelText(/base price/i), "199");
     await userEvent.type(screen.getByLabelText(/^price/i), "99");
     await userEvent.type(screen.getByLabelText(/stock/i), "-10");
-    await clickAddProduct();
+    await clickCreateProduct();
     expect(
       await screen.findByText(/stock must be a positive integer/i)
     ).toBeInTheDocument();
@@ -283,11 +283,92 @@ describe("ProductForm", () => {
     const input = screen.getByLabelText(/image/i);
     await userEvent.upload(input, file);
 
-    await userEvent.click(screen.getByRole("button", { name: /add/i }));
+    await clickCreateProduct();
 
     // Check if the file size error message is displayed
     expect(
       await screen.findByText(/image size must be less than or equal to 2MB/i)
     ).toBeInTheDocument();
+  });
+});
+
+// For create a product
+describe("ProductForm", () => {
+  beforeEach(() => {
+    const mockSetIsModalOpen = sinon.stub();
+    const mockType = "create";
+
+    render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <ProductForm setIsModalOpen={mockSetIsModalOpen} type={mockType} />
+        </Provider>
+      </BrowserRouter>
+    );
+  });
+
+  // it("should render correct title when creating a product", () => {
+  //   expect(screen.getByText(/create a product/i)).toBeInTheDocument();
+  // });
+
+  it("should not render the component after creating a product", async () => {
+    await userEvent.type(screen.getByLabelText(/name/i), "product 1");
+    await userEvent.type(screen.getByLabelText(/brand/i), "brand 1");
+    await userEvent.type(
+      screen.getByLabelText(/description/i),
+      "product 1 description"
+    );
+    await userEvent.type(screen.getByLabelText(/base price/i), "199");
+    await userEvent.type(screen.getByLabelText(/^price/i), "99");
+    await userEvent.type(screen.getByLabelText(/stock/i), "10");
+
+    await clickCreateProduct();
+
+    screen.debug();
+
+    await waitFor(() => {
+      expect(screen.queryByText(/create a product/i)).not.toBeInTheDocument();
+    });
+  });
+});
+
+describe("ProductForm", () => {
+  beforeEach(() => {
+    const mockSetIsModalOpen = sinon.stub();
+    const mockType = "update";
+    const product: Product = {
+      id: 1,
+      name: "test product",
+      brand: "test brand",
+      description: "test description",
+      base_price: 249.99,
+      price: 199.99,
+      stock: 10,
+      image_url: "image.png",
+      category: {
+        id: 1,
+        name: "Test Category",
+        code: "test-category",
+      },
+      seller: {
+        id: 1,
+        username: "testUser",
+      },
+    };
+    render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <ProductForm
+            setIsModalOpen={mockSetIsModalOpen}
+            type={mockType}
+            product={product}
+          />
+        </Provider>
+      </BrowserRouter>
+    );
+  });
+
+  it("should render correct title when editing", () => {
+    expect(screen.getByText(/edit a product/i)).toBeInTheDocument();
   });
 });

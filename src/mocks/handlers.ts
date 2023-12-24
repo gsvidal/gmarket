@@ -49,7 +49,7 @@ export const handlers = [
           base_price: 349.99,
           price: 299.99,
           stock: 20,
-          image: [],
+          image: "image.png",
           category: {
             id: 3,
             name: "Category 3",
@@ -127,7 +127,7 @@ export const handlers = [
           base_price: 249.99,
           price: 199.99,
           stock: 10,
-          images: [],
+          image: "image.png",
           category: {
             id: 1,
             name: "Category 1",
@@ -146,7 +146,7 @@ export const handlers = [
           base_price: 349.99,
           price: 299.99,
           stock: 20,
-          images: [],
+          image: "image.png",
           category: {
             id: 3,
             name: "Category 3",
@@ -173,7 +173,7 @@ export const handlers = [
         base_price: 249.99,
         price: 199.99,
         stock: 10,
-        images: [],
+        image: "image.png",
         category: {
           id: 1,
           name: "Category 1",
@@ -186,6 +186,7 @@ export const handlers = [
       },
     });
   }),
+  
   http.delete(`${API_URL}/delete_product/:id`, () => {
     // Note that you DON'T have to stringify the JSON!
     return HttpResponse.json({

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Dashboard } from ".";
 import { BrowserRouter } from "react-router-dom";
@@ -8,8 +8,16 @@ import { store } from "../../redux/store";
 import { server } from "../../mocks/node";
 import { HttpResponse, http } from "msw";
 import { configureStore } from "@reduxjs/toolkit";
+import sinon from "sinon";
+import { addProduct, editProduct } from "../../redux/states/product.slice";
+import { Product } from "../../models";
+import { act } from "@testing-library/react";
 
 const API_URL = import.meta.env.VITE_API_URL as string;
+
+afterEach(() => {
+  cleanup();
+});
 
 describe("Dashboard", () => {
   it("should render the dashboard title", async () => {
@@ -102,7 +110,7 @@ describe("Dashboard", () => {
     expect(productStock2).toBeInTheDocument();
   });
 
-  it("should open add product form when click on add product button", async () => {
+  it("should open product form when click on add product button", async () => {
     render(
       <BrowserRouter>
         <Provider store={store}>
@@ -112,9 +120,7 @@ describe("Dashboard", () => {
     );
     await userEvent.click(screen.getByRole("button", { name: /add product/i }));
 
-    expect(
-      await screen.findByText(/create a new product/i)
-    ).toBeInTheDocument();
+    expect(await screen.findByText(/create a product/i)).toBeInTheDocument();
 
     expect(await screen.findByRole("form")).toBeInTheDocument();
   });
@@ -140,5 +146,97 @@ describe("Dashboard", () => {
     expect(
       await screen.findByText(/seller with provided ID does not exist/i)
     ).toBeInTheDocument();
+  });
+
+  it("should render a product after creating it", async () => {
+    // Render the Dashboard component within the Redux provider
+    render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <Dashboard />
+        </Provider>
+      </BrowserRouter>
+    );
+
+    // Define the product to be added
+    const newProduct = {
+      id: 3,
+      name: "Product 3",
+      brand: "Brand 3",
+      description: "This is a description for Product 3",
+      base_price: 349.99,
+      price: 299.99,
+      stock: 20,
+      image_url: "",
+      category: {
+        id: 3,
+        name: "Category 3",
+        code: "cat3",
+      },
+      seller: {
+        id: 1,
+        username: "testuser",
+      },
+    };
+
+    // Dispatch the addProduct action
+    await act(async () => {
+      store.dispatch(
+        addProduct({ isSellerProduct: true, product: newProduct })
+      );
+    });
+
+    // Wait for the product's name to appear on the screen
+    await waitFor(() => screen.getByText(/product 3/i));
+    await waitFor(() => screen.getByText(/brand 3/i));
+    await waitFor(() => screen.getByText(/349.99/i));
+    await waitFor(() => screen.getByText(/299.99/i));
+    await waitFor(() => screen.getByText(/stock: 20/i));
+  });
+
+  it("should render an edited product after editing it", async () => {
+    // Render the Dashboard component within the Redux provider
+    render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <Dashboard />
+        </Provider>
+      </BrowserRouter>
+    );
+
+    // Define the product to be edited
+    const productToEdit = {
+      id: 3,
+      name: "Product 3 edited",
+      brand: "Brand 3",
+      description: "This is a description for Product 3",
+      base_price: 349.99,
+      price: 299.99,
+      stock: 20,
+      image_url: "",
+      category: {
+        id: 3,
+        name: "Category 3",
+        code: "cat3",
+      },
+      seller: {
+        id: 1,
+        username: "testuser",
+      },
+    };
+
+    // Dispatch the addProduct action
+    await act(async () => {
+      store.dispatch(
+        editProduct({ isSellerProduct: true, productToEdit: productToEdit })
+      );
+    });
+
+    // Wait for the product's name to appear on the screen
+    await waitFor(() => screen.getByText(/product 3 edited/i));
+    await waitFor(() => screen.getByText(/brand 3/i));
+    await waitFor(() => screen.getByText(/349.99/i));
+    await waitFor(() => screen.getByText(/299.99/i));
+    await waitFor(() => screen.getByText(/stock: 20/i));
   });
 });

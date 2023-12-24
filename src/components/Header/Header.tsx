@@ -73,7 +73,6 @@ export const Header = () => {
             <span className="header__logo-capital">G</span>
             <span className="header__logo-lower">market</span>
           </NavLink>
-          {/* <div className="header__nav"> */}
           <span
             className={`hamburger__icon hamburger__icon--menu ${
               isHamburgerOpen ? "closed" : "open"
