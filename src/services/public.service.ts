@@ -45,10 +45,10 @@ export const logout = (token: string) => {
   };
 };
 
-export const getSellerProducts = (id: number, token: string) => {
+export const getSellerProducts = (id: number, token: string, page = 1, perPage = 10) => {
   const controller = new AbortController();
   return {
-    call: axios.get(`http://127.0.0.1:8000/seller_dashboard/${id}`, {
+    call: axios.get(`http://127.0.0.1:8000/seller_dashboard/${id}?page=${page}&per_page=${perPage}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Token ${token}`,
@@ -86,15 +86,18 @@ export const getCategories = (token: string) => {
   };
 };
 
-export const getAllProducts = () => {
+export const getAllProducts = (page = 1, perPage = 10) => {
   const controller = new AbortController();
   return {
-    call: axios.get(`http://127.0.0.1:8000/all_products`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      signal: controller.signal,
-    }),
+    call: axios.get(
+      `http://127.0.0.1:8000/all_products?page=${page}&per_page=${perPage}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        signal: controller.signal,
+      }
+    ),
     controller,
   };
 };

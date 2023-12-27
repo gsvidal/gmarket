@@ -15,6 +15,8 @@ export const useFetchProducts = (
   const dispatch = useDispatch();
   const [errorMessage, setErrorMessage] = useState<string>("");
   const location = useLocation();
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const isDashboard = location.pathname === "/dashboard";
 
@@ -29,6 +31,7 @@ export const useFetchProducts = (
             : saveAllProducts(productsAdapter(data.products))
         );
         setErrorMessage("");
+        setTotalPages(data.pagination_info.total_pages);
       } catch (error: any) {
         setErrorMessage(error.message);
       }
@@ -36,5 +39,9 @@ export const useFetchProducts = (
     fetchSellerProducts();
   }, []);
 
-  return { loading, errorMessage };
+  const changePage = (page: number) => {
+    setCurrentPage(page)
+  }
+
+  return { loading, errorMessage, totalPages, currentPage, changePage };
 };
