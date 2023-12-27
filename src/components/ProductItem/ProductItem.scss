@@ -49,3 +49,8 @@
   height: 10px;
   background: url() center/cover no-repeat;
 }
+
+.delete-modal__buttons-container {
+  display: flex;
+  justify-content: center;
+}

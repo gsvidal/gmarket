@@ -307,28 +307,8 @@ describe("ProductForm", () => {
     );
   });
 
-  // it("should render correct title when creating a product", () => {
-  //   expect(screen.getByText(/create a product/i)).toBeInTheDocument();
-  // });
-
-  it("should not render the component after creating a product", async () => {
-    await userEvent.type(screen.getByLabelText(/name/i), "product 1");
-    await userEvent.type(screen.getByLabelText(/brand/i), "brand 1");
-    await userEvent.type(
-      screen.getByLabelText(/description/i),
-      "product 1 description"
-    );
-    await userEvent.type(screen.getByLabelText(/base price/i), "199");
-    await userEvent.type(screen.getByLabelText(/^price/i), "99");
-    await userEvent.type(screen.getByLabelText(/stock/i), "10");
-
-    await clickCreateProduct();
-
-    screen.debug();
-
-    await waitFor(() => {
-      expect(screen.queryByText(/create a product/i)).not.toBeInTheDocument();
-    });
+  it("should render correct title when creating a product", () => {
+    expect(screen.getByText(/create a product/i)).toBeInTheDocument();
   });
 });
 

@@ -24,7 +24,7 @@ const Dashboard = () => {
       <Button onClick={handleAddProduct}>+ Add product</Button>
       <h3>These are your products:</h3>
       {isModalOpen && (
-        <Modal>
+        <Modal onClose={() => setIsModalOpen(false)}>
           <ProductForm setIsModalOpen={setIsModalOpen} type="create" />
         </Modal>
       )}
