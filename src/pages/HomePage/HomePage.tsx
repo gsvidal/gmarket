@@ -9,7 +9,7 @@ import { useState, ChangeEvent, useEffect } from "react";
 type HomePageProps = {};
 
 export const HomePage = (): React.ReactNode => {
-  const [productsPerPage, setProductsPerPage] = useState<number>(5);
+  const [productsPerPage, setProductsPerPage] = useState<number>(10);
   const { username } = useSelector((store: AppStore) => store.user);
   const { loading, errorMessage, totalPages, currentPage, changePage } =
     useFetchProducts(() => getAllProducts(1, productsPerPage));
@@ -38,6 +38,7 @@ export const HomePage = (): React.ReactNode => {
           name="products-amount"
           id="products-amount"
           onChange={handleProductsAmount}
+          defaultValue={10}
         >
           <option value="5">5</option>
           <option value="10">10</option>

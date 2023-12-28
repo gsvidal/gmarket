@@ -182,7 +182,7 @@ describe("Dashboard", () => {
     // Dispatch the addProduct action
     await act(async () => {
       store.dispatch(
-        addProduct({ isSellerProduct: true, product: newProduct })
+        addProduct({ isDashboardProduct: true, product: newProduct })
       );
     });
 
@@ -228,7 +228,7 @@ describe("Dashboard", () => {
     // Dispatch the addProduct action
     await act(async () => {
       store.dispatch(
-        editProduct({ isSellerProduct: true, productToEdit: productToEdit })
+        editProduct({ isDashboardProduct: true, productToEdit: productToEdit })
       );
     });
 

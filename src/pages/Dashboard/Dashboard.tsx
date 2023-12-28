@@ -7,7 +7,7 @@ import { useFetchProducts } from "../../hooks";
 import { ProductList } from "../../components";
 
 const Dashboard = () => {
-  const [productsPerPage, setProductsPerPage] = useState<number>(1);
+  const [productsPerPage, setProductsPerPage] = useState<number>(10);
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const user = useSelector((store: AppStore) => store.user);
@@ -48,6 +48,7 @@ const Dashboard = () => {
           name="products-amount"
           id="products-amount"
           onChange={handleProductsAmount}
+          defaultValue={10}
         >
           <option value="5">5</option>
           <option value="10">10</option>

@@ -18,14 +18,43 @@
     }
   }
 
+  &__info {
+    margin-top: 10px;
+  }
+
+  &__name {
+    font-weight: bold;
+    margin: 7px 0;
+  }
+
   &__buttons-container {
     display: flex;
     justify-content: space-around;
   }
-}
 
-.base-price {
-  text-decoration: line-through;
+  &__discount {
+    position: relative;
+    top: -16px;
+    left: 63px;
+    width: fit-content;
+    padding: 2px 4px;
+    margin: 0 auto;
+    color: var(--white);
+    background-color: var(--danger-color);
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+
+  &__base-price {
+    position: relative;
+    top: -11px;
+    text-decoration: line-through;
+    padding: 2px 5px;
+    color: var(--gray);
+    width: fit-content;
+    margin: 0 auto;
+    font-size: 1.1rem;
+  }
 }
 
 .fade-animation {

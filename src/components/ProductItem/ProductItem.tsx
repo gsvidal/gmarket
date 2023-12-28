@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { useFetchAndLoad } from "../../hooks";
 import { Product } from "../../models";
-import { deleteProduct, updateProduct } from "../../services/public.service";
+import { deleteProduct } from "../../services/public.service";
 import "./ProductItem.scss";
 import noImagePlaceholder from "/images/no-image.png";
 import { useLocation } from "react-router-dom";
@@ -27,10 +27,10 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
   const { loading: deleteLoading, callEndPoint } = useFetchAndLoad();
   // const { loading: editLoading, callEndPoint: editCallEndPoint } =
   //   useFetchAndLoad();
-  const { token } = useSelector((store: AppStore) => store.user);
+  const { id, role, token } = useSelector((store: AppStore) => store.user);
   const dispatch = useDispatch();
   const location = useLocation();
-  const isSellerProduct = location.pathname === "/dashboard";
+  const isDashboardProduct = location.pathname === "/dashboard";
   const [fade, setFade] = useState<boolean>(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
@@ -48,7 +48,7 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
       setFade(true);
       setTimeout(() => {
         setFade(false);
-        dispatch(removeProduct({ isSellerProduct, productId }));
+        dispatch(removeProduct({ isDashboardProduct, productId }));
       }, 1000);
     } catch (error) {
       // TODO: Toast(error)
@@ -79,28 +79,42 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
             }}
           />
         </figure>
-        <p>{brand}</p>
-        <p>{name}</p>
-        <p>{price}</p>
-        <p>{discount(+base_price, +price)}%</p>
-        <p className="base-price">{base_price}</p>
-        <p>Stock: {stock}</p>
-        <p>{seller.username}</p>
+        <div className="product__info">
+          <p>{brand}</p>
+          <p className="product__name">{name}</p>
+          <p>$ {price}</p>
+          <p className="product__discount">{discount(+base_price, +price)}%</p>
+          <p className="product__base-price">$ {base_price}</p>
+          <p>Stock: {stock}</p>
+          <p>Seller: {seller.username}</p>
+        </div>
 
-        {isSellerProduct && (
-          <div className="product__buttons-container">
-            <Button onClick={openEditForm} className="edit">
-              Edit <span className="icon-edit"></span>
-            </Button>
-            <Button
-              className={`delete ${deleteLoading ? "disabled" : ""}`}
-              disabled={deleteLoading}
-              onClick={handleDeleteModal}
-            >
-              {deleteLoading ? "Deleting" : "Delete"}
-            </Button>
-          </div>
-        )}
+        <div className="product__buttons-container">
+          {isDashboardProduct ? (
+            <>
+              <Button onClick={openEditForm} className="edit">
+                Edit <span className="icon-edit"></span>
+              </Button>
+              <Button
+                className={`delete ${deleteLoading ? "disabled" : ""}`}
+                disabled={deleteLoading}
+                onClick={handleDeleteModal}
+              >
+                {deleteLoading ? "Deleting" : "Delete"}
+              </Button>
+            </>
+          ) : (
+            id !== seller.id &&
+            role === "Customer" && (
+              <Button
+                className="add"
+                onClick={() => alert("Product added to cart!")}
+              >
+                Add to Cart
+              </Button>
+            )
+          )}
+        </div>
 
         {isEditModalOpen && (
           <Modal onClose={() => setIsEditModalOpen(false)}>

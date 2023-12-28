@@ -37,7 +37,7 @@ export const ProductForm = ({
   );
   const dispatch = useDispatch();
   const location = useLocation();
-  const isSellerProduct = location.pathname === "/dashboard";
+  const isDashboardProduct = location.pathname === "/dashboard";
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -194,11 +194,11 @@ export const ProductForm = ({
         dispatch(
           type === "update"
             ? editProduct({
-                isSellerProduct,
+                isDashboardProduct,
                 productToEdit: productAdapter(data.product),
               })
             : addProduct({
-                isSellerProduct,
+                isDashboardProduct,
                 product: productAdapter(data.product),
               })
         );

@@ -186,7 +186,7 @@ describe("ProductItem", async () => {
     await waitFor(() => {
       sinon.assert.calledWith(
         mockDispatch,
-        removeProduct({ isSellerProduct: true, productId: product.id })
+        removeProduct({ isDashboardProduct: true, productId: product.id })
       );
     });
 

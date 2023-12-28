@@ -7,17 +7,17 @@ export type ProductState = {
 };
 
 type AddProductAction = {
-  isSellerProduct: boolean;
+  isDashboardProduct: boolean;
   product: Product;
 };
 
 type EditProductAction = {
-  isSellerProduct: boolean;
+  isDashboardProduct: boolean;
   productToEdit: Product;
 };
 
 type RemoveProductAction = {
-  isSellerProduct: boolean;
+  isDashboardProduct: boolean;
   productId: number;
 };
 
@@ -37,22 +37,22 @@ export const productSlice = createSlice({
       state.sellerProducts = action.payload;
     },
     addProduct: (state, action: PayloadAction<AddProductAction>) => {
-      const { isSellerProduct, product } = action.payload;
-      if (isSellerProduct) {
+      const { isDashboardProduct, product } = action.payload;
+      if (isDashboardProduct) {
         state.sellerProducts.push(product);
       }
     },
     removeProduct: (state, action: PayloadAction<RemoveProductAction>) => {
-      const { isSellerProduct, productId } = action.payload;
-      if (isSellerProduct) {
+      const { isDashboardProduct, productId } = action.payload;
+      if (isDashboardProduct) {
         state.sellerProducts = state.sellerProducts.filter(
           (sellerProduct) => sellerProduct.id !== productId
         );
       }
     },
     editProduct: (state, action: PayloadAction<EditProductAction>) => {
-      const { isSellerProduct, productToEdit } = action.payload;
-      if (isSellerProduct) {
+      const { isDashboardProduct, productToEdit } = action.payload;
+      if (isDashboardProduct) {
         state.sellerProducts = state.sellerProducts.map((sellerProduct) =>
           sellerProduct.id === productToEdit.id ? productToEdit : sellerProduct
         );

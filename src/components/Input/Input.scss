@@ -12,9 +12,10 @@
 
   label {
     margin: 5px 0;
+    width: 140px;
   }
 
-  input {
+  input:not([type="radio"]) {
     padding: 5px 8px;
     border: none;
     border-radius: 5px;
