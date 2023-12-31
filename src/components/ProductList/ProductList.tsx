@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Pagination, ProductItem } from "..";
 import { Product } from "../../models";
 import "./ProductList.scss";
@@ -26,6 +26,11 @@ export const ProductList = ({
   const endIndex = Math.min(startIndex + productsPerPage, products.length);
 
   const productsToDisplay = products.slice(startIndex, endIndex);
+
+  useEffect(() => {
+    // after clicking on the products per page filter the pagination change page to page 1
+    onChangePage(1)
+  }, [productsPerPage])
   return (
     <>
       <Pagination

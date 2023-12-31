@@ -3,8 +3,8 @@ import { AppStore } from "../../redux/store";
 import "./HomePage.scss";
 import { useFetchProducts } from "../../hooks";
 import { getAllProducts } from "../../services/public.service";
-import { Pagination, ProductList } from "../../components";
-import { useState, ChangeEvent, useEffect } from "react";
+import { ProductList, ProductsPerPageFilter } from "../../components";
+import { useState, useEffect } from "react";
 
 type HomePageProps = {};
 
@@ -14,11 +14,6 @@ export const HomePage = (): React.ReactNode => {
   const { loading, errorMessage, totalPages, currentPage, changePage } =
     useFetchProducts(() => getAllProducts(1, productsPerPage));
   const { allProducts } = useSelector((store: AppStore) => store.product);
-
-  const handleProductsAmount = (event: ChangeEvent<HTMLSelectElement>) => {
-    setProductsPerPage(+event.target.value);
-  };
-
   const [localTotalPages, setLocalTotalPages] = useState<number>(totalPages);
 
   // Update localTotalPages when productsPerPage changes
@@ -32,21 +27,7 @@ export const HomePage = (): React.ReactNode => {
         Welcome {username && username}!{" "}
       </h1>
       <h3>You can find any products here:</h3>
-      <div className="products-per-page">
-        <label htmlFor="products-amount">Products per page: </label>
-        <select
-          name="products-amount"
-          id="products-amount"
-          onChange={handleProductsAmount}
-          defaultValue={10}
-        >
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="15">15</option>
-          <option value="25">25</option>
-          <option value="50">50</option>
-        </select>
-      </div>
+      <ProductsPerPageFilter setProductsPerPage={setProductsPerPage} />
 
       <ProductList
         products={allProducts}

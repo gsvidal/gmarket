@@ -1,6 +1,6 @@
 // Pagination.tsx
 
-import React, { useEffect } from "react";
+import React from "react";
 import "./Pagination.scss";
 
 type PaginationProps = {
@@ -89,7 +89,7 @@ export const Pagination = ({
       <button
         className="button-pag"
         onClick={() => onChangePage(currentPage + 1)}
-        disabled={currentPage === totalPages}
+        disabled={currentPage === totalPages || totalPages === 0}
       >
         Next
       </button>

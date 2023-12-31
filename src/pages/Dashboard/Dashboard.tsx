@@ -1,8 +1,8 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { AppStore } from "../../redux/store";
 import { getSellerProducts } from "../../services/public.service";
-import { ProductForm, Button, Modal, Pagination } from "../../components";
+import { ProductForm, Button, Modal, ProductsPerPageFilter } from "../../components";
 import { useFetchProducts } from "../../hooks";
 import { ProductList } from "../../components";
 
@@ -28,10 +28,6 @@ const Dashboard = () => {
     setLocalTotalPages(Math.ceil(sellerProducts.length / productsPerPage));
   }, [sellerProducts, productsPerPage]);
 
-  const handleProductsAmount = (event: ChangeEvent<HTMLSelectElement>) => {
-    setProductsPerPage(+event.target.value);
-  };
-
   return (
     <>
       <h1 className="title dashboard__title">Seller Dashboard</h1>
@@ -42,21 +38,8 @@ const Dashboard = () => {
           <ProductForm setIsModalOpen={setIsModalOpen} type="create" />
         </Modal>
       )}
-      <div className="products-per-page">
-        <label htmlFor="products-amount">Products per page: </label>
-        <select
-          name="products-amount"
-          id="products-amount"
-          onChange={handleProductsAmount}
-          defaultValue={10}
-        >
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="15">15</option>
-          <option value="25">25</option>
-          <option value="50">50</option>
-        </select>
-      </div>
+      <ProductsPerPageFilter setProductsPerPage={setProductsPerPage} />
+
       <ProductList
         products={sellerProducts}
         loading={loading}

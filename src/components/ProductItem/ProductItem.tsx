@@ -42,7 +42,7 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
   const handleDelete = async (productId: number) => {
     try {
       const response = await callEndPoint(deleteProduct(productId, token));
-      const data = await response.data;
+      await response.data;
       // TODO: Toast(data.message)
       setIsDeleteModalOpen(false);
       setFade(true);
