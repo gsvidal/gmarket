@@ -1,10 +1,12 @@
 import axios from "axios";
 import { FormValues } from "../pages";
 
+const API_URL = import.meta.env.VITE_API_URL as string;
+
 export const register = (userData: FormValues) => {
   const controller = new AbortController();
   return {
-    call: axios.post("http://127.0.0.1:8000/register", userData, {
+    call: axios.post(`${API_URL}/register`, userData, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -17,7 +19,7 @@ export const register = (userData: FormValues) => {
 export const login = (userData: FormValues) => {
   const controller = new AbortController();
   return {
-    call: axios.post("http://127.0.0.1:8000/login_view", userData, {
+    call: axios.post(`${API_URL}/login_view`, userData, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -31,7 +33,7 @@ export const logout = (token: string) => {
   const controller = new AbortController();
   return {
     call: axios.post(
-      "http://127.0.0.1:8000/logout_view",
+      `${API_URL}/logout_view`,
       {},
       {
         headers: {
@@ -48,7 +50,7 @@ export const logout = (token: string) => {
 export const getSellerProducts = (id: number, token: string, page = 1, perPage = 10) => {
   const controller = new AbortController();
   return {
-    call: axios.get(`http://127.0.0.1:8000/seller_dashboard/${id}?page=${page}&per_page=${perPage}`, {
+    call: axios.get(`${API_URL}/seller_dashboard/${id}?page=${page}&per_page=${perPage}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Token ${token}`,
@@ -62,7 +64,7 @@ export const getSellerProducts = (id: number, token: string, page = 1, perPage =
 export const createProduct = (formData: FormData, token: string) => {
   const controller = new AbortController();
   return {
-    call: axios.post("http://127.0.0.1:8000/create_product", formData, {
+    call: axios.post(`${API_URL}/create_product`, formData, {
       headers: {
         Authorization: `Token ${token}`,
       },
@@ -75,7 +77,7 @@ export const createProduct = (formData: FormData, token: string) => {
 export const getCategories = (token: string) => {
   const controller = new AbortController();
   return {
-    call: axios.get(`http://127.0.0.1:8000/categories`, {
+    call: axios.get(`${API_URL}/categories`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Token ${token}`,
@@ -90,7 +92,7 @@ export const getAllProducts = (page = 1, perPage = 10) => {
   const controller = new AbortController();
   return {
     call: axios.get(
-      `http://127.0.0.1:8000/all_products?page=${page}&per_page=${perPage}`,
+      `${API_URL}/all_products?page=${page}&per_page=${perPage}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -105,7 +107,7 @@ export const getAllProducts = (page = 1, perPage = 10) => {
 export const deleteProduct = (productId: number, token: string) => {
   const controller = new AbortController();
   return {
-    call: axios.delete(`http://127.0.0.1:8000/delete_product/${productId}`, {
+    call: axios.delete(`${API_URL}/delete_product/${productId}`, {
       headers: {
         Authorization: `Token ${token}`,
       },
@@ -123,7 +125,7 @@ export const updateProduct = (
   const controller = new AbortController();
   return {
     call: axios.post(
-      `http://127.0.0.1:8000/update_product/${productId}`,
+      `${API_URL}/update_product/${productId}`,
       updatedFormData,
       {
         headers: {
