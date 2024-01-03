@@ -141,7 +141,7 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
                   disabled={deleteLoading}
                   onClick={() => handleDelete(product.id)}
                 >
-                  {deleteLoading ? "Deleting" : "Delete"}
+                  {deleteLoading ? "Deleting" : "Confirm"}
                 </Button>
               </div>
             </div>

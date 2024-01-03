@@ -39,7 +39,7 @@ export const Header = () => {
   };
   const handleLogout = async () => {
     try {
-      const data: any = await callEndPoint(logout(token));
+      await callEndPoint(logout(token));
       // TODO: Toast
       // <Toast message={data.message} />
       dispatch(resetUser());

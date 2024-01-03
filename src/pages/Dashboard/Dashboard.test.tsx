@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Dashboard } from ".";
@@ -8,9 +8,7 @@ import { store } from "../../redux/store";
 import { server } from "../../mocks/node";
 import { HttpResponse, http } from "msw";
 import { configureStore } from "@reduxjs/toolkit";
-import sinon from "sinon";
 import { addProduct, editProduct } from "../../redux/states/product.slice";
-import { Product } from "../../models";
 import { act } from "@testing-library/react";
 
 const API_URL = import.meta.env.VITE_API_URL as string;
