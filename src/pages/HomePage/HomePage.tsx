@@ -6,8 +6,6 @@ import { getAllProducts } from "../../services/public.service";
 import { ProductList, ProductsPerPageFilter } from "../../components";
 import { useState, useEffect } from "react";
 
-type HomePageProps = {};
-
 export const HomePage = (): React.ReactNode => {
   const [productsPerPage, setProductsPerPage] = useState<number>(10);
   const { username } = useSelector((store: AppStore) => store.user);

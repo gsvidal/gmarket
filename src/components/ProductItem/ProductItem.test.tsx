@@ -40,8 +40,8 @@ describe("ProductItem", async () => {
 
     expect(screen.getByText(/test product/i)).toBeInTheDocument();
     expect(screen.getByText(/test brand/i)).toBeInTheDocument();
-    expect(screen.getByText("249.99")).toBeInTheDocument();
-    expect(screen.getByText("199.99")).toBeInTheDocument();
+    expect(screen.getByText(/249.99/)).toBeInTheDocument();
+    expect(screen.getByText(/199.99/)).toBeInTheDocument();
     expect(screen.getByText(/stock: 10/i)).toBeInTheDocument();
     expect(screen.getByText(/testUser/i)).toBeInTheDocument();
   });
@@ -182,6 +182,12 @@ describe("ProductItem", async () => {
     const deleteButton = screen.getByRole("button", { name: /delete/i });
 
     await userEvent.click(deleteButton);
+
+    const deleteConfirmationButton = screen.getByRole("button", {
+      name: /confirm/i,
+    });
+
+    await userEvent.click(deleteConfirmationButton);
 
     await waitFor(() => {
       sinon.assert.calledWith(

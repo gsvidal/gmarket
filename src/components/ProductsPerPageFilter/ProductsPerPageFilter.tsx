@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 import "./ProductsPerPageFilter.scss";
 
 type ProductsPerPageFilterProps = {
@@ -8,8 +8,10 @@ type ProductsPerPageFilterProps = {
 export const ProductsPerPageFilter = ({
   setProductsPerPage,
 }: ProductsPerPageFilterProps): React.ReactNode => {
+  const [selectValue, setSelectValue] = useState<number>(10);
   const handleProductsAmount = (event: ChangeEvent<HTMLSelectElement>) => {
     setProductsPerPage(+event.target.value);
+    setSelectValue(+event.target.value);
   };
 
   return (
@@ -19,7 +21,8 @@ export const ProductsPerPageFilter = ({
         name="products-amount"
         id="products-amount"
         onChange={handleProductsAmount}
-        defaultValue={10}
+        // defaultValue={10}
+        value={selectValue}
       >
         <option value="5">5</option>
         <option value="10">10</option>

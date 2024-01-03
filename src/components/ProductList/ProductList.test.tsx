@@ -10,6 +10,9 @@ describe("ProductList", () => {
     const products: Product[] = [];
     const loading = true;
     const errorMessage = "";
+    const totalPages = 3;
+    const currentPage = 1;
+    const productsPerPage = 5;
 
     render(
       <Provider store={store}>
@@ -17,6 +20,10 @@ describe("ProductList", () => {
           products={products}
           loading={loading}
           errorMessage={errorMessage}
+          totalPages={totalPages}
+          currentPage={currentPage}
+          productsPerPage={productsPerPage}
+          onChangePage={() => {}}
         />
       </Provider>
     );
@@ -28,6 +35,9 @@ describe("ProductList", () => {
     const products: Product[] = [];
     const loading = false;
     const errorMessage = "";
+    const totalPages = 3;
+    const currentPage = 1;
+    const productsPerPage = 5;
 
     render(
       <Provider store={store}>
@@ -35,6 +45,10 @@ describe("ProductList", () => {
           products={products}
           loading={loading}
           errorMessage={errorMessage}
+          totalPages={totalPages}
+          currentPage={currentPage}
+          productsPerPage={productsPerPage}
+          onChangePage={() => {}}
         />{" "}
       </Provider>
     );
@@ -46,6 +60,9 @@ describe("ProductList", () => {
     const products: Product[] = [];
     const loading = false;
     const errorMessage = "Couldn't retrieve products. Error: Test error";
+    const totalPages = 3;
+    const currentPage = 1;
+    const productsPerPage = 5;
 
     render(
       <Provider store={store}>
@@ -53,6 +70,10 @@ describe("ProductList", () => {
           products={products}
           loading={loading}
           errorMessage={errorMessage}
+          totalPages={totalPages}
+          currentPage={currentPage}
+          productsPerPage={productsPerPage}
+          onChangePage={() => {}}
         />
       </Provider>
     );
@@ -63,7 +84,7 @@ describe("ProductList", () => {
     expect(screen.getByText(errorMessage)).toBeInTheDocument();
   });
 
-  it("should render product list name, price and seller when products.length is not 0", () => {
+  it("should render products names, base_prices, prices and sellers when products.length is not 0", () => {
     const products: Product[] = [
       {
         id: 1,
@@ -106,6 +127,9 @@ describe("ProductList", () => {
     ];
     const loading = false;
     const errorMessage = "";
+    const totalPages = 3;
+    const currentPage = 1;
+    const productsPerPage = 5;
 
     render(
       <Provider store={store}>
@@ -114,6 +138,10 @@ describe("ProductList", () => {
             products={products}
             loading={loading}
             errorMessage={errorMessage}
+            totalPages={totalPages}
+            currentPage={currentPage}
+            productsPerPage={productsPerPage}
+            onChangePage={() => {}}
           />
         </BrowserRouter>
       </Provider>
@@ -121,14 +149,13 @@ describe("ProductList", () => {
 
     expect(screen.getByText(/test product 1/i)).toBeInTheDocument();
     expect(screen.getByText(/test brand 1/i)).toBeInTheDocument();
-
-    expect(screen.getByText("249.99")).toBeInTheDocument();
-    expect(screen.getByText("199.99")).toBeInTheDocument();
+    expect(screen.getByText(/249.99/)).toBeInTheDocument();
+    expect(screen.getByText(/199.99/)).toBeInTheDocument();
 
     expect(screen.getByText(/test product 2/i)).toBeInTheDocument();
     expect(screen.getByText(/test brand 2/i)).toBeInTheDocument();
-    expect(screen.getByText("399.99")).toBeInTheDocument();
-    expect(screen.getByText("299.99")).toBeInTheDocument();
+    expect(screen.getByText(/399.99/)).toBeInTheDocument();
+    expect(screen.getByText(/299.99/)).toBeInTheDocument();
 
     expect(screen.getAllByText(/testUser/i)).toBeTruthy;
   });
