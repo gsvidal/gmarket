@@ -1,35 +1,48 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, lazy, Suspense } from "react";
+import { Routes, Route } from "react-router-dom";
+import "./App.scss";
+import { HomePage, Login, Register } from "./pages";
+import { AuthGuard } from "./guards/auth.guards";
+import { PrivateRoutes, PublicRoutes } from "./models";
+import { Header } from "./components";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { authUser } from "./redux/states/user.slice";
+
+const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    if (user && user.token) {
+      dispatch(authUser(user));
+    }
+    setIsLoading(false);
+  }, [dispatch]);
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Header />
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <Suspense fallback={<p>Loading your Dashboard...</p>}>
+          <Routes>
+            <Route path={PublicRoutes.HOME} element={<HomePage />} />
+            <Route path={PublicRoutes.LOGIN} element={<Login />} />
+            <Route path={PublicRoutes.REGISTER} element={<Register />} />
+            <Route element={<AuthGuard />}>
+              <Route path={PrivateRoutes.DASHBOARD} element={<Dashboard />} />
+            </Route>
+            <Route path="*" element={<>Not found</>} />
+          </Routes>
+        </Suspense>
+      )}
     </>
-  )
+  );
 }
 
-export default App
+export default App;

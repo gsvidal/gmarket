@@ -1,0 +1,102 @@
+.button__container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 1px;
+  margin: 10px;
+  border-radius: 9px;
+  background-image: linear-gradient(
+    -45deg,
+    var(--secondary-color) 30%,
+    var(--tertiary-color)
+  );
+  box-shadow: 0px 3px 10px -1px var(--secondary-dark-color);
+
+  &.edit {
+    background-image: linear-gradient(
+      -45deg,
+      var(--secondary-color) 30%,
+      var(--success-color)
+    );
+    box-shadow: 0px 3px 10px -1px #489769;
+  }
+
+  &.delete {
+    background-image: linear-gradient(
+      -45deg,
+      var(--secondary-color) 30%,
+      #f73838
+    );
+    box-shadow: 0px 3px 10px -1px var(--danger-shadow-color);
+  }
+}
+
+.button {
+  display: inline-block;
+  padding: 8px 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    background-image: linear-gradient(
+      -45deg,
+      var(--secondary-opac25-color) 30%,
+      #007bff40
+    );
+  }
+
+  &:active {
+    background-image: linear-gradient(
+      -45deg,
+      var(--secondary-opac50-color) 30%,
+      #007bff80
+    );
+  }
+
+  &:disabled {
+    background-color: var(--gray);
+    cursor: not-allowed;
+  }
+
+  &.edit {
+    &:hover {
+      background-image: linear-gradient(
+        -45deg,
+        var(--secondary-opac25-color) 30%,
+        var(--success-opac25-color)
+      );
+    }
+
+    &:active {
+      background-image: linear-gradient(
+        -45deg,
+        var(--secondary-opac50-color) 30%,
+        var(--success-opac50-color)
+      );
+    }
+  }
+  &.delete {
+    &:hover {
+      background-image: linear-gradient(
+        -45deg,
+        var(--secondary-opac25-color) 30%,
+        var(--danger-opac25-color)
+      );
+    }
+
+    &:active {
+      background-image: linear-gradient(
+        -45deg,
+        var(--secondary-opac50-color) 30%,
+        var(--danger-opac50-color)
+      );
+    }
+  }
+}
