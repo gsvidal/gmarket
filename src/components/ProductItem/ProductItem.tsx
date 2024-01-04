@@ -15,8 +15,6 @@ type ProductItemProps = {
   product: Product;
 };
 
-const API_URL = import.meta.env.VITE_API_URL as string;
-
 const discount = (base: number, price: number) => {
   const discount = ((price - base) / base) * 100;
   return discount.toFixed(2);
@@ -68,9 +66,7 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
           <img
             className="product__image"
             src={
-              product.image_url
-                ? `${API_URL}${product.image_url}`
-                : noImagePlaceholder
+              product.image_url ? `${product.image_url}` : noImagePlaceholder
             }
             alt={`${product.name} image`}
             width="260"
