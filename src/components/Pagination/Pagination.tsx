@@ -50,7 +50,7 @@ export const Pagination = ({
   return (
     <div className="pagination">
       <button
-        className="button-pag"
+        className="button-pag button-pag--prev"
         onClick={() => onChangePage(currentPage - 1)}
         disabled={currentPage === 1}
       >
@@ -87,7 +87,7 @@ export const Pagination = ({
           </button>
         )}
       <button
-        className="button-pag"
+        className="button-pag button-pag--next"
         onClick={() => onChangePage(currentPage + 1)}
         disabled={currentPage === totalPages || totalPages === 0}
       >

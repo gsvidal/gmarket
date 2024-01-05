@@ -14,6 +14,9 @@ import { addProduct, editProduct } from "../../redux/states/product.slice";
 import { useLocation } from "react-router-dom";
 import { productAdapter } from "../../adapters";
 import "./ProductForm.scss";
+import {
+  setToastNotification
+} from "../../redux/states/toastNotification.slice";
 
 type ProductFormProps = {
   setIsModalOpen: (bool: boolean) => void;
@@ -82,8 +85,6 @@ export const ProductForm = ({
   const productStockData = useInput(product ? product.stock : "");
 
   useEffect(() => {
-    // console.log(user.id);
-    // console.log(user.username);
     if (product) {
       setSelectedCategory(product.category.code);
     }
@@ -169,7 +170,6 @@ export const ProductForm = ({
     formData.append("category_code", selectedCategory as string);
     formData.append("seller_id", user.id.toString() as string);
 
-    // console.log("formData values: ", [...formData.values()]);
     // Check if the selected category code exists in the fetched categories
     const selectedCategoryExists = categories.some(
       (category) => category.code === selectedCategory
@@ -187,10 +187,6 @@ export const ProductForm = ({
             : createProduct(formData, user.token)
         );
         const data = await response.data;
-        // console.log(data);
-        // TODO: Toast
-        // console.log(response);
-
         dispatch(
           type === "update"
             ? editProduct({
@@ -202,11 +198,17 @@ export const ProductForm = ({
                 product: productAdapter(data.product),
               })
         );
+        dispatch(
+          setToastNotification({ message: data.message, type: "success" })
+        );
         setErrorMessage("");
-        setIsModalOpen(false);
       } catch (error: any) {
-        console.log(error);
         setErrorMessage(error.message);
+        dispatch(
+          setToastNotification({ message: error.message, type: "danger" })
+        );
+      } finally {
+        setIsModalOpen(false);
       }
     };
     postProduct();

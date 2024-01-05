@@ -4,10 +4,12 @@ import "./App.scss";
 import { HomePage, Login, Register } from "./pages";
 import { AuthGuard } from "./guards/auth.guards";
 import { PrivateRoutes, PublicRoutes } from "./models";
-import { Header } from "./components";
+import { Header, ToastNotification } from "./components";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { authUser } from "./redux/states/user.slice";
+import { useSelector } from "react-redux";
+import { AppStore } from "./redux/store";
 
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 
@@ -23,8 +25,11 @@ function App() {
     setIsLoading(false);
   }, [dispatch]);
 
+  const { isShown } = useSelector((store: AppStore) => store.toast);
+
   return (
     <>
+      {isShown && <ToastNotification />}
       <Header />
       {isLoading ? (
         <p>Loading...</p>
