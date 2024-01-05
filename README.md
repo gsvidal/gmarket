@@ -1,3 +1,5 @@
+[Gmarket deployed App](https://gmarket.onrender.com)
+
 # Distinctiveness and Complexity
 
 The detailed description bellow demonstrates the complexity of my e-commerce application, showcasing over three years of accumulated web development expertise. In my pursuit of excellence, I opted for a challenging project, steering away from the simplicity of a basic Django React JS application. This deliberate choice reflects my commitment to meeting course requirements and building a project that meets industry standards.
