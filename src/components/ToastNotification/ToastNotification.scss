@@ -1,0 +1,53 @@
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: calc(50vw - 50% + 20px);
+  z-index: 4;
+  padding: 15px;
+  background-color: var(--white);
+  color: black;
+  border-radius: 5px;
+  font-weight: bold;
+  border-top: 3px solid black;
+  @media screen and (min-width: 1240px) {
+    left: calc(50vw - 600px);
+  }
+
+  &--success {
+    color: var(--success-shadow-color);
+    border-top-color: var(--success-shadow-color);
+  }
+
+  &--warning {
+    color: var(--warning-shadow-color);
+    border-top-color: var(--warning-shadow-color);
+  }
+
+  &--danger {
+    color: var(--danger-shadow-color);
+    border-top-color: var(--danger-shadow-color);
+  }
+
+  &__icon {
+    position: relative;
+    top: 2px;
+    left: 0px;
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
+    background: url("/icons/check.svg") center/cover no-repeat;
+
+    &--success {
+      background-image: url("/icons/check.svg");
+    }
+
+    &--warning {
+      background-image: url("/icons/warning.svg");
+    }
+
+    &--danger {
+      background-image: url("/icons/danger.svg");
+    }
+  }
+}

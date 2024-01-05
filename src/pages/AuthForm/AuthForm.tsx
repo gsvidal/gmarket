@@ -8,6 +8,7 @@ import { authUserAdapter } from "../../adapters";
 import { login, register } from "../../services/public.service";
 import { Button, Input } from "../../components";
 import { useFetchAndLoad, useInput } from "../../hooks";
+import { setToastNotification } from "../../redux/states/toastNotification.slice";
 
 type AuthFormProps = {
   title: "Login" | "Register";
@@ -93,17 +94,13 @@ export const AuthForm: React.FC<AuthFormProps> = ({ title }) => {
 
     // Trigger API Call using axios
     try {
-      const data = await callEndPoint(
+      const response = await callEndPoint(
         title === "Register" ? register(formValues) : login(formValues)
       );
+      const data = await response.data
       dispatch(authUser(authUserAdapter(data)));
       localStorage.setItem("user", JSON.stringify(authUserAdapter(data)));
-      // TODO:
-      // if(title === "Register") {
-      //   // Toast("Registered successfully")
-      // } else if(title === "Login") {
-      //   // Toast("Logged in successfully")
-      // }
+      dispatch(setToastNotification({ message: data.message, type: "success" }));
       navigate("/dashboard");
     } catch (error: any) {
       setErrorMessage(error.message);

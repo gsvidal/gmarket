@@ -11,6 +11,7 @@ import { Button } from "..";
 import { useState } from "react";
 import menuIcon from "/icons/menu.svg";
 import closeIcon from "/icons/close.svg";
+import { setToastNotification } from "../../redux/states/toastNotification.slice";
 
 export const Header = () => {
   const dispatch = useDispatch();
@@ -39,16 +40,20 @@ export const Header = () => {
   };
   const handleLogout = async () => {
     try {
-      await callEndPoint(logout(token));
-      // TODO: Toast
-      // <Toast message={data.message} />
+      const response = await callEndPoint(logout(token));
+      const data = await response.data;
       dispatch(resetUser());
       localStorage.removeItem("user");
       navigate(PublicRoutes.HOME);
-      closeHamburger();
+      dispatch(
+        setToastNotification({ message: data.message, type: "success" })
+      );
     } catch (error: any) {
-      // TODO: Toast
-      // <Toast message={error.message} />
+      dispatch(
+        setToastNotification({ message: error.message, type: "danger" })
+      );
+    } finally {
+      closeHamburger();
     }
   };
 

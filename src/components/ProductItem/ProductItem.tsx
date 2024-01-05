@@ -8,8 +8,9 @@ import { useLocation } from "react-router-dom";
 import { AppStore } from "../../redux/store";
 import { removeProduct } from "../../redux/states/product.slice";
 import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ProductForm, Button, Modal } from "..";
+import { setToastNotification } from "../../redux/states/toastNotification.slice";
 
 type ProductItemProps = {
   product: Product;
@@ -20,11 +21,11 @@ const discount = (base: number, price: number) => {
   return discount.toFixed(2);
 };
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
   const { brand, name, base_price, price, stock, seller } = product;
   const { loading: deleteLoading, callEndPoint } = useFetchAndLoad();
-  // const { loading: editLoading, callEndPoint: editCallEndPoint } =
-  //   useFetchAndLoad();
   const { id, role, token } = useSelector((store: AppStore) => store.user);
   const dispatch = useDispatch();
   const location = useLocation();
@@ -40,23 +41,27 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
   const handleDelete = async (productId: number) => {
     try {
       const response = await callEndPoint(deleteProduct(productId, token));
-      await response.data;
-      // TODO: Toast(data.message)
-      setIsDeleteModalOpen(false);
+      const data = await response.data;
+
       setFade(true);
       setTimeout(() => {
         setFade(false);
         dispatch(removeProduct({ isDashboardProduct, productId }));
       }, 1000);
-    } catch (error) {
-      // TODO: Toast(error)
-      console.log(error);
+      dispatch(
+        setToastNotification({ message: data.message, type: "success" })
+      );
+    } catch (error: any) {
+      dispatch(
+        setToastNotification({ message: error.message, type: "danger" })
+      );
+    } finally {
+      setIsDeleteModalOpen(false);
     }
   };
 
   const openEditForm = () => {
     setIsEditModalOpen(true);
-    console.log(product);
   };
 
   return (
@@ -66,7 +71,11 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
           <img
             className="product__image"
             src={
-              product.image_url ? `${product.image_url}` : noImagePlaceholder
+              product.image_url
+                ? API_URL.includes("127.0.0.1") || API_URL.includes("local")
+                  ? API_URL + product.image_url
+                  : product.image_url
+                : noImagePlaceholder
             }
             alt={`${product.name} image`}
             width="260"
@@ -81,22 +90,23 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
           <p>$ {price}</p>
           <p className="product__discount">{discount(+base_price, +price)}%</p>
           <p className="product__base-price">$ {base_price}</p>
-          <p>Stock: {stock}</p>
-          <p>Seller: {seller.username}</p>
+          <p className="product__stock">Stock: {stock}</p>
+          <p className="product__seller">Seller: {seller.username}</p>
         </div>
 
         <div className="product__buttons-container">
           {isDashboardProduct ? (
             <>
               <Button onClick={openEditForm} className="edit">
-                Edit <span className="icon-edit"></span>
+                Edit <span className="icon-item icon-item--edit"></span>
               </Button>
               <Button
                 className={`delete ${deleteLoading ? "disabled" : ""}`}
                 disabled={deleteLoading}
                 onClick={handleDeleteModal}
               >
-                {deleteLoading ? "Deleting" : "Delete"}
+                {deleteLoading ? "Deleting" : "Delete"}{" "}
+                <span className="icon-item icon-item--delete"></span>
               </Button>
             </>
           ) : (
