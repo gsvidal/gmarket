@@ -1,8 +1,6 @@
-# Distinctiveness and Complexity
+[Gmarket deployed App](https://gmarket.onrender.com)
 
-The detailed description bellow demonstrates the complexity of my e-commerce application, showcasing over three years of accumulated web development expertise. In my pursuit of excellence, I opted for a challenging project, steering away from the simplicity of a basic Django React JS application. This deliberate choice reflects my commitment to meeting course requirements and building a project that meets industry standards.
-
-## Gmarket is an e-commerce fullstack app with some CMS(Content Management System) functionalities, it's been built with:
+## Gmarket is an e-commerce fullstack app, it's been built with:
 
 Frontend:
 
