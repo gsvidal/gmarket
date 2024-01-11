@@ -5,7 +5,9 @@
 </a> 
 
 # Live demo
-[Gmarket deployed App](https://gmarket.onrender.com)
+Deployed and hosted on <img src="https://ptimofeev.com/images/render.png" alt="Render Logo" width="125" height="25"/>
+
+[Gmarket deployed App here](https://gmarket.onrender.com) 
 
 # Gmarket is an e-commerce fullstack app, it's been built with:
 
