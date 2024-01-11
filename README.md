@@ -4,7 +4,7 @@
   <img src="https://i.postimg.cc/9MLNzTxk/gmarket.gif" width="700">
 </a> 
 
-# Deploy
+# Live demo
 [Gmarket deployed App](https://gmarket.onrender.com)
 
 # Gmarket is an e-commerce fullstack app, it's been built with:
