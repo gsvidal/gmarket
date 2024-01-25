@@ -4,7 +4,7 @@ import "./App.scss";
 import { HomePage, Login, Register } from "./pages";
 import { AuthGuard } from "./guards/auth.guards";
 import { PrivateRoutes, PublicRoutes } from "./models";
-import { Header, ToastNotification } from "./components";
+import { Header, Loader, ToastNotification } from "./components";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { authUser } from "./redux/states/user.slice";
@@ -32,7 +32,7 @@ function App() {
       {isShown && <ToastNotification />}
       <Header />
       {isLoading ? (
-        <p>Loading...</p>
+        <Loader />
       ) : (
         <Suspense fallback={<p>Loading your Dashboard...</p>}>
           <Routes>

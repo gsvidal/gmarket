@@ -1,6 +1,7 @@
 export * from './Button';
 export * from './Header';
 export * from './Input';
+export * from './Loader';
 export * from './Modal';
 export * from './Pagination';
 export * from './ProductForm';

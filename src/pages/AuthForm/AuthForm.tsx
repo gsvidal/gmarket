@@ -6,7 +6,7 @@ import { authUser } from "../../redux/states/user.slice";
 import { authUserAdapter } from "../../adapters";
 
 import { login, register } from "../../services/public.service";
-import { Button, Input } from "../../components";
+import { Button, Input, Loader } from "../../components";
 import { useFetchAndLoad, useInput } from "../../hooks";
 import { setToastNotification } from "../../redux/states/toastNotification.slice";
 
@@ -110,7 +110,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ title }) => {
   return (
     <>
       {loading ? (
-        <p>Loading...</p>
+        <Loader />
       ) : (
         <form action="" onSubmit={handleSubmit} className="border">
           <h1>{title} Form</h1>

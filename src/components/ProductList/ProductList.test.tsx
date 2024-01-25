@@ -28,7 +28,7 @@ describe("ProductList", () => {
       </Provider>
     );
 
-    expect(screen.getByText(/loading.../i)).toBeInTheDocument();
+    expect(screen.getByTestId("loader")).toBeInTheDocument();
   });
 
   it("should render 'Product List is empty' when products.length is 0 and there's no error message", () => {

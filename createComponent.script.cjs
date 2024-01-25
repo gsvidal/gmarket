@@ -54,7 +54,7 @@ beforeEach(() => {
   );
 });
 
-describe(${componentName}, () => {
+describe("${componentName}", () => {
   it("renders correctly", () => {
     expect(screen.getByText(/${componentName}/i)).toBeInTheDocument()
   });
