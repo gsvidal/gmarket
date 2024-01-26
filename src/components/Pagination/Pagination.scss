@@ -10,11 +10,20 @@
   cursor: pointer;
 }
 
+.button-pag:hover {
+  background-color: var(--secondary-ultralight-color);
+}
+
 .button-pag__current {
   background-color: var(--secondary-color);
   transition: background-color 0.25s linear;
 }
 
+.button-pag__current:hover {
+  background-color: var(--secondary-color);
+}
+
 .button-pag[disabled] {
   cursor: not-allowed;
+  background-color: var(--gray);
 }

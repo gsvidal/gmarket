@@ -102,6 +102,7 @@ Button folder:
 - There's Pagination (front & back), in the client will show previous, next buttons as well as some page numbers or elipsis in case the total pages are greater than or equal to the max amount of visible pages (5).
 - There's also a products-per-page filter with set values (5,10,15,25 and 50) products/page.
 - These values will change the size of the pagination (a low products-per-page will result in a larger pagination pages buttons and viceversa).
+- There's a toast notification component that shows a short message when success (user registered successfully, product created/edited/updated successfully, etc), also with danger (in case some http request failed, if user couldn't register successfully, or delete a product, etc.)
 - Responsiveness is implemented with flexible container and products row sizes and header with a hamburger menu
 - Glassy effects for Header, hamburger menu and modals.
 - Dark mode by default.

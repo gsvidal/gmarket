@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Pagination, ProductItem } from "..";
+import { Loader, Pagination, ProductItem } from "..";
 import { Product } from "../../models";
 import "./ProductList.scss";
 
@@ -41,7 +41,7 @@ export const ProductList = ({
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       <ul className="product__list">
         {loading ? (
-          "Loading..."
+          <Loader />
         ) : products.length === 0 && !errorMessage ? (
           <li>Product List is empty</li>
         ) : (
