@@ -147,3 +147,20 @@
     display: block;
   }
 }
+
+.cart-container {
+  cursor: pointer;
+}
+
+.cart-quantity {
+  position: relative;
+  top: -3px;
+  left: 1px;
+  padding: 5px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: transparent;
+  color: var(--warning-color);
+  // border: 1px solid var(--warning-color);
+}

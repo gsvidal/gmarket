@@ -7,10 +7,11 @@ import { useFetchAndLoad } from "../../hooks";
 import { useDispatch } from "react-redux";
 import { resetUser } from "../../redux/states/user.slice";
 import "./Header.scss";
-import { Button } from "..";
+import { Button, MiniCart, Modal } from "..";
 import { useState } from "react";
 import menuIcon from "/icons/menu.svg";
 import closeIcon from "/icons/close.svg";
+import cartIcon from "/icons/cart.svg";
 import { setToastNotification } from "../../redux/states/toastNotification.slice";
 
 export const Header = () => {
@@ -21,6 +22,7 @@ export const Header = () => {
   );
   const { loading: logoutLoading, callEndPoint } = useFetchAndLoad();
   const [isHamburgerOpen, setIsHamburgerOpen] = useState<boolean>(false);
+  const [isMiniCartOpen, setIsMiniCartOpen] = useState<boolean>(false);
 
   const notAuth = (): React.ReactNode => {
     return (
@@ -63,6 +65,14 @@ export const Header = () => {
 
   const closeHamburger = () => {
     setIsHamburgerOpen(false);
+  };
+
+  const toggleMiniCart = () => {
+    setIsMiniCartOpen((prevState) => !prevState);
+  };
+
+  const closeMiniCart = () => {
+    setIsMiniCartOpen(false);
   };
 
   return (
@@ -132,7 +142,16 @@ export const Header = () => {
                     </NavLink>
                   </Button>
                 </li>
-                {/* </div> */}
+                {role === "Customer" && (
+                  <div onClick={toggleMiniCart} className="cart-container">
+                    <img
+                      src={cartIcon}
+                      alt="cart icon"
+                      className="icon icon--cart"
+                    />
+                    <span className="cart-quantity">{1}</span>
+                  </div>
+                )}
               </>
             ) : logoutLoading ? (
               // <div className="list-item list-item--auth">
@@ -147,6 +166,7 @@ export const Header = () => {
           {/* </div> */}
         </nav>
       </div>
+      {isMiniCartOpen && <MiniCart />}
     </>
   );
 };
