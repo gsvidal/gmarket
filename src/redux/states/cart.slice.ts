@@ -1,8 +1,8 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Product } from "../../models";
 
-type CartState = {
-  cart: Product[];
+export type CartState = {
+  cartItems: Product[];
 };
 
 type AddProductToCartAction = {
@@ -21,7 +21,7 @@ type UpdateProductCartAction = {
 };
 
 const initialState: CartState = {
-  cart: [],
+  cartItems: [],
 };
 
 export const cartSlice = createSlice({
@@ -34,7 +34,7 @@ export const cartSlice = createSlice({
     ) => {
       const { isUserCustomer, product } = action.payload;
       if (isUserCustomer) {
-        state.cart.push(product);
+        state.cartItems.push(product);
       }
     },
     removeProductFromCart: (
@@ -43,7 +43,7 @@ export const cartSlice = createSlice({
     ) => {
       const { isUserCustomer, productId } = action.payload;
       if (isUserCustomer) {
-        state.cart = state.cart.filter((cartItem) => cartItem.id !== productId);
+        state.cartItems = state.cartItems.filter((cartItem) => cartItem.id !== productId);
       }
     },
     updateProductCart: (
@@ -52,10 +52,16 @@ export const cartSlice = createSlice({
     ) => {
       const { isUserCustomer, product } = action.payload;
       if (isUserCustomer) {
-        state.cart = state.cart.map((cartItem) =>
+        state.cartItems = state.cartItems.map((cartItem) =>
           cartItem.id === product.id ? product : cartItem
         );
       }
     },
   },
 });
+
+export const {
+  addProductToCart, removeProductFromCart, updateProductCart
+} = cartSlice.actions;
+
+export default cartSlice.reducer;

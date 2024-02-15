@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { ProductForm, Button, Modal } from "..";
 import { setToastNotification } from "../../redux/states/toastNotification.slice";
+import { addProductToCart } from "../../redux/states/cart.slice";
 
 type ProductItemProps = {
   product: Product;
@@ -36,6 +37,8 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
     setIsDeleteModalOpen(true);
   };
 
+  const isUserCustomer = role === "Customer";
+
   const handleDelete = async (productId: number) => {
     try {
       const response = await callEndPoint(deleteProduct(productId, token));
@@ -60,6 +63,11 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
 
   const openEditForm = () => {
     setIsEditModalOpen(true);
+  };
+
+  const handleAddToCart = () => {
+    console.log("product to add: ", product);
+    dispatch(addProductToCart({ isUserCustomer, product }));
   };
 
   return (
@@ -104,10 +112,7 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
           ) : (
             id !== seller.id &&
             role === "Customer" && (
-              <Button
-                className="add"
-                onClick={() => alert("Product added to cart!")}
-              >
+              <Button className="add" onClick={handleAddToCart}>
                 Add to Cart
               </Button>
             )

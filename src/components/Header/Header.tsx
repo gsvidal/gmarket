@@ -143,14 +143,17 @@ export const Header = () => {
                   </Button>
                 </li>
                 {role === "Customer" && (
-                  <div onClick={toggleMiniCart} className="cart-container">
-                    <img
-                      src={cartIcon}
-                      alt="cart icon"
-                      className="icon icon--cart"
-                    />
-                    <span className="cart-quantity">{1}</span>
-                  </div>
+                  <>
+                    <div onClick={toggleMiniCart} className="cart-container">
+                      <img
+                        src={cartIcon}
+                        alt="cart icon"
+                        className="icon icon--cart"
+                      />
+                      <span className="cart-quantity">{1}</span>
+                    </div>
+                    {isMiniCartOpen && <MiniCart />}
+                  </>
                 )}
               </>
             ) : logoutLoading ? (
@@ -166,7 +169,6 @@ export const Header = () => {
           {/* </div> */}
         </nav>
       </div>
-      {isMiniCartOpen && <MiniCart />}
     </>
   );
 };
