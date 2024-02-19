@@ -12,3 +12,7 @@ export interface Product {
   category: Category;
   seller: Seller;
 }
+
+export interface CartProduct extends Product {
+  quantity: number;
+}

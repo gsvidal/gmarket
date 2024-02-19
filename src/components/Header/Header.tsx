@@ -7,7 +7,7 @@ import { useFetchAndLoad } from "../../hooks";
 import { useDispatch } from "react-redux";
 import { resetUser } from "../../redux/states/user.slice";
 import "./Header.scss";
-import { Button, MiniCart, Modal } from "..";
+import { Button, MiniCart } from "..";
 import { useState } from "react";
 import menuIcon from "/icons/menu.svg";
 import closeIcon from "/icons/close.svg";
@@ -20,6 +20,7 @@ export const Header = () => {
   const { username, isUserAuth, token, role } = useSelector(
     (store: AppStore) => store.user
   );
+  const { totalQuantity } = useSelector((store: AppStore) => store.cart)
   const { loading: logoutLoading, callEndPoint } = useFetchAndLoad();
   const [isHamburgerOpen, setIsHamburgerOpen] = useState<boolean>(false);
   const [isMiniCartOpen, setIsMiniCartOpen] = useState<boolean>(false);
@@ -150,7 +151,7 @@ export const Header = () => {
                         alt="cart icon"
                         className="icon icon--cart"
                       />
-                      <span className="cart-quantity">{1}</span>
+                      <span className="cart-quantity">{totalQuantity}</span>
                     </div>
                     {isMiniCartOpen && <MiniCart />}
                   </>

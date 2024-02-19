@@ -68,6 +68,7 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
   const handleAddToCart = () => {
     console.log("product to add: ", product);
     dispatch(addProductToCart({ isUserCustomer, product }));
+    
   };
 
   return (

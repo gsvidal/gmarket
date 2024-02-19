@@ -8,8 +8,7 @@ import noImagePlaceholder from "/images/no-image.png";
 type MiniCartProps = {};
 
 export const MiniCart = ({}: MiniCartProps): React.ReactNode => {
-  const { cartItems } = useSelector((store: AppStore) => store.cart);
-  console.log("cart: ", cartItems);
+  const { cartItems, totalPrice } = useSelector((store: AppStore) => store.cart);
   const handleContinue = () => {};
   return (
     <section className="mini-cart">
@@ -17,7 +16,7 @@ export const MiniCart = ({}: MiniCartProps): React.ReactNode => {
       <div className="items__container">
         {cartItems.length > 0 ? (
           cartItems.map((cartItem) => (
-            <div className="item__container">
+            <div className="item__container" key={cartItem.id}>
               <img
                 className="item__image"
                 src={
@@ -25,9 +24,13 @@ export const MiniCart = ({}: MiniCartProps): React.ReactNode => {
                 }
                 alt={`${cartItem.name} image`}
               />
-              <p className="item__name">{cartItem.name}</p>
+              <p className="item__name">
+                {cartItem.name.length < 9
+                  ? cartItem.name
+                  : cartItem.name.substring(0, 8) + "..."}
+              </p>
               <p className="item__description">
-                <span className="item__quantity">{cartItem.stock}</span>
+                <span className="item__quantity">{cartItem.quantity}</span>
                 {"  x  "}
                 <span className="item__price">$ {cartItem.price}</span>
               </p>
@@ -37,6 +40,7 @@ export const MiniCart = ({}: MiniCartProps): React.ReactNode => {
           <p className="item__container empty">Your cart is empty</p>
         )}
       </div>
+      <p>Total price: $ {totalPrice}</p>
       <Button onClick={handleContinue} className="minicart">
         <NavLink to={"/shopping-cart"}>Continue</NavLink>
       </Button>
