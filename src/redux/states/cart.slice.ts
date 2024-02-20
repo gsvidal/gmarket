@@ -3,12 +3,11 @@ import { Product, CartProduct } from "../../models";
 
 export type CartState = {
   cartItems: CartProduct[];
-  totalQuantity: number;
-  totalPrice: number;
+  cartTotalQuantity: number;
+  cartTotalPrice: number;
 };
 
 type AddProductToCartAction = {
-  isUserCustomer: boolean;
   product: Product;
 };
 
@@ -26,24 +25,26 @@ type UpdateProductCartAction = {
 // Making use of localStorage
 const initialItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
 const initialTotalQuantity = JSON.parse(
-  localStorage.getItem("totalQuantity") || "0"
+  localStorage.getItem("cartTotalQuantity") || "0"
 );
-const initialTotalPrice = JSON.parse(localStorage.getItem("totalPrice") || "0");
+const initialTotalPrice = JSON.parse(
+  localStorage.getItem("cartTotalPrice") || "0"
+);
 
 const setStateInLocalStorage = (
-  items: CartProduct[],
-  totalQuantity: number,
-  totalPrice: number
+  cartItems: CartProduct[],
+  cartTotalQuantity: number,
+  cartTotalPrice: number
 ) => {
-  localStorage.setItem("cartItems", JSON.stringify(items));
-  localStorage.setItem("cartTotalQuantity", JSON.stringify(totalQuantity));
-  localStorage.setItem("cartTotalPrice", JSON.stringify(totalPrice));
+  localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  localStorage.setItem("cartTotalQuantity", JSON.stringify(cartTotalQuantity));
+  localStorage.setItem("cartTotalPrice", JSON.stringify(cartTotalPrice));
 };
 
 const initialState: CartState = {
   cartItems: initialItems,
-  totalQuantity: initialTotalQuantity,
-  totalPrice: initialTotalPrice,
+  cartTotalQuantity: initialTotalQuantity,
+  cartTotalPrice: initialTotalPrice,
 };
 
 const calculateTotal = (
@@ -51,7 +52,8 @@ const calculateTotal = (
   property: "quantity" | "price"
 ) => {
   return cartItems.reduce((acum: number, curr: CartProduct) => {
-    return acum + curr[property];
+    const multiplier = property === "price" ? curr["quantity"] : 1;
+    return acum + curr[property] * multiplier;
   }, 0);
 };
 
@@ -63,30 +65,28 @@ export const cartSlice = createSlice({
       state,
       action: PayloadAction<AddProductToCartAction>
     ) => {
-      const { isUserCustomer, product } = action.payload;
-      if (isUserCustomer) {
-        const existingItemIndex = state.cartItems.findIndex(
-          (cartItem) => cartItem.id === product.id
-        );
-        if (existingItemIndex !== -1) {
-          // Product is already in shopping cart
-          state.cartItems[existingItemIndex].quantity++;
-        } else {
-          // In case doesn't exist yet in shopping cart
-          state.cartItems.push({ ...product, quantity: 1 });
-        }
-        // Recalculate total quantity
-        state.totalQuantity = calculateTotal(state.cartItems, "quantity");
-        // Recalculate total price
-        state.totalPrice = calculateTotal(state.cartItems, "price");
-
-        // Save in local storage
-        setStateInLocalStorage(
-          state.cartItems,
-          state.totalQuantity,
-          state.totalPrice
-        );
+      const { product } = action.payload;
+      const existingItemIndex = state.cartItems.findIndex(
+        (cartItem) => cartItem.id === product.id
+      );
+      if (existingItemIndex !== -1) {
+        // Product is already in shopping cart
+        state.cartItems[existingItemIndex].quantity++;
+      } else {
+        // In case doesn't exist yet in shopping cart
+        state.cartItems.push({ ...product, quantity: 1 });
       }
+      // Recalculate total quantity
+      state.cartTotalQuantity = calculateTotal(state.cartItems, "quantity");
+      // Recalculate total price
+      state.cartTotalPrice = calculateTotal(state.cartItems, "price");
+
+      // Save in local storage
+      setStateInLocalStorage(
+        state.cartItems,
+        state.cartTotalQuantity,
+        state.cartTotalPrice
+      );
     },
     removeProductFromCart: (
       state,
@@ -99,15 +99,15 @@ export const cartSlice = createSlice({
         );
       }
       // Recalculate total quantity
-      state.totalQuantity = calculateTotal(state.cartItems, "quantity");
+      state.cartTotalQuantity = calculateTotal(state.cartItems, "quantity");
       // Recalculate total price
-      state.totalPrice = calculateTotal(state.cartItems, "price");
+      state.cartTotalPrice = calculateTotal(state.cartItems, "price");
 
       // Save in local storage
       setStateInLocalStorage(
         state.cartItems,
-        state.totalQuantity,
-        state.totalPrice
+        state.cartTotalQuantity,
+        state.cartTotalPrice
       );
     },
     updateProductCart: (
@@ -124,15 +124,15 @@ export const cartSlice = createSlice({
           state.cartItems[existingItemIndex].quantity = updatedQuantity;
         }
         // Recalculate total quantity
-        state.totalQuantity = calculateTotal(state.cartItems, "quantity");
+        state.cartTotalQuantity = calculateTotal(state.cartItems, "quantity");
         // Recalculate total price
-        state.totalPrice = calculateTotal(state.cartItems, "price");
+        state.cartTotalPrice = calculateTotal(state.cartItems, "price");
 
         // Save in local storage
         setStateInLocalStorage(
           state.cartItems,
-          state.totalQuantity,
-          state.totalPrice
+          state.cartTotalQuantity,
+          state.cartTotalPrice
         );
       }
     },

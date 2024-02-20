@@ -22,7 +22,7 @@ export const HomePage = (): React.ReactNode => {
   return (
     <main className="homepage">
       <h1 className="title homepage__title">
-        Welcome {username && username}!{" "}
+        Welcome {username ? username : "guest"}!{" "}
       </h1>
       <h3>You can find any products here:</h3>
       <ProductsPerPageFilter setProductsPerPage={setProductsPerPage} />

@@ -6,5 +6,6 @@ export const PublicRoutes = {
 
 export const PrivateRoutes = {
   DASHBOARD: "dashboard",
-  LOGOUT: "logout"
+  LOGOUT: "logout",
+  CART: "shopping-cart"
 };

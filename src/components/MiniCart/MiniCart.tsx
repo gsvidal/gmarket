@@ -8,7 +8,8 @@ import noImagePlaceholder from "/images/no-image.png";
 type MiniCartProps = {};
 
 export const MiniCart = ({}: MiniCartProps): React.ReactNode => {
-  const { cartItems, totalPrice } = useSelector((store: AppStore) => store.cart);
+  const { cartItems, cartTotalPrice } = useSelector((store: AppStore) => store.cart);
+  console.log(cartItems)
   const handleContinue = () => {};
   return (
     <section className="mini-cart">
@@ -40,7 +41,7 @@ export const MiniCart = ({}: MiniCartProps): React.ReactNode => {
           <p className="item__container empty">Your cart is empty</p>
         )}
       </div>
-      <p>Total price: $ {totalPrice}</p>
+      <p className="total__price">Total price: $ {cartTotalPrice}</p>
       <Button onClick={handleContinue} className="minicart">
         <NavLink to={"/shopping-cart"}>Continue</NavLink>
       </Button>

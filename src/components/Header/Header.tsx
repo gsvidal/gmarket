@@ -20,7 +20,8 @@ export const Header = () => {
   const { username, isUserAuth, token, role } = useSelector(
     (store: AppStore) => store.user
   );
-  const { totalQuantity } = useSelector((store: AppStore) => store.cart)
+  const { cartTotalQuantity } = useSelector((store: AppStore) => store.cart);
+  // console.log(totalQuantity)
   const { loading: logoutLoading, callEndPoint } = useFetchAndLoad();
   const [isHamburgerOpen, setIsHamburgerOpen] = useState<boolean>(false);
   const [isMiniCartOpen, setIsMiniCartOpen] = useState<boolean>(false);
@@ -143,19 +144,6 @@ export const Header = () => {
                     </NavLink>
                   </Button>
                 </li>
-                {role === "Customer" && (
-                  <>
-                    <div onClick={toggleMiniCart} className="cart-container">
-                      <img
-                        src={cartIcon}
-                        alt="cart icon"
-                        className="icon icon--cart"
-                      />
-                      <span className="cart-quantity">{totalQuantity}</span>
-                    </div>
-                    {isMiniCartOpen && <MiniCart />}
-                  </>
-                )}
               </>
             ) : logoutLoading ? (
               // <div className="list-item list-item--auth">
@@ -166,8 +154,12 @@ export const Header = () => {
               // </div>
               notAuth()
             )}
+            <div onClick={toggleMiniCart} className="cart-container">
+              <img src={cartIcon} alt="cart icon" className="icon icon--cart" />
+              <span className="cart-quantity">{cartTotalQuantity}</span>
+            </div>
+            {isMiniCartOpen && <MiniCart />}
           </ul>
-          {/* </div> */}
         </nav>
       </div>
     </>

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { FormValues } from "../pages";
+import { Product } from "../models";
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 
@@ -137,3 +138,20 @@ export const updateProduct = (
     controller,
   };
 };
+
+export const addProductToCartService = (product: Product, token: string) => {
+  const controller = new AbortController();
+  return {
+    call: axios.post(
+      `${API_URL}/add_to_cart/${product.id}`,
+      product,
+      {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+        signal: controller.signal,
+      }
+    ),
+    controller,
+  };
+}
