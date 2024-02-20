@@ -11,7 +11,7 @@ import { useLocation } from "react-router-dom";
 import { AppStore } from "../../redux/store";
 import { removeProduct } from "../../redux/states/product.slice";
 import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ProductForm, Button, Modal } from "..";
 import { setToastNotification } from "../../redux/states/toastNotification.slice";
 import { addProductToCart } from "../../redux/states/cart.slice";
@@ -27,7 +27,8 @@ const discount = (base: number, price: number) => {
 
 export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
   const { brand, name, base_price, price, stock, seller } = product;
-  const { loading: deleteLoading, callEndPoint } = useFetchAndLoad();
+  const { loading: deleteLoading, callEndPoint: callEndPointDelete } = useFetchAndLoad("delete");
+  const { loading: addToCartLoading, callEndPoint: callEndPointAdd } = useFetchAndLoad("add");
   const { id, role, token, isUserAuth } = useSelector(
     (store: AppStore) => store.user
   );
@@ -44,7 +45,7 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
 
   const handleDelete = async (productId: number) => {
     try {
-      const response = await callEndPoint(deleteProduct(productId, token));
+      const response = await callEndPointDelete(deleteProduct(productId, token));
       const data = await response.data;
 
       setFade(true);
@@ -71,7 +72,7 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
   const handleAddToCart = async (product: Product) => {
     if (isUserAuth) {
       try {
-        const response: any = await callEndPoint(
+        const response: any = await callEndPointAdd(
           addProductToCartService(product, token)
         );
 
@@ -83,8 +84,8 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
         console.log(error);
       }
     } else {
-      console.log("user not auth, is gonna dispatch")
-        dispatch(addProductToCart({ product }));
+      console.log("user not auth, is gonna dispatch");
+      dispatch(addProductToCart({ product }));
     }
   };
 
@@ -129,7 +130,7 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
             </>
           ) : (
             <Button className="add" onClick={() => handleAddToCart(product)}>
-              Add to Cart
+              {addToCartLoading ? "Adding..." : "Add to Cart"}
             </Button>
           )}
         </div>
