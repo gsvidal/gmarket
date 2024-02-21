@@ -27,8 +27,8 @@ const discount = (base: number, price: number) => {
 
 export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
   const { brand, name, base_price, price, stock, seller } = product;
-  const { loading: deleteLoading, callEndPoint: callEndPointDelete } = useFetchAndLoad("delete");
-  const { loading: addToCartLoading, callEndPoint: callEndPointAdd } = useFetchAndLoad("add");
+  const { loading: deleteLoading, callEndPoint: callEndPointDelete } = useFetchAndLoad();
+  const { loading: addToCartLoading, callEndPoint: callEndPointAdd } = useFetchAndLoad();
   const { id, role, token, isUserAuth } = useSelector(
     (store: AppStore) => store.user
   );
@@ -129,7 +129,7 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
               </Button>
             </>
           ) : (
-            <Button className="add" onClick={() => handleAddToCart(product)}>
+            <Button className="add" onClick={() => handleAddToCart(product)} disabled={addToCartLoading}>
               {addToCartLoading ? "Adding..." : "Add to Cart"}
             </Button>
           )}

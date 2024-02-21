@@ -1,11 +1,11 @@
 export const PublicRoutes = {
   LOGIN: "login",
   REGISTER: "register",
-  HOME: "/"
+  HOME: "/",
+  CART: "shopping-cart"
 };
 
 export const PrivateRoutes = {
   DASHBOARD: "dashboard",
   LOGOUT: "logout",
-  CART: "shopping-cart"
 };

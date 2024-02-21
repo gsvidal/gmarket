@@ -10,6 +10,8 @@ import { useDispatch } from "react-redux";
 import { authUser } from "./redux/states/user.slice";
 import { useSelector } from "react-redux";
 import { AppStore } from "./redux/store";
+import { ShoppingCartGuard } from "./guards/shooping-cart.guards";
+import { ShoppingCart } from "./pages/ShoppingCart/ShoppingCart";
 
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 
@@ -41,6 +43,9 @@ function App() {
             <Route path={PublicRoutes.REGISTER} element={<Register />} />
             <Route element={<AuthGuard />}>
               <Route path={PrivateRoutes.DASHBOARD} element={<Dashboard />} />
+            </Route>
+            <Route element={<ShoppingCartGuard />}>
+              <Route path={PublicRoutes.CART} element={<ShoppingCart />} />
             </Route>
             <Route path="*" element={<>Not found</>} />
           </Routes>

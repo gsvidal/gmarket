@@ -20,37 +20,37 @@
   &__title {
     text-align: center;
   }
-}
 
-.items__container {
-  padding: 0px 10px;
-  height: 320px;
-  overflow: auto;
-  background-color: rgb(97, 97, 97);
-}
-
-.item__container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 10px 0;
-  background-color: rgb(107, 107, 107);
-
-  padding: 6px;
-  font-size: 1.3rem;
-  font-weight: 300;
-
-  &.empty {
-    justify-content: center;
+  .items__container {
+    padding: 0px 10px;
+    height: 320px;
+    overflow: auto;
+    background-color: rgb(97, 97, 97);
   }
-}
 
-.item__image {
-  width: 65px;
-  height: 49px;
-  object-fit: cover;
-}
+  .item__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+    background-color: rgb(107, 107, 107);
 
-.total__price {
-  margin-top: 15px;
+    padding: 6px;
+    font-size: 1.3rem;
+    font-weight: 300;
+
+    &.empty {
+      justify-content: center;
+    }
+  }
+
+  .item__image {
+    width: 65px;
+    height: 49px;
+    object-fit: cover;
+  }
+
+  .total__price {
+    margin-top: 15px;
+  }
 }

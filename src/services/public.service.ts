@@ -48,16 +48,24 @@ export const logout = (token: string) => {
   };
 };
 
-export const getSellerProducts = (id: number, token: string, page = 1, perPage = 10) => {
+export const getSellerProducts = (
+  id: number,
+  token: string,
+  page = 1,
+  perPage = 10
+) => {
   const controller = new AbortController();
   return {
-    call: axios.get(`${API_URL}/seller_dashboard/${id}?page=${page}&per_page=${perPage}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
-      },
-      signal: controller.signal,
-    }),
+    call: axios.get(
+      `${API_URL}/seller_dashboard/${id}?page=${page}&per_page=${perPage}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+        signal: controller.signal,
+      }
+    ),
     controller,
   };
 };
@@ -142,9 +150,26 @@ export const updateProduct = (
 export const addProductToCartService = (product: Product, token: string) => {
   const controller = new AbortController();
   return {
-    call: axios.post(
-      `${API_URL}/add_to_cart/${product.id}`,
-      product,
+    call: axios.post(`${API_URL}/add_to_cart/${product.id}`, product, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+      signal: controller.signal,
+    }),
+    controller,
+  };
+};
+
+export const updateProductQuantity = (
+  productId: number,
+  factor: number,
+  token: string
+) => {
+  const controller = new AbortController();
+  return {
+    call: axios.put(
+      `${API_URL}/update_quantity/${productId}`,
+      { quantity: factor },
       {
         headers: {
           Authorization: `Token ${token}`,
@@ -154,4 +179,4 @@ export const addProductToCartService = (product: Product, token: string) => {
     ),
     controller,
   };
-}
+};

@@ -4,13 +4,18 @@ import "./MiniCart.scss";
 import { useSelector } from "react-redux";
 import { AppStore } from "../../redux/store";
 import noImagePlaceholder from "/images/no-image.png";
+import { PublicRoutes } from "../../models";
 
-type MiniCartProps = {};
+type MiniCartProps = {
+  setIsMiniCartOpen: (bool: boolean) => void;
+};
 
-export const MiniCart = ({}: MiniCartProps): React.ReactNode => {
+export const MiniCart = ({setIsMiniCartOpen}: MiniCartProps): React.ReactNode => {
   const { cartItems, cartTotalPrice } = useSelector((store: AppStore) => store.cart);
-  console.log(cartItems)
-  const handleContinue = () => {};
+  // console.log(cartItems)
+  const handleContinueToCart = () => {
+    setIsMiniCartOpen(false)
+  };
   return (
     <section className="mini-cart">
       <h2 className="mini-cart__title">MiniCart</h2>
@@ -42,8 +47,8 @@ export const MiniCart = ({}: MiniCartProps): React.ReactNode => {
         )}
       </div>
       <p className="total__price">Total price: $ {cartTotalPrice}</p>
-      <Button onClick={handleContinue} className="minicart">
-        <NavLink to={"/shopping-cart"}>Continue</NavLink>
+      <Button onClick={handleContinueToCart} className="minicart">
+        <NavLink to={PublicRoutes.CART}>Continue</NavLink>
       </Button>
     </section>
   );

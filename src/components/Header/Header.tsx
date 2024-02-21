@@ -158,7 +158,7 @@ export const Header = () => {
               <img src={cartIcon} alt="cart icon" className="icon icon--cart" />
               <span className="cart-quantity">{cartTotalQuantity}</span>
             </div>
-            {isMiniCartOpen && <MiniCart />}
+            {isMiniCartOpen && <MiniCart setIsMiniCartOpen={setIsMiniCartOpen} />}
           </ul>
         </nav>
       </div>

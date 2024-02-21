@@ -17,8 +17,7 @@ type RemoveProductFromCartAction = {
 };
 
 type UpdateProductCartAction = {
-  isUserCustomer: boolean;
-  product: Product;
+  productId: number;
   updatedQuantity: number;
 };
 
@@ -114,27 +113,25 @@ export const cartSlice = createSlice({
       state,
       action: PayloadAction<UpdateProductCartAction>
     ) => {
-      const { isUserCustomer, product, updatedQuantity } = action.payload;
-      if (isUserCustomer) {
-        const existingItemIndex = state.cartItems.findIndex(
-          (cartItem) => cartItem.id === product.id
-        );
-        if (existingItemIndex !== -1) {
-          // Product is already in shopping cart
-          state.cartItems[existingItemIndex].quantity = updatedQuantity;
-        }
-        // Recalculate total quantity
-        state.cartTotalQuantity = calculateTotal(state.cartItems, "quantity");
-        // Recalculate total price
-        state.cartTotalPrice = calculateTotal(state.cartItems, "price");
+      const { productId, updatedQuantity } = action.payload;
+      const productIndex = state.cartItems.findIndex(
+        (cartItem) => cartItem.id === productId
+      );
+      if (productIndex !== -1) {
+      // Product is already in shopping cart
+      state.cartItems[productIndex].quantity += updatedQuantity;
+      } 
+      // Recalculate total quantity
+      state.cartTotalQuantity = calculateTotal(state.cartItems, "quantity");
+      // Recalculate total price
+      state.cartTotalPrice = calculateTotal(state.cartItems, "price");
 
-        // Save in local storage
-        setStateInLocalStorage(
-          state.cartItems,
-          state.cartTotalQuantity,
-          state.cartTotalPrice
-        );
-      }
+      // Save in local storage
+      setStateInLocalStorage(
+        state.cartItems,
+        state.cartTotalQuantity,
+        state.cartTotalPrice
+      );
     },
   },
 });

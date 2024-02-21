@@ -8,7 +8,7 @@ export type UserState = User & {
 const emptyUser: UserState = {
   id: 0,
   username: "",
-  role: "Seller",
+  role: "Customer",
   creationDate: "",
   token: "",
   isUserAuth: false,

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { AxiosResponse } from "axios";
 import { AxiosCall } from "../models";
 
-export const useFetchAndLoad = (operation: string) => {
+export const useFetchAndLoad = () => {
   const [loading, setLoading] = useState(false);
   const controllerRef = useRef<AbortController | null>(null);
 
