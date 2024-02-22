@@ -37,9 +37,11 @@ export const ShoppingCart = ({}: ShoppingCartProps): React.ReactNode => {
       <div className="items__container">
         {cartItems.map((cartItem: CartProduct) => (
           <div className={`item__container`} key={cartItem.id}>
-            {true && (<div className="item__disabled">
-                <Loader  />
-              </div>)}
+            {loading && (
+              <div className="item__disabled">
+                <Loader size="medium" />
+              </div>
+            )}
             <img
               src={cartItem.image_url ? noImagePlaceholder : cartItem.image_url}
               alt={`${cartItem.name} image`}
