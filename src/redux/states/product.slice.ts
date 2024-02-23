@@ -22,7 +22,7 @@ type RemoveProductAction = {
 };
 
 const initialState: ProductState = {
-  allProducts: [],
+  allProducts: [] ,
   sellerProducts: [],
 };
 

@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { ProductForm, Button, Modal } from "..";
 import { setToastNotification } from "../../redux/states/toastNotification.slice";
 import { addProductToCart } from "../../redux/states/cart.slice";
+import { formatPrice } from "../../helpers";
 
 type ProductItemProps = {
   product: Product;
@@ -27,8 +28,10 @@ const discount = (base: number, price: number) => {
 
 export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
   const { brand, name, base_price, price, stock, seller } = product;
-  const { loading: deleteLoading, callEndPoint: callEndPointDelete } = useFetchAndLoad();
-  const { loading: addToCartLoading, callEndPoint: callEndPointAdd } = useFetchAndLoad();
+  const { loading: deleteLoading, callEndPoint: callEndPointDelete } =
+    useFetchAndLoad();
+  const { loading: addToCartLoading, callEndPoint: callEndPointAdd } =
+    useFetchAndLoad();
   const { id, role, token, isUserAuth } = useSelector(
     (store: AppStore) => store.user
   );
@@ -45,7 +48,9 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
 
   const handleDelete = async (productId: number) => {
     try {
-      const response = await callEndPointDelete(deleteProduct(productId, token));
+      const response = await callEndPointDelete(
+        deleteProduct(productId, token)
+      );
       const data = await response.data;
 
       setFade(true);
@@ -104,11 +109,11 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
           />
         </figure>
         <div className="product__info">
-          <p>{brand}</p>
+          <p className="product__brand">{brand}</p>
           <p className="product__name">{name}</p>
-          <p>$ {price}</p>
+          <p className="product__price">{formatPrice(price)}</p>
           <p className="product__discount">{discount(+base_price, +price)}%</p>
-          <p className="product__base-price">$ {base_price}</p>
+          <p className="product__base-price">{formatPrice(base_price)}</p>
           <p className="product__stock">Stock: {stock}</p>
           <p className="product__seller">Seller: {seller.username}</p>
         </div>
@@ -129,7 +134,11 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
               </Button>
             </>
           ) : (
-            <Button className="add" onClick={() => handleAddToCart(product)} disabled={addToCartLoading}>
+            <Button
+              className="add"
+              onClick={() => handleAddToCart(product)}
+              disabled={addToCartLoading}
+            >
               {addToCartLoading ? "Adding..." : "Add to Cart"}
             </Button>
           )}

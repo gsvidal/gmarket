@@ -180,3 +180,16 @@ export const updateProductQuantity = (
     controller,
   };
 };
+
+export const deleteProductFromCart = (productId: number, token: string) => {
+  const controller = new AbortController();
+  return {
+    call: axios.delete(`${API_URL}/remove_from_cart/${productId}`, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+      signal: controller.signal,
+    }),
+    controller,
+  };
+};

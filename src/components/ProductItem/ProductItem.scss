@@ -26,8 +26,9 @@
   }
 
   &__name {
+    margin: 9px 0;
+    font-size: 1.7rem;
     font-weight: bold;
-    margin: 7px 0;
   }
 
   &__buttons-container {
@@ -46,6 +47,10 @@
     background-color: var(--danger-color);
     border-radius: 4px;
     font-size: 0.9rem;
+  }
+
+  &__price {
+    font-size: 1.6rem;
   }
 
   &__base-price {
