@@ -10,10 +10,11 @@ import {
 } from "../../services/public.service";
 import { useFetchAndLoad, useFetchProducts } from "../../hooks";
 import { useDispatch } from "react-redux";
-import { updateProductCart } from "../../redux/states/cart.slice";
+import { removeProductFromCart, updateProductCart } from "../../redux/states/cart.slice";
 import { Button, Loader } from "../../components";
 import { useEffect, useState } from "react";
 import { formatPrice } from "../../helpers";
+import { setToastNotification } from "../../redux/states/toastNotification.slice";
 
 type ShoppingCartProps = {};
 
@@ -38,10 +39,10 @@ export const ShoppingCart = ({}: ShoppingCartProps): React.ReactNode => {
   const updateQuantity = async (productId: number, factor: number) => {
     setProductIdToUpdate(productId);
     try {
-      const response = await callEndPoint(
+      const { data } = await callEndPoint(
         updateProductQuantity(productId, factor, token)
       );
-      console.log(response);
+      console.log(data)
       dispatch(updateProductCart({ productId, updatedQuantity: factor }));
     } catch (error) {
       console.log(error);
@@ -65,10 +66,12 @@ export const ShoppingCart = ({}: ShoppingCartProps): React.ReactNode => {
 
   const handleDeleteCartItem = async (itemId: number) => {
     try {
-      const response = await callEndPointDeleteCartItem(
+      const { data } = await callEndPointDeleteCartItem(
         deleteProductFromCart(itemId, token)
       );
-      console.log(response);
+      // Deleted successfully
+      dispatch(setToastNotification({message: data.message, type: "success"}))
+      dispatch(removeProductFromCart({productId: itemId}))
     } catch (error) {
       console.log(error);
     }

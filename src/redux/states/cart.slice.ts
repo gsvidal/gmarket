@@ -12,7 +12,6 @@ type AddProductToCartAction = {
 };
 
 type RemoveProductFromCartAction = {
-  isUserCustomer: boolean;
   productId: number;
 };
 
@@ -91,12 +90,12 @@ export const cartSlice = createSlice({
       state,
       action: PayloadAction<RemoveProductFromCartAction>
     ) => {
-      const { isUserCustomer, productId } = action.payload;
-      if (isUserCustomer) {
-        state.cartItems = state.cartItems.filter(
-          (cartItem) => cartItem.id !== productId
-        );
-      }
+      const { productId } = action.payload;
+
+      state.cartItems = state.cartItems.filter(
+        (cartItem) => cartItem.id !== productId
+      );
+
       // Recalculate total quantity
       state.cartTotalQuantity = calculateTotal(state.cartItems, "quantity");
       // Recalculate total price
@@ -118,9 +117,9 @@ export const cartSlice = createSlice({
         (cartItem) => cartItem.id === productId
       );
       if (productIndex !== -1) {
-      // Product is already in shopping cart
-      state.cartItems[productIndex].quantity += updatedQuantity;
-      } 
+        // Product is already in shopping cart
+        state.cartItems[productIndex].quantity += updatedQuantity;
+      }
       // Recalculate total quantity
       state.cartTotalQuantity = calculateTotal(state.cartItems, "quantity");
       // Recalculate total price
