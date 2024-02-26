@@ -13,6 +13,7 @@ import menuIcon from "/icons/menu.svg";
 import closeIcon from "/icons/close.svg";
 import cartIcon from "/icons/cart.svg";
 import { setToastNotification } from "../../redux/states/toastNotification.slice";
+import { clearCart } from "../../redux/states/cart.slice";
 
 export const Header = () => {
   const dispatch = useDispatch();
@@ -43,6 +44,7 @@ export const Header = () => {
     );
   };
   const handleLogout = async () => {
+    console.log("click on logout")
     try {
       const response = await callEndPoint(logout(token));
       const data = await response.data;
@@ -52,6 +54,7 @@ export const Header = () => {
       dispatch(
         setToastNotification({ message: data.message, type: "success" })
       );
+      dispatch(clearCart())
     } catch (error: any) {
       dispatch(
         setToastNotification({ message: error.message, type: "danger" })

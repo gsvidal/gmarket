@@ -20,6 +20,12 @@ type UpdateProductCartAction = {
   updatedQuantity: number;
 };
 
+type SetCartAction = {
+  cartItems: CartProduct[];
+  cartTotalQuantity: number;
+  cartTotalPrice: number;
+};
+
 // Making use of localStorage
 const initialItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
 const initialTotalQuantity = JSON.parse(
@@ -132,10 +138,31 @@ export const cartSlice = createSlice({
         state.cartTotalPrice
       );
     },
+    clearCart: (state) => {
+      state.cartItems = [];
+      state.cartTotalQuantity = 0;
+      state.cartTotalPrice = 0;
+      setStateInLocalStorage(
+        state.cartItems,
+        state.cartTotalQuantity,
+        state.cartTotalPrice
+      );
+    },
+    setCart: (state, action: PayloadAction<SetCartAction>) => {
+      const { cartItems, cartTotalQuantity, cartTotalPrice } = action.payload;
+      state.cartItems = [...cartItems];
+      state.cartTotalQuantity = cartTotalQuantity;
+      state.cartTotalPrice = cartTotalPrice;
+    },
   },
 });
 
-export const { addProductToCart, removeProductFromCart, updateProductCart } =
-  cartSlice.actions;
+export const {
+  addProductToCart,
+  removeProductFromCart,
+  updateProductCart,
+  clearCart,
+  setCart,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;

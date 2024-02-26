@@ -193,3 +193,17 @@ export const deleteProductFromCart = (productId: number, token: string) => {
     controller,
   };
 };
+
+export const getCart = (token: string) => {
+  const controller = new AbortController();
+  return {
+    call: axios.get(`${API_URL}/get_cart`, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+      signal: controller.signal,
+    }),
+    controller,
+  };
+};
+

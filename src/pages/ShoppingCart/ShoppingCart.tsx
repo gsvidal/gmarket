@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import "./ShoppingCart.scss";
 import { AppStore } from "../../redux/store";
-import { CartProduct, Product } from "../../models";
+import { CartProduct } from "../../models";
 import noImagePlaceholder from "/images/no-image.png";
 import {
   deleteProductFromCart,
@@ -20,7 +20,6 @@ type ShoppingCartProps = {};
 
 export const ShoppingCart = ({}: ShoppingCartProps): React.ReactNode => {
   const { cartItems } = useSelector((store: AppStore) => store.cart);
-  const { allProducts } = useSelector((store: AppStore) => store.product);
   const { token } = useSelector((store: AppStore) => store.user);
   const { loading, callEndPoint } = useFetchAndLoad();
   const [productIdToUpdate, setProductIdToUpdate] = useState<number | null>(
@@ -70,16 +69,17 @@ export const ShoppingCart = ({}: ShoppingCartProps): React.ReactNode => {
         deleteProductFromCart(itemId, token)
       );
       // Deleted successfully
-      dispatch(setToastNotification({message: data.message, type: "success"}))
       dispatch(removeProductFromCart({productId: itemId}))
-    } catch (error) {
-      console.log(error);
+      dispatch(setToastNotification({message: data.message, type: "success"}))
+    } catch (error: any) {
+      dispatch(setToastNotification({message: error.error, type: "danger"}))
     }
   };
 
   return (
     <section className="shopping-cart">
       <h1>Shopping Cart</h1>
+      { cartItems.length > 0 ? (
       <div className="items__container">
         {cartItems.map((cartItem: CartProduct) => (
           <div className={`item__container`} key={cartItem.id}>
@@ -135,6 +135,9 @@ export const ShoppingCart = ({}: ShoppingCartProps): React.ReactNode => {
           </div>
         ))}
       </div>
+      ) : (
+        <p>Your shopping cart is empty, go to Home an add some products.</p>
+      )}
     </section>
   );
 };

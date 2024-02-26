@@ -12,12 +12,18 @@ import { useSelector } from "react-redux";
 import { AppStore } from "./redux/store";
 import { ShoppingCartGuard } from "./guards/shooping-cart.guards";
 import { ShoppingCart } from "./pages/ShoppingCart/ShoppingCart";
+import { useFetchAndLoad } from "./hooks";
+import { getCart } from "./services/public.service";
+import { setCart } from "./redux/states/cart.slice";
 
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 
 function App() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
+  const { loading: getCartLoading, callEndPoint } = useFetchAndLoad();
+  const { isShown } = useSelector((store: AppStore) => store.toast);
+  const { username, token } = useSelector((store: AppStore) => store.user);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -27,7 +33,21 @@ function App() {
     setIsLoading(false);
   }, [dispatch]);
 
-  const { isShown } = useSelector((store: AppStore) => store.toast);
+  useEffect(() => {
+    if (username) {
+      console.log("username: ", username)
+      const fetchCart = async () => {
+        try {
+          const {data: {cartItems, cartTotalQuantity, cartTotalPrice}} = await callEndPoint(getCart(token));
+          console.log({cartItems, cartTotalQuantity, cartTotalPrice})
+          dispatch(setCart({cartItems, cartTotalQuantity, cartTotalPrice}))
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchCart();
+    }
+  }, [username]);
 
   return (
     <>
