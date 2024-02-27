@@ -52,7 +52,7 @@ function App() {
   return (
     <>
       {isShown && <ToastNotification />}
-      <Header />
+      <Header getCartLoading={getCartLoading}/>
       {isLoading ? (
         <Loader />
       ) : (

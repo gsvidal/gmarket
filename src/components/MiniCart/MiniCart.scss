@@ -53,4 +53,18 @@
   .total__price {
     margin-top: 15px;
   }
+
+  .close-icon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 30px;
+    height: 30px;
+    filter: invert(100%);
+    cursor: pointer;
+
+    &:hover {
+      filter: invert(70%);
+    }
+  }
 }

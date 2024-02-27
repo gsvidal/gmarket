@@ -2,7 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { PrivateRoutes, PublicRoutes } from "../../models";
 import { AppStore } from "../../redux/store";
 import { useSelector } from "react-redux";
-import { logout } from "../../services/public.service";
+import { getCart, logout } from "../../services/public.service";
 import { useFetchAndLoad } from "../../hooks";
 import { useDispatch } from "react-redux";
 import { resetUser } from "../../redux/states/user.slice";
@@ -15,7 +15,11 @@ import cartIcon from "/icons/cart.svg";
 import { setToastNotification } from "../../redux/states/toastNotification.slice";
 import { clearCart } from "../../redux/states/cart.slice";
 
-export const Header = () => {
+type HeaderProps = {
+  getCartLoading: boolean;
+}
+
+export const Header = ({getCartLoading}: HeaderProps) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { username, isUserAuth, token, role } = useSelector(
@@ -76,9 +80,9 @@ export const Header = () => {
     setIsMiniCartOpen((prevState) => !prevState);
   };
 
-  const closeMiniCart = () => {
-    setIsMiniCartOpen(false);
-  };
+  // const closeMiniCart = () => {
+  //   setIsMiniCartOpen(false);
+  // };
 
   return (
     <>
@@ -161,7 +165,7 @@ export const Header = () => {
               <img src={cartIcon} alt="cart icon" className="icon icon--cart" />
               <span className="cart-quantity">{cartTotalQuantity}</span>
             </div>
-            {isMiniCartOpen && <MiniCart setIsMiniCartOpen={setIsMiniCartOpen} />}
+            {isMiniCartOpen && <MiniCart setIsMiniCartOpen={setIsMiniCartOpen} getCartLoading={getCartLoading} />}
           </ul>
         </nav>
       </div>
