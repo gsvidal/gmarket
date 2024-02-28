@@ -9,7 +9,9 @@ const renderHeaderComponent = () => {
   render(
     <Provider store={store}>
       <BrowserRouter>
-        <Header />
+        <Header 
+          getCartLoading={false}
+        />
       </BrowserRouter>
     </Provider>
   );

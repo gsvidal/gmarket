@@ -153,6 +153,12 @@ export const cartSlice = createSlice({
       state.cartItems = [...cartItems];
       state.cartTotalQuantity = cartTotalQuantity;
       state.cartTotalPrice = cartTotalPrice;
+
+      setStateInLocalStorage(
+        state.cartItems,
+        state.cartTotalQuantity,
+        state.cartTotalPrice
+      );
     },
   },
 });

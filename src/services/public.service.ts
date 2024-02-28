@@ -149,6 +149,7 @@ export const updateProduct = (
 
 export const addProductToCartService = (product: Product, token: string) => {
   const controller = new AbortController();
+  console.log("product: ", product)
   return {
     call: axios.post(`${API_URL}/add_to_cart/${product.id}`, product, {
       headers: {

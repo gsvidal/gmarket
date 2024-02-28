@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { useFetchAndLoad } from "../../hooks";
-import { CartProduct, Product } from "../../models";
+import { Product } from "../../models";
 import {
   addProductToCartService,
   deleteProduct,
@@ -11,7 +11,7 @@ import { useLocation } from "react-router-dom";
 import { AppStore } from "../../redux/store";
 import { removeProduct } from "../../redux/states/product.slice";
 import { useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { ProductForm, Button, Modal } from "..";
 import { setToastNotification } from "../../redux/states/toastNotification.slice";
 import { addProductToCart } from "../../redux/states/cart.slice";
@@ -27,6 +27,7 @@ const discount = (base: number, price: number) => {
 };
 
 export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
+  console.log("product: ", product)
   const { brand, name, base_price, price, stock, seller } = product;
   const { loading: deleteLoading, callEndPoint: callEndPointDelete } =
     useFetchAndLoad();
@@ -75,21 +76,18 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
   };
 
   const handleAddToCart = async (product: Product) => {
+    console.log("product", product)
     if (isUserAuth) {
       try {
         const response: any = await callEndPointAdd(
           addProductToCartService(product, token)
         );
 
-        if (!response.error) {
-          console.log("user auth, there's no error, is gonna dispatch");
-          dispatch(addProductToCart({ product }));
-        }
+        dispatch(addProductToCart({ product }));
       } catch (error) {
         console.log(error);
       }
     } else {
-      console.log("user not auth, is gonna dispatch");
       dispatch(addProductToCart({ product }));
     }
   };

@@ -17,16 +17,15 @@ import { clearCart } from "../../redux/states/cart.slice";
 
 type HeaderProps = {
   getCartLoading: boolean;
-}
+};
 
-export const Header = ({getCartLoading}: HeaderProps) => {
+export const Header = ({ getCartLoading }: HeaderProps) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { username, isUserAuth, token, role } = useSelector(
     (store: AppStore) => store.user
   );
   const { cartTotalQuantity } = useSelector((store: AppStore) => store.cart);
-  // console.log(totalQuantity)
   const { loading: logoutLoading, callEndPoint } = useFetchAndLoad();
   const [isHamburgerOpen, setIsHamburgerOpen] = useState<boolean>(false);
   const [isMiniCartOpen, setIsMiniCartOpen] = useState<boolean>(false);
@@ -48,7 +47,7 @@ export const Header = ({getCartLoading}: HeaderProps) => {
     );
   };
   const handleLogout = async () => {
-    console.log("click on logout")
+    console.log("click on logout");
     try {
       const response = await callEndPoint(logout(token));
       const data = await response.data;
@@ -58,7 +57,7 @@ export const Header = ({getCartLoading}: HeaderProps) => {
       dispatch(
         setToastNotification({ message: data.message, type: "success" })
       );
-      dispatch(clearCart())
+      dispatch(clearCart());
     } catch (error: any) {
       dispatch(
         setToastNotification({ message: error.message, type: "danger" })
@@ -79,10 +78,6 @@ export const Header = ({getCartLoading}: HeaderProps) => {
   const toggleMiniCart = () => {
     setIsMiniCartOpen((prevState) => !prevState);
   };
-
-  // const closeMiniCart = () => {
-  //   setIsMiniCartOpen(false);
-  // };
 
   return (
     <>
@@ -161,11 +156,24 @@ export const Header = ({getCartLoading}: HeaderProps) => {
               // </div>
               notAuth()
             )}
-            <div onClick={toggleMiniCart} className="cart-container">
-              <img src={cartIcon} alt="cart icon" className="icon icon--cart" />
-              <span className="cart-quantity">{cartTotalQuantity}</span>
-            </div>
-            {isMiniCartOpen && <MiniCart setIsMiniCartOpen={setIsMiniCartOpen} getCartLoading={getCartLoading} />}
+            {role !== "Seller" && (
+              <>
+                <div onClick={toggleMiniCart} className="cart-container">
+                  <img
+                    src={cartIcon}
+                    alt="cart icon"
+                    className="icon icon--cart"
+                  />
+                  <span className="cart-quantity">{cartTotalQuantity}</span>
+                </div>
+                {isMiniCartOpen && (
+                  <MiniCart
+                    setIsMiniCartOpen={setIsMiniCartOpen}
+                    getCartLoading={getCartLoading}
+                  />
+                )}
+              </>
+            )}
           </ul>
         </nav>
       </div>

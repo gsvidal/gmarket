@@ -18,12 +18,12 @@ export const useFetchAndLoad = () => {
       if (error.response) {
         throw new Error(error.response.data.error);
       } else {
-        throw new Error(error.message + ". Try again later, please.");
+        throw new Error("Try again later, please.");
       }
     } finally {
       setLoading(false);
     }
-  return response;
+    return response;
   };
 
   const cancelEndpoint = () => {

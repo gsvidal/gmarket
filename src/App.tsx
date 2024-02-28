@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import "./App.scss";
 import { HomePage, Login, Register } from "./pages";
 import { AuthGuard } from "./guards/auth.guards";
-import { PrivateRoutes, PublicRoutes } from "./models";
+import { CartProduct, PrivateRoutes, PublicRoutes } from "./models";
 import { Header, Loader, ToastNotification } from "./components";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -15,6 +15,7 @@ import { ShoppingCart } from "./pages/ShoppingCart/ShoppingCart";
 import { useFetchAndLoad } from "./hooks";
 import { getCart } from "./services/public.service";
 import { setCart } from "./redux/states/cart.slice";
+import { setToastNotification } from "./redux/states/toastNotification.slice";
 
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 
@@ -35,14 +36,22 @@ function App() {
 
   useEffect(() => {
     if (username) {
-      console.log("username: ", username)
       const fetchCart = async () => {
         try {
-          const {data: {cartItems, cartTotalQuantity, cartTotalPrice}} = await callEndPoint(getCart(token));
-          console.log({cartItems, cartTotalQuantity, cartTotalPrice})
-          dispatch(setCart({cartItems, cartTotalQuantity, cartTotalPrice}))
-        } catch (error) {
-          console.log(error);
+          const {
+            data: { cartItems, cartTotalQuantity, cartTotalPrice },
+          } = await callEndPoint(getCart(token));
+          dispatch(
+            setCart({
+              cartItems,
+              cartTotalQuantity,
+              cartTotalPrice,
+            })
+          );
+        } catch (error: any) {
+          dispatch(
+            setToastNotification({ message: error.message, type: "danger" })
+          );
         }
       };
       fetchCart();
@@ -52,7 +61,7 @@ function App() {
   return (
     <>
       {isShown && <ToastNotification />}
-      <Header getCartLoading={getCartLoading}/>
+      <Header getCartLoading={getCartLoading} />
       {isLoading ? (
         <Loader />
       ) : (

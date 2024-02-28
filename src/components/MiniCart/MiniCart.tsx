@@ -19,7 +19,7 @@ export const MiniCart = ({
   const { cartItems, cartTotalPrice } = useSelector(
     (store: AppStore) => store.cart
   );
-  // console.log(cartItems)
+  console.log(cartTotalPrice);
   const handleCloseMiniCart = () => {
     setIsMiniCartOpen(false);
   };
@@ -44,8 +44,8 @@ export const MiniCart = ({
                     className="item__image"
                     src={
                       cartItem.image_url
-                        ? noImagePlaceholder
-                        : cartItem.image_url
+                        ? cartItem.image_url
+                        : noImagePlaceholder
                     }
                     alt={`${cartItem.name} image`}
                   />
