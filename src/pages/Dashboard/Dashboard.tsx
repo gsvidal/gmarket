@@ -31,7 +31,7 @@ const Dashboard = () => {
   return (
     <>
       <h1 className="title dashboard__title">Seller Dashboard</h1>
-      <Button onClick={handleAddProduct}>+ Add product</Button>
+      <Button onClick={handleAddProduct} className="add-product">+ Add product</Button>
       <h3>These are your products:</h3>
       {isModalOpen && (
         <Modal onClose={() => setIsModalOpen(false)}>

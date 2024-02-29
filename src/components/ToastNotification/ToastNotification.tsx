@@ -12,7 +12,7 @@ export const ToastNotification = (): React.ReactNode => {
   useEffect(() => {
     const id = setTimeout(() => {
       dispatch(clearToastNotification());
-    }, 7000);
+    }, 6000);
     return () => {
       clearTimeout(id);
     };

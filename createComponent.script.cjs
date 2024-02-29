@@ -25,7 +25,7 @@ type ${componentName}Props = {
 }
 
 export const ${componentName} = ({}: ${componentName}Props): React.ReactNode => {
-    return <div></div>;
+    return <div>${componentName}</div>;
 }`;
 
 fs.writeFileSync(

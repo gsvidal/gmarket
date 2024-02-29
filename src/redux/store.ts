@@ -4,14 +4,17 @@ import {
   productReducer,
   userReducer,
   toastNotificationReducer,
+  cartReducer,
 } from "./states";
 import { ProductState } from "./states/product.slice.ts";
 import { ToastState } from "./states/toastNotification.slice.ts";
+import { CartState } from "./states/cart.slice.ts";
 
 export interface AppStore {
   user: UserState;
   product: ProductState;
   toast: ToastState;
+  cart: CartState;
 }
 
 export const store = configureStore<AppStore>({
@@ -19,6 +22,7 @@ export const store = configureStore<AppStore>({
     user: userReducer,
     product: productReducer,
     toast: toastNotificationReducer,
+    cart: cartReducer,
   },
 });
 
