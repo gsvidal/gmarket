@@ -2,25 +2,33 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { PrivateRoutes, PublicRoutes } from "../../models";
 import { AppStore } from "../../redux/store";
 import { useSelector } from "react-redux";
-import { logout } from "../../services/public.service";
+import { getCart, logout } from "../../services/public.service";
 import { useFetchAndLoad } from "../../hooks";
 import { useDispatch } from "react-redux";
 import { resetUser } from "../../redux/states/user.slice";
 import "./Header.scss";
-import { Button } from "..";
+import { Button, MiniCart } from "..";
 import { useState } from "react";
 import menuIcon from "/icons/menu.svg";
 import closeIcon from "/icons/close.svg";
+import cartIcon from "/icons/cart.svg";
 import { setToastNotification } from "../../redux/states/toastNotification.slice";
+import { clearCart } from "../../redux/states/cart.slice";
 
-export const Header = () => {
+type HeaderProps = {
+  getCartLoading: boolean;
+};
+
+export const Header = ({ getCartLoading }: HeaderProps) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { username, isUserAuth, token, role } = useSelector(
     (store: AppStore) => store.user
   );
+  const { cartTotalQuantity } = useSelector((store: AppStore) => store.cart);
   const { loading: logoutLoading, callEndPoint } = useFetchAndLoad();
   const [isHamburgerOpen, setIsHamburgerOpen] = useState<boolean>(false);
+  const [isMiniCartOpen, setIsMiniCartOpen] = useState<boolean>(false);
 
   const notAuth = (): React.ReactNode => {
     return (
@@ -39,6 +47,7 @@ export const Header = () => {
     );
   };
   const handleLogout = async () => {
+    console.log("click on logout");
     try {
       const response = await callEndPoint(logout(token));
       const data = await response.data;
@@ -48,6 +57,7 @@ export const Header = () => {
       dispatch(
         setToastNotification({ message: data.message, type: "success" })
       );
+      dispatch(clearCart());
     } catch (error: any) {
       dispatch(
         setToastNotification({ message: error.message, type: "danger" })
@@ -63,6 +73,10 @@ export const Header = () => {
 
   const closeHamburger = () => {
     setIsHamburgerOpen(false);
+  };
+
+  const toggleMiniCart = () => {
+    setIsMiniCartOpen((prevState) => !prevState);
   };
 
   return (
@@ -132,7 +146,6 @@ export const Header = () => {
                     </NavLink>
                   </Button>
                 </li>
-                {/* </div> */}
               </>
             ) : logoutLoading ? (
               // <div className="list-item list-item--auth">
@@ -143,8 +156,25 @@ export const Header = () => {
               // </div>
               notAuth()
             )}
+            {role !== "Seller" && (
+              <>
+                <div onClick={toggleMiniCart} className="cart-container">
+                  <img
+                    src={cartIcon}
+                    alt="cart icon"
+                    className="icon icon--cart"
+                  />
+                  <span className="cart-quantity">{cartTotalQuantity}</span>
+                </div>
+                {isMiniCartOpen && (
+                  <MiniCart
+                    setIsMiniCartOpen={setIsMiniCartOpen}
+                    getCartLoading={getCartLoading}
+                  />
+                )}
+              </>
+            )}
           </ul>
-          {/* </div> */}
         </nav>
       </div>
     </>
