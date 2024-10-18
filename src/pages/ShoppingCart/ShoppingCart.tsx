@@ -43,7 +43,7 @@ export const ShoppingCart = ({}: ShoppingCartProps): React.ReactNode => {
   const updateQuantity = async (productId: number, factor: number) => {
     setCartItemIdToUpdate(productId);
     try {
-      const { data } = await callEndPointUpdate(
+      await callEndPointUpdate(
         updateProductQuantity(productId, factor, token)
       );
       dispatch(updateProductCart({ productId, updatedQuantity: factor }));

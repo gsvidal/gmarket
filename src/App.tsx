@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import "./App.scss";
 import { HomePage, Login, Register } from "./pages";
 import { AuthGuard } from "./guards/auth.guards";
-import { CartProduct, PrivateRoutes, PublicRoutes } from "./models";
+import { PrivateRoutes, PublicRoutes } from "./models";
 import { Header, Loader, ToastNotification } from "./components";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";

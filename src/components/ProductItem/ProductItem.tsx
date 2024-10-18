@@ -33,7 +33,7 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
     useFetchAndLoad();
   const { loading: addToCartLoading, callEndPoint: callEndPointAdd } =
     useFetchAndLoad();
-  const { id, role, token, isUserAuth } = useSelector(
+  const { token, isUserAuth } = useSelector(
     (store: AppStore) => store.user
   );
   const dispatch = useDispatch();
@@ -79,7 +79,7 @@ export const ProductItem = ({ product }: ProductItemProps): React.ReactNode => {
     console.log("product", product)
     if (isUserAuth) {
       try {
-        const response: any = await callEndPointAdd(
+        await callEndPointAdd(
           addProductToCartService(product, token)
         );
 

@@ -2,7 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { PrivateRoutes, PublicRoutes } from "../../models";
 import { AppStore } from "../../redux/store";
 import { useSelector } from "react-redux";
-import { getCart, logout } from "../../services/public.service";
+import { logout } from "../../services/public.service";
 import { useFetchAndLoad } from "../../hooks";
 import { useDispatch } from "react-redux";
 import { resetUser } from "../../redux/states/user.slice";
