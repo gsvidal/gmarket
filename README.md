@@ -4,10 +4,8 @@
   <img src="https://i.postimg.cc/9MLNzTxk/gmarket.gif" width="700">
 </a> 
 
-# Live demo
-Deployed and hosted on <img src="https://ptimofeev.com/images/render.png" alt="Render Logo" width="125" height="25"/>
-
-[Gmarket deployed App here](https://gmarket.onrender.com) 
+## 🚀 Live Demo (Currently Unavailable)
+⚠️ Note: The live demo is currently offline as the database instance is not running to reduce hosting costs. However, you can still explore the full source code and set it up locally.
 
 # Gmarket is an e-commerce fullstack app, it's been built with:
 
@@ -109,7 +107,7 @@ Button folder:
 - Modern theming and styling that makes the app more homogeneous and visually appealing.
 
 
-## Installation and starting backend and front dev servers
+## Installation
 
 Install the project:
 
