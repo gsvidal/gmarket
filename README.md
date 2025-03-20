@@ -7,6 +7,8 @@
 ## 🚀 Live Demo (Currently Unavailable)
 ⚠️ Note: The live demo is currently offline as the database instance is not running to reduce hosting costs. However, you can still explore the full source code and set it up locally.
 
+The BACKEND repo is [here](https://github.com/gsvidal/gmarket-backend)
+
 # Gmarket is an e-commerce fullstack app, it's been built with:
 
 ## Tech Stack:
